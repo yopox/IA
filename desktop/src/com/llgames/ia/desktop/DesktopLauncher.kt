@@ -8,6 +8,8 @@ object DesktopLauncher {
     @JvmStatic fun main(arg: Array<String>) {
         var config = LwjglApplicationConfiguration().apply {
             title = "IA Desktop"
+            width = 1280
+            height = 720
         }
         LwjglApplication(IA(), config)
     }

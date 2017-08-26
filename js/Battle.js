@@ -1,10 +1,10 @@
 var battle = {
 
-    init: function(ev) {
+    init: function (ev) {
         a_ev = ev;
     },
 
-    create: function() {
+    create: function () {
 
         // INIT MUSIC
         // a_mus = game.add.audio('combat1');
@@ -19,7 +19,7 @@ var battle = {
             alpha: 1
         }, 750, Phaser.Easing.Exponential.OutIn, true);
 
-        for (i of[0, 1, 2]) {
+        for (i of [0, 1, 2]) {
             var posx_base = (i * 2 + 1.5) / 9 * 960;
             a_gui[i][0] = game.add.sprite(posx_base + 960 * 2 / 117, 560 / 32, 'charSSC');
             initSprite(a_gui[i][0], 0, [0.5, 0.25], 2, 1);
@@ -46,7 +46,7 @@ var battle = {
 
         a_bg = game.add.tileSprite(0, 560 / 16, 0, 102, 'bg_nightPlain');
         initSprite(a_bg, 0, [0, 0], 4, 1);
-        initInput(a_bg, function() {
+        initInput(a_bg, function () {
             a_paused ^= 1;
             a_pause.visible ^= 1;
         });
@@ -64,7 +64,7 @@ var battle = {
 
     },
 
-    update: function() {
+    update: function () {
         if (!a_paused) {
             if (a_battleTurn.length && a_battleTurn[0][0] == a_frame) {
                 if (a_battleTurn[0].length - 1) {
@@ -234,7 +234,7 @@ function a_updateMove() {
 // Update GUI.
 */
 function a_updateGui(man) {
-    for (i of[0, 1, 2]) {
+    for (i of [0, 1, 2]) {
         var posx_base = (i * 2 + 1.5) / 9 * 960;
         a_gui[i][1].width = 8 / 117 * 960 * man.chars[i].battleStats[0] / man.chars[i].stats[0];
         a_gui[i][2].width = 8 / 117 * 960 * man.chars[i].battleStats[1] / man.chars[i].stats[1];

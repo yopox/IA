@@ -51,11 +51,11 @@ class IA : ApplicationAdapter() {
         var dist = Math.sqrt(Math.pow(charY.toDouble(), 2.0) + Math.pow(charX.toDouble(), 2.0))
 
         var posX = (oX - dist * Math.sin(beta) * 140 - 8).toFloat() - 16
-        var posY = (oY - dist * Math.cos(beta) * 30 - 8).toFloat()
+        var posY = (oY + dist * Math.cos(beta) * 30 - 8).toFloat()
 
         batch.projectionMatrix = camera.combined
         batch.begin()
-        batch.draw(bg, 0f, 78f, (-64 * angle).toInt(), 0, 320, 102)
+        batch.draw(bg, 0f, 78f, (64 * angle).toInt(), 0, 320, 102)
         if (posX + 16 < oX) {
             batch.draw(char, posX + 16, posY,-16f,32f)
         } else {

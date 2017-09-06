@@ -30,14 +30,13 @@ class IA : ApplicationAdapter() {
     override fun create() {
 
         batch = SpriteBatch()
-        bg = Texture("bg.png")
-        bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
-
+        bg = Texture("bg.png").apply {
+            setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+        }
         chars = Array(6, { i -> Perso(Texture("char.png"), 16, 32, pos[i][0], pos[i][1]) })
 
         camera = OrthographicCamera()
-        viewport = FitViewport(320f, 180f, camera)
-        viewport.apply()
+        viewport = FitViewport(320f, 180f, camera).apply { apply() }
 
         oX = camera.viewportWidth / 2
         oY = camera.viewportHeight / 2
@@ -53,7 +52,6 @@ class IA : ApplicationAdapter() {
         chars.map { it.updatePos(angle, oX, oY) }
 
         camera.update()
-        val clearColor = Color.getColor("5850c0")
         Gdx.gl.glClearColor(49 / 255f, 49 / 255f, 54 / 255f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 

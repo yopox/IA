@@ -20,7 +20,4 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private val posX: 
 
     }
 
-    infix fun Float.angle(x: Float): Float {
-        return Math.atan2(this.toDouble(), x.toDouble()).toFloat();
-    }
 }

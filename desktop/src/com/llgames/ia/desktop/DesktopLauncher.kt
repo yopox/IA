@@ -9,8 +9,8 @@ import com.llgames.ia.IA
 fun main(arg: Array<String>) {
     val config = LwjglApplicationConfiguration().apply {
         title = "IA Desktop"
-        width = 320
-        height = 180
+        width = 640
+        height = 360
     }
     LwjglApplication(IA(), config)
 }

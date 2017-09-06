@@ -3,10 +3,8 @@ package com.llgames.ia
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import java.awt.Color
 import com.badlogic.gdx.utils.viewport.FitViewport
 
 
@@ -14,8 +12,7 @@ class IA : ApplicationAdapter() {
     private lateinit var batch: SpriteBatch
     private lateinit var bg: Texture
     private lateinit var viewport: FitViewport
-    private lateinit var camera: OrthographicCamera
-    var angle = 3.2
+    private lateinit var camera: Camera
     var counter = 0.0
     var oX = 0f
     var oY = 0f
@@ -35,7 +32,7 @@ class IA : ApplicationAdapter() {
         }
         chars = Array(6, { i -> Perso(Texture("char.png"), 16, 32, pos[i][0], pos[i][1]) })
 
-        camera = OrthographicCamera()
+        camera = Camera()
         viewport = FitViewport(320f, 180f, camera).apply { apply() }
 
         oX = camera.viewportWidth / 2
@@ -48,8 +45,8 @@ class IA : ApplicationAdapter() {
 
         // TODO : Handle camera properly
         counter += 0.02
-        angle = 3.2 + Math.sin(counter) / 1.5
-        chars.map { it.updatePos(angle, oX, oY) }
+        camera.angle = 3.2 + Math.sin(counter) / 1.5
+        chars.map { it.updatePos(camera.angle, oX, oY) }
 
         camera.update()
         Gdx.gl.glClearColor(49 / 255f, 49 / 255f, 54 / 255f, 1f)
@@ -57,7 +54,7 @@ class IA : ApplicationAdapter() {
 
         batch.projectionMatrix = camera.combined
         batch.begin()
-        batch.draw(bg, 0f, 78f, (80 * angle).toInt(), 0, 320, 102)
+        batch.draw(bg, 0f, 78f, (80 * camera.angle).toInt(), 0, 320, 102)
 
         for (char in chars) {
             if (char.realX + 16 < oX) {
@@ -74,6 +71,10 @@ class IA : ApplicationAdapter() {
     override fun dispose() {
         batch.dispose()
         bg.dispose()
+    }
+
+    override fun resize(width: Int, height: Int) {
+        viewport.update(width, height)
     }
 
 }

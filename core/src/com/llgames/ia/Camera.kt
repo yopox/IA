@@ -1,8 +1,10 @@
 package com.llgames.ia
 
+import com.badlogic.gdx.graphics.OrthographicCamera
+
 /**
  * Created by yopox on 23/08/2017.
  */
-object Camera {
-    private var angle = 0;
+class Camera() : OrthographicCamera() {
+    open var angle = 3.2;
 }

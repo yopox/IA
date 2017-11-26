@@ -1,6 +1,7 @@
 package com.llgames.ia
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 
 /**
@@ -16,8 +17,16 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private val posX: 
         val dist = Math.sqrt(Math.pow(posY.toDouble(), 2.0) + Math.pow(posX.toDouble(), 2.0))
 
         realX = (oX + dist * Math.sin(beta) * 165 - 8).toFloat()
-        realY = (oY + dist * Math.cos(beta) * 20 - 8).toFloat()
+        realY = (oY + dist * Math.cos(beta) * 20 - 8 - 22).toFloat()
 
+    }
+
+    fun drawChar(batch: Batch, oX: Float) {
+        if (this.realX + 16 < oX) {
+            batch.draw(this, this.realX + 16, this.realY, -16f, 32f)
+        } else {
+            batch.draw(this, this.realX, this.realY)
+        }
     }
 
 }

@@ -27,6 +27,7 @@ class IA : ApplicationAdapter() {
     private lateinit var chars1: Array<Perso>
     private lateinit var chars2: Array<Perso>
     private lateinit var gui: GUI
+    private lateinit var console: Console
 
     override fun create() {
 
@@ -37,6 +38,7 @@ class IA : ApplicationAdapter() {
         chars1 = Array(3, { i -> Perso(Texture("char.png"), 16, 32, pos[i][0], pos[i][1]) })
         chars2 = Array(3, { i -> Perso(Texture("char.png"), 16, 32, pos[i+3][0], pos[i+3][1]) })
         gui = GUI().apply { update(chars1, chars2) }
+        console = Console()
 
         camera = Camera()
         viewport = FitViewport(320f, 180f, camera).apply { apply() }
@@ -52,7 +54,7 @@ class IA : ApplicationAdapter() {
 
         // TODO : Handle camera properly
         counter += 0.02
-        camera.angle = 3.2 + Math.sin(0.25 * counter) / 1.25
+        camera.angle = 3.2 + Math.sin(1.5 * counter) / 2
         chars1.map { it.updatePos(camera.angle, oX, oY) }
         chars2.map { it.updatePos(camera.angle, oX, oY) }
 
@@ -67,9 +69,10 @@ class IA : ApplicationAdapter() {
 
         // GUI
         gui.draw(batch, font)
+        console.draw(batch, font)
 
         // BACKGROUND
-        batch.draw(bg, 0f, 43f, (80 * camera.angle).toInt(), 0, 320, 102)
+        batch.draw(bg, 0f, 39f, (80 * camera.angle).toInt(), 0, 320, 102)
 
         // CHARS
         chars1.map { it.drawChar(batch, oX) }

@@ -19,7 +19,7 @@ class GUI() {
     fun draw(batch: Batch, font: BitmapFont) {
 
         val posX = floatArrayOf(28f, 78f, 108f);
-        val posY = floatArrayOf(186f, 175f, 164f);
+        val posY = floatArrayOf(184f, 173f, 162f);
 
         for (i in 0..1) {
             for (j in 0..2) {

@@ -1,4 +1,4 @@
-package com.llgames.ia
+package com.llgames.ia.Util
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 
 class GUI() {
     private val names = Array(2, { i -> Array(3, { j -> "char$i$j" }) })
-    private val hp = Array(2, { i -> Array(3, { j -> 0 }) })
-    private val mp = Array(2, { i -> Array(3, { j -> 0 }) })
+    private val hp = Array(2, { _ -> Array(3, { _ -> 0 }) })
+    private val mp = Array(2, { _ -> Array(3, { _ -> 0 }) })
 
     fun update(heroes:Array<Perso>, foes:Array<Perso>) {
 

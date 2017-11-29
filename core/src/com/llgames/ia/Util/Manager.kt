@@ -3,7 +3,6 @@ package com.llgames.ia.Util
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.sun.jmx.remote.internal.ArrayQueue
 
 /**
  * Created by yopox on 27/11/2017.
@@ -14,33 +13,33 @@ import com.sun.jmx.remote.internal.ArrayQueue
     private var frame:Int = 0
     var camera = Camera()
 
-    fun getChars1():Array<Perso> {
+    fun getChars():Array<Perso> {
         val pos = arrayOf(floatArrayOf(-0.2f, 0.5f),
                     floatArrayOf(0f, 0.5f),
-                    floatArrayOf(0.2f, 0.5f))
-        return Array(3, { i -> Perso(Texture("char.png"), 16, 32, pos[i][0], pos[i][1]) })
-    }
-
-    fun getChars2():Array<Perso> {
-        val pos = arrayOf(floatArrayOf(-0.2f, -0.5f),
+                    floatArrayOf(0.2f, 0.5f),
+                    floatArrayOf(-0.2f, -0.5f),
                     floatArrayOf(0f, -0.5f),
                     floatArrayOf(0.2f, -0.5f))
-        return Array(3, { i -> Perso(Texture("char.png"), 16, 32, pos[i][0], pos[i][1]) })
+        val textures = arrayOf("char2.png", "char.png")
+        return Array(6, { i -> Perso(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1]) })
     }
 
     fun init() {
         camera.init()
     }
 
-    fun update(chars1:Array<Perso>, chars2:Array<Perso>) {
+    fun update(chars:Array<Perso>) {
 
-        frame++
+        frame = (frame + 1) % 75
 
-        camera.angle = 3.2 + Math.sin(frame/20.0) / 2
-        chars1.map { it.updatePos(camera) }
-        chars2.map { it.updatePos(camera) }
+        if (frame == 1) {
+            if (Math.random() > 0.5) camera moveTo "foe" else camera moveTo "ally"
+            console.writeText(Math.random().toString())
+        }
 
         camera.update()
+        chars.map { it.updatePos(camera) }
+
         if (frame % 2 == 0){
             console.update()
         }

@@ -19,8 +19,8 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private val posX: 
         val dist = Math.sqrt(Math.pow(posY.toDouble(), 2.0) + Math.pow(posX.toDouble(), 2.0))
 
         this.x = (oX + dist * Math.sin(beta) * 165 - 8).toFloat()
-        this.y = (oY + dist * Math.cos(beta) * 20 - 12 - 22).toFloat()
-        this.setScale(1f - Math.cos(beta).toFloat() / 6)
+        this.y = (oY + dist * Math.cos(beta) * 18 - 12 - 22).toFloat()
+        this.setScale(1f - Math.cos(beta).toFloat() / 7)
 
     }
 

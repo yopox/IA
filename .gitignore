@@ -1,3 +1,7 @@
+## IA
+
+android/assets/gifexport
+
 ## Java
 
 *.class
@@ -111,5 +115,6 @@ gradle-app.setting
 .gradletasknamecache
 
 ## OS Specific
+
 .DS_Store
 Thumbs.db

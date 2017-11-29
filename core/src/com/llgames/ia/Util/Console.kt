@@ -8,15 +8,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
  */
 
 class Console {
-    private val lines = Array(2, { _ -> ""})
-    private var toWrite = "foe2 uses Earthquake!"
-    private val writeTo = 0
+    private val lines = arrayOf("Battle begins!", "")
+    private var toWrite = ""
 
     fun update() {
         if (toWrite.isNotEmpty()) {
-            lines[writeTo] = lines[writeTo] + toWrite[0]
+            lines[1] = lines[1] + toWrite[0]
             toWrite = toWrite.substring(1)
         }
+    }
+
+    fun writeText(text: String) {
+        if (lines[1].isNotEmpty())
+            lines[0] = lines[1]
+        lines[1] = ""
+        toWrite = text
     }
 
     fun draw(batch: Batch, font: BitmapFont) {

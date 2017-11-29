@@ -18,6 +18,7 @@ class AndroidLauncher : AndroidApplication() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
 
         val config = AndroidApplicationConfiguration()
+        config.useImmersiveMode = true;
         initialize(IA(), config)
     }
 }

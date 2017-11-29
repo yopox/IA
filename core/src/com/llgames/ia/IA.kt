@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.llgames.ia.Gif.GifRecorder
 import com.llgames.ia.Util.*
 
 
@@ -15,17 +16,17 @@ class IA : ApplicationAdapter() {
     private lateinit var bg: Texture
     private lateinit var viewport: FitViewport
     private lateinit var font: BitmapFont
-    private lateinit var chars1: Array<Perso>
-    private lateinit var chars2: Array<Perso>
+    private lateinit var chars: Array<Perso>
+    private lateinit var recorder: GifRecorder
     private val manager = Manager()
 
     override fun create() {
         batch = SpriteBatch()
+        recorder = GifRecorder(batch)
         bg = Texture("bg.png").apply {
             setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
         }
-        chars1 = manager.getChars1()
-        chars2 = manager.getChars2()
+        chars = manager.getChars()
         viewport = FitViewport(320f, 180f, manager.camera).apply { apply() }
         manager.init()
         font = BitmapFont(Gdx.files.internal("m5x7.fnt"), false)
@@ -34,7 +35,7 @@ class IA : ApplicationAdapter() {
     override fun render() {
 
         // Update
-        manager.update(chars1, chars2)
+        manager.update(chars)
 
         // Clear screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
@@ -51,10 +52,12 @@ class IA : ApplicationAdapter() {
         batch.draw(bg, 0f, 39f, (80 * manager.camera.angle).toInt(), 0, 320, 102)
 
         // Draw chars
-        chars1.map { it.drawChar(batch, manager.camera) }
-        chars2.map { it.drawChar(batch, manager.camera) }
+        chars.sortByDescending { it.y }
+        chars.map { it.drawChar(batch, manager.camera) }
 
         batch.end()
+
+        recorder.update()
 
     }
 

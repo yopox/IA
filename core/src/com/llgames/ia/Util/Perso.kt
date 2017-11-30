@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 /**
  * Created by yopox on 06/09/2017.
  */
-class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private val posX: Float, private val posY: Float) : Sprite(texture, srcWidth, srcHeight) {
+class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
 
     fun updatePos(camera:Camera) {
 

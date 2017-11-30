@@ -28,7 +28,7 @@ class IA : ApplicationAdapter() {
         }
         chars = manager.getChars()
         viewport = FitViewport(320f, 180f, manager.camera).apply { apply() }
-        manager.init()
+        manager.init(chars)
         font = BitmapFont(Gdx.files.internal("m5x7.fnt"), false)
     }
 

@@ -44,7 +44,7 @@ class Camera() : OrthographicCamera() {
     }
 
     companion object {
-        private val MOVE_DURATION = 50
+        private val MOVE_DURATION = 60
         private val CAM_1 = 0.55
         private val CAM_2 = -0.55
     }

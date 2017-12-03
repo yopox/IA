@@ -11,7 +11,7 @@ import com.llgames.ia.Gif.GifRecorder
 import com.llgames.ia.Util.*
 
 
-class IA : ApplicationAdapter() {
+class Main : ApplicationAdapter() {
     private lateinit var batch: SpriteBatch
     private lateinit var bg: Texture
     private lateinit var viewport: FitViewport

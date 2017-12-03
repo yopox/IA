@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite
  */
 class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
 
+    private val ia = IA()
+
     fun updatePos(camera:Camera) {
 
         val alpha = camera.angle
@@ -28,6 +30,10 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: 
         val oX = camera.center[0]
         this.setFlip(this.x + 16 < oX, false)
         this.draw(batch)
+    }
+
+    fun getRule(chars: Array<Perso>, state: State): Rule {
+        return ia.getRule(chars, state)
     }
 
 }

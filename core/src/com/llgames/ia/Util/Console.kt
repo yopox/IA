@@ -18,18 +18,18 @@ class Console {
         }
     }
 
-    fun writeText(text: String) {
-        if (lines[1].isNotEmpty())
-            lines[0] = lines[1]
-        lines[1] = ""
-        toWrite = text
-    }
-
     fun draw(batch: Batch, font: BitmapFont) {
 
         val posX = 28f;
 
         font.draw(batch, lines[0], posX, 39f)
         font.draw(batch, lines[1], posX, 25f)
+    }
+    
+    infix fun write(text: String) {
+        if (lines[1].isNotEmpty())
+            lines[0] = lines[1]
+        lines[1] = ""
+        toWrite = text
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
     private var gui = GUI()
     private var console = Console()
     private var frame:Int = -1
+    private var turn:Int = 0
     var camera = Camera()
     var turnManager = Turn()
 
@@ -28,18 +29,26 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
     fun init(chars: Array<Perso>) {
         camera.init()
         gui.init(chars)
+        turnManager.newTurn(turn, chars)
     }
 
     fun update(chars:Array<Perso>) {
 
-        frame = (frame + 1) % 120
+        // Update frame
+        frame = (frame + 1)
+        if (frame == 120) {
+            frame = 0
+            //TODO: Handle turn order
+            turn = (turn + 1) % chars.size
+            turnManager.newTurn(turn, chars)
+        }
 
-        if (frame == 0)
-            turnManager.update(camera, console, chars)
+        // Frame subactions
+        turnManager.update(frame, camera, console, chars)
 
+        // Update components
         camera.update()
         chars.map { it.updatePos(camera) }
-
         if (frame % 2 == 0){
             console.update()
         }

@@ -25,8 +25,6 @@ class Camera() : OrthographicCamera() {
     }
 
     fun moveCam(shift: Double, duration: Int, method: String = "linear") {
-        print(angle)
-        print("\n")
         nextPos = when (method) {
             "sin" -> Array(duration, { i -> angle + shift * Math.sin(Math.PI * (i + 1) / (2 * (duration - 1))) })
             "exp" -> Array(duration, { i -> angle + shift * (1 - Math.exp(- 5.0 * (i + 1) / (duration - 1) )) })

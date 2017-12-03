@@ -54,6 +54,7 @@ class IA : ApplicationAdapter() {
         // Draw chars
         chars.sortByDescending { it.y }
         chars.map { it.drawChar(batch, manager.camera) }
+        chars.sortByDescending { - 3 * it.team - it.id }
 
         batch.end()
 

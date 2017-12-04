@@ -2,6 +2,7 @@ package com.llgames.ia.Util
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
 /**
  * Created by yopox on 26/11/2017.
@@ -38,4 +39,12 @@ class GUI() {
             }
         }
     }
+
+    fun debug(batch: Batch, font: BitmapFont, camera: Camera, chars: Array<Perso>, state: State) {
+
+        font.draw(batch, "TURN " + if (state.turn < 10) "0" + state.turn else state.turn, 6f, 144f)
+        font.draw(batch,  chars[state.charTurn].getIAString(), 6f, 129f)
+    
+    }
+
 }

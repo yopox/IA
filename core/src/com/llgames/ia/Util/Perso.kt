@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 /**
  * Created by yopox on 06/09/2017.
  */
-class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
 
+data class Stats(var hp: Int = 0, var mp: Int = 0)
+
+class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
     private val ia = IA()
+    private var stats = Stats()
+    private var maxStats = Stats()
 
     fun updatePos(camera:Camera) {
 
@@ -34,6 +38,18 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: 
 
     fun getRule(chars: Array<Perso>, state: State): Rule {
         return ia.getRule(chars, state)
+    }
+
+    infix fun pourcent(value: String): Int {
+        return when (value) {
+            "HP" -> 100 * stats.hp / maxStats.hp
+            "MP" -> 100 * stats.mp / maxStats.mp
+            else -> 0
+        }
+    }
+
+    fun getIAString(): String {
+        return ia.toString()
     }
 
 }

@@ -66,4 +66,8 @@ class Manager() {
         console.draw(batch, font)
     }
 
+    fun debug(batch: Batch, font: BitmapFont, chars: Array<Perso>) {
+        gui.debug(batch, font, camera, chars, state)
+    }
+
 }

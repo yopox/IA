@@ -31,9 +31,6 @@ class Turn() {
             else -> actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " does nothing."))
         }
 
-        println("Turn " + state.turn.toString() + " ; char " + state.charTurn.toString())
-        actions.map { println(it.id) }
-
     }
 
     fun update(frame: Int, camera: Camera, console: Console, chars: Array<Perso>) {

@@ -18,6 +18,7 @@ class Main : ApplicationAdapter() {
     private lateinit var font: BitmapFont
     private lateinit var chars: Array<Perso>
     private lateinit var recorder: GifRecorder
+    private val debug: Boolean = true
     private val manager = Manager()
 
     override fun create() {
@@ -55,6 +56,10 @@ class Main : ApplicationAdapter() {
         chars.sortByDescending { it.y }
         chars.map { it.drawChar(batch, manager.camera) }
         chars.sortByDescending { - 3 * it.team - it.id }
+
+        if (debug) {
+            manager.debug(batch, font, chars)
+        }
 
         batch.end()
 

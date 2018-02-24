@@ -1,5 +1,3 @@
-@file:JvmName("DesktopLauncher")
-
 package com.llgames.ia.desktop
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication

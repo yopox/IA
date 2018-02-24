@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
  */
 
 class GUI() {
-    private var names = Array(2, { i -> Array(3, { j -> "" }) })
+    private var names = Array(2, { _ -> Array(3, { _ -> "" }) })
     private var hp = Array(2, { _ -> Array(3, { _ -> 0 }) })
     private var mp = Array(2, { _ -> Array(3, { _ -> 0 }) })
 

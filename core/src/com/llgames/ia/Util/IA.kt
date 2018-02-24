@@ -18,11 +18,11 @@ class IA {
         // Default rule
         if (index == rules.size)
             return Rule()
-        
-        if (gateCheck(rules[index].gate, chars, state)) {
-            return rules[index]
+
+        return if (gateCheck(rules[index].gate, chars, state)) {
+            rules[index]
         } else {
-            return iaStep(index + 1, chars, state)
+            iaStep(index + 1, chars, state)
         }
     }
 

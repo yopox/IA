@@ -3,6 +3,7 @@ package com.llgames.ia.Util
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.utils.viewport.FitViewport
 
 /**
  * Created by yopox on 27/11/2017.
@@ -16,25 +17,16 @@ class Manager() {
     private var state: State = State()
     var camera = Camera()
     var turnManager = Turn()
-
-    fun getChars():Array<Perso> {
-        val pos = arrayOf(floatArrayOf(-0.2f, 0.5f),
-                    floatArrayOf(0f, 0.5f),
-                    floatArrayOf(0.2f, 0.5f),
-                    floatArrayOf(-0.2f, -0.5f),
-                    floatArrayOf(0f, -0.5f),
-                    floatArrayOf(0.2f, -0.5f))
-        val textures = arrayOf("char2.png", "char.png")
-        return Array(6, { i -> Perso(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], "Char" + i.toString(), i / 3, i % 3) })
-    }
+    val viewport = FitViewport(320f, 180f, camera)
 
     fun init(chars: Array<Perso>) {
+        viewport.apply()
         camera.init()
         gui.init(chars)
         turnManager.newTurn(chars, state)
     }
 
-    fun update(chars:Array<Perso>) {
+    fun update(chars: Array<Perso>) {
 
         // Update frame
         state.frame = state.frame + 1
@@ -55,7 +47,7 @@ class Manager() {
         // Update components
         camera.update()
         chars.map { it.updatePos(camera) }
-        if (state.frame % 2 == 0){
+        if (state.frame % 2 == 0) {
             console.update()
         }
 
@@ -68,6 +60,10 @@ class Manager() {
 
     fun debug(batch: Batch, font: BitmapFont, chars: Array<Perso>) {
         gui.debug(batch, font, camera, chars, state)
+    }
+
+    fun resize(width: Int, height: Int) {
+        viewport.update(width, height)
     }
 
 }

@@ -9,31 +9,32 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.llgames.ia.Gif.GifRecorder
 import com.llgames.ia.Util.*
+import ktx.app.KtxScreen
 
 
-class Battle : ApplicationAdapter() {
-    private lateinit var batch: SpriteBatch
-    private lateinit var bg: Texture
-    private lateinit var viewport: FitViewport
-    private lateinit var font: BitmapFont
-    private lateinit var chars: Array<Perso>
-    private lateinit var recorder: GifRecorder
-    private val debug: Boolean = true
-    private val manager = Manager()
+class Battle : KtxScreen {
+    val batch = SpriteBatch()
+    val bg = Texture("bg.png").apply {
+        setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+    }
+    val chars = prepareChars()
+    val manager = Manager().apply { init(chars) }
+    val font = BitmapFont(Gdx.files.internal("m5x7.fnt"), false)
+    val recorder = GifRecorder(batch)
+    val debug: Boolean = true
 
-    override fun create() {
-        batch = SpriteBatch()
-        recorder = GifRecorder(batch)
-        bg = Texture("bg.png").apply {
-            setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
-        }
-        chars = manager.getChars()
-        viewport = FitViewport(320f, 180f, manager.camera).apply { apply() }
-        manager.init(chars)
-        font = BitmapFont(Gdx.files.internal("m5x7.fnt"), false)
+    private fun prepareChars(): Array<Perso> {
+        val pos = arrayOf(floatArrayOf(-0.2f, 0.5f),
+                floatArrayOf(0f, 0.5f),
+                floatArrayOf(0.2f, 0.5f),
+                floatArrayOf(-0.2f, -0.5f),
+                floatArrayOf(0f, -0.5f),
+                floatArrayOf(0.2f, -0.5f))
+        val textures = arrayOf("char2.png", "char.png")
+        return Array(6, { i -> Perso(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], "Char" + i.toString(), i / 3, i % 3) })
     }
 
-    override fun render() {
+    override fun render(alpha: Float) {
 
         // Update
         manager.update(chars)
@@ -55,7 +56,7 @@ class Battle : ApplicationAdapter() {
         // Draw chars
         chars.sortByDescending { it.y }
         chars.map { it.drawChar(batch, manager.camera) }
-        chars.sortByDescending { - 3 * it.team - it.id }
+        chars.sortByDescending { -3 * it.team - it.id }
 
         if (debug) {
             manager.debug(batch, font, chars)
@@ -73,7 +74,7 @@ class Battle : ApplicationAdapter() {
     }
 
     override fun resize(width: Int, height: Int) {
-        viewport.update(width, height)
+        manager.resize(width, height)
     }
 
 }

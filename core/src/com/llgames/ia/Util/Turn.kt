@@ -12,12 +12,11 @@ data class TurnAction(val frame: Int = 0, val id: String = "cam", val intContent
 
 class Turn() {
 
-    private lateinit var actions: MutableList<TurnAction> 
+    val actions: MutableList<TurnAction> = mutableListOf()
 
     fun newTurn(chars: Array<Perso>, state: State) {
 
-        // Empty actions
-        actions = mutableListOf()
+        actions.clear()
 
         // Move the camera to the playing character        
         val text = if (chars[state.charTurn].team == 0) "ally" else "foe"

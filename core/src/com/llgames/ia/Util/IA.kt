@@ -5,6 +5,7 @@ package com.llgames.ia.Util
  */
 
 data class LogicG(var id: String = "ID", var c1: String = "E1T", var c2: String = "", var value1: Int = 0, var value2: Int = 0)
+
 data class Rule(var gate: LogicG = LogicG(), var action: String = "WAIT", var target: String = "SELF")
 
 class IA {
@@ -29,13 +30,13 @@ class IA {
     private fun gateCheck(gate: LogicG, chars: Array<Perso>, state: State): Boolean {
         return when (gate.id) {
             "ID" -> check(gate.c1, gate.value1, chars, state)
-            "NOT" -> ! check(gate.c1, gate.value1, chars, state)
+            "NOT" -> !check(gate.c1, gate.value1, chars, state)
             "AND" -> check(gate.c1, gate.value1, chars, state) and check(gate.c2, gate.value2, chars, state)
             "OR" -> check(gate.c1, gate.value1, chars, state) or check(gate.c2, gate.value2, chars, state)
             "XOR" -> check(gate.c1, gate.value1, chars, state) xor check(gate.c2, gate.value2, chars, state)
-            "NAND" -> ! (check(gate.c1, gate.value1, chars, state) and check(gate.c2, gate.value2, chars, state))
-            "NOR" -> ! (check(gate.c1, gate.value1, chars, state) or check(gate.c2, gate.value2, chars, state))
-            "NXOR" -> ! (check(gate.c1, gate.value1, chars, state) xor check(gate.c2, gate.value2, chars, state))
+            "NAND" -> !(check(gate.c1, gate.value1, chars, state) and check(gate.c2, gate.value2, chars, state))
+            "NOR" -> !(check(gate.c1, gate.value1, chars, state) or check(gate.c2, gate.value2, chars, state))
+            "NXOR" -> !(check(gate.c1, gate.value1, chars, state) xor check(gate.c2, gate.value2, chars, state))
             else -> false
         }
     }
@@ -59,7 +60,7 @@ class IA {
                 "NOT" -> rule.gate.id + " " + rule.gate.c1 + " (" + rule.gate.value1 + ") " +
                         rule.action + " " + rule.target + "\n"
                 else -> rule.gate.id + " " + rule.gate.c1 + " (" + rule.gate.value1 + ") " +
-                        rule.gate.c2 + " (" + rule.gate.value2 + ") "  + rule.action + " " +
+                        rule.gate.c2 + " (" + rule.gate.value2 + ") " + rule.action + " " +
                         rule.target + "\n"
             }
         }

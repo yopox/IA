@@ -25,7 +25,7 @@ class Turn() {
         // Get the rule
         val rule = chars[state.charTurn].getRule(chars, state)
         
-        when (rule.action) {
+        when (rule.act.id) {
             "DEF" -> actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " is defending himself!"))
             else -> actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " does nothing."))
         }

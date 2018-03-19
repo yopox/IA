@@ -34,7 +34,7 @@ class Battle : KtxScreen {
         return Array(6, { i -> Perso(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], "Char" + i.toString(), i / 3, i % 3) })
     }
 
-    override fun render(alpha: Float) {
+    override fun render(delta: Float) {
 
         // Update
         manager.update(chars)

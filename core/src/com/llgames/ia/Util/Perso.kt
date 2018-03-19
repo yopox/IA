@@ -36,11 +36,11 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: 
         this.draw(batch)
     }
 
-    fun getRule(chars: Array<Perso>, state: State): Rule {
+    fun getRule(chars: Array<Perso>, state: State): IA.Rule {
         return ia.getRule(chars, state)
     }
 
-    infix fun pourcent(value: String): Int {
+    infix fun getPourcent(value: String): Int {
         return when (value) {
             "HP" -> 100 * stats.hp / maxStats.hp
             "MP" -> 100 * stats.mp / maxStats.mp

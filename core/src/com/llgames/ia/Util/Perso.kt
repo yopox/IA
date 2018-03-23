@@ -15,7 +15,7 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: 
     private var stats = Stats()
     private var maxStats = Stats()
 
-    fun updatePos(camera:Camera) {
+    fun updatePos(camera: Camera) {
 
         val alpha = camera.angle
         val oX = camera.center[0]

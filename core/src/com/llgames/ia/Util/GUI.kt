@@ -20,7 +20,7 @@ class GUI() {
         }
     }
 
-    fun update(chars:Array<Perso>) {
+    fun update(chars: Array<Perso>) {
         // TODO : Update stats
     }
 
@@ -43,8 +43,8 @@ class GUI() {
     fun debug(batch: Batch, font: BitmapFont, camera: Camera, chars: Array<Perso>, state: State) {
 
         font.draw(batch, "TURN " + if (state.turn < 10) "0" + state.turn else state.turn, 6f, 144f)
-        font.draw(batch,  chars[state.charTurn].getIAString(), 6f, 129f)
-    
+        font.draw(batch, chars[state.charTurn].getIAString(), 6f, 129f)
+
     }
 
 }

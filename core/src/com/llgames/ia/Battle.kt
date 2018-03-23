@@ -17,8 +17,8 @@ class Battle : KtxScreen {
     val bg = Texture("bg.png").apply {
         setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
     }
-    val chars = prepareChars()
-    val manager = Manager().apply { init(chars) }
+    private val chars = prepareChars()
+    private val manager = Manager().apply { init(chars) }
     val font = BitmapFont(Gdx.files.internal("m5x7.fnt"), false)
     val recorder = GifRecorder(batch)
     val debug: Boolean = true

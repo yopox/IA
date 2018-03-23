@@ -8,27 +8,21 @@ package com.llgames.ia.Util
  * - [frame, "def", [0], ""]
  */
 
-data class TurnAction(val frame: Int = 0, val id: String = "cam", val intContent:Array<Int> = arrayOf(0), val strContent: String = "Default text.")
+data class TurnAction(val frame: Int = 0, val id: String = "cam", val intContent: Array<Int> = arrayOf(0), val strContent: String = "Default text.")
 
-class Turn() {
+class Turn() : IAHandler {
 
-    val actions: MutableList<TurnAction> = mutableListOf()
+    private val actions: MutableList<TurnAction> = mutableListOf()
 
-    fun newTurn(chars: Array<Perso>, state: State) {
+    override fun newTurn(chars: Array<Perso>, state: State) {
 
         actions.clear()
 
         // Move the camera to the playing character        
         val text = if (chars[state.charTurn].team == 0) "ally" else "foe"
         actions.add(TurnAction(0, "cam", strContent = text))
-        
-        // Get the rule
-        val rule = chars[state.charTurn].getRule(chars, state)
-        
-        when (rule.act.id) {
-            "DEF" -> actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " is defending himself!"))
-            else -> actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " does nothing."))
-        }
+
+        super.newTurn(chars, state)
 
     }
 
@@ -43,6 +37,22 @@ class Turn() {
                     }
                 }
 
+    }
+
+    override fun def(chars: Array<Perso>, state: State) {
+        actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " is defending himself!"))
+    }
+
+    override fun wpn(chars: Array<Perso>, state: State) {
+        TODO("not implemented")
+    }
+
+    override fun spl(chars: Array<Perso>, state: State) {
+        TODO("not implemented")
+    }
+
+    override fun wait(chars: Array<Perso>, state: State) {
+        actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " does nothing."))
     }
 
 }

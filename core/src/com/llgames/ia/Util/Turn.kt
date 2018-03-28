@@ -51,6 +51,10 @@ class Turn() : IAHandler {
         TODO("not implemented")
     }
 
+    override fun pro(chars: Array<Perso>, state: State) {
+        TODO("not implemented")
+    }
+
     override fun wait(chars: Array<Perso>, state: State) {
         actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " does nothing."))
     }

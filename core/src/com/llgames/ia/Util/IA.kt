@@ -63,9 +63,35 @@ class IA {
         return when (cond?.id) {
             "E1T" -> true
             "EXT" -> state.turn.rem(cond.value) == 0
-            "HP<X" -> chars[state.charTurn] getPourcent "HP" < cond.value
-            "MP<X" -> chars[state.charTurn] getPourcent "MP" < cond.value
+            "MXHP" -> getTarget(cond.target, chars, state) getPourcent "HP" >= cond.value
+            "LXHP" -> getTarget(cond.target, chars, state) getPourcent "HP" <= cond.value
+            "MXMP" -> getTarget(cond.target, chars, state) getPourcent "MP" >= cond.value
+            "LXMP" -> getTarget(cond.target, chars, state) getPourcent "MP" <= cond.value
             else -> false
+        }
+    }
+
+    private fun getTarget(cible: String, chars: Array<Perso>, state: State): Perso {
+        return when (cible) {
+            // HP MAX
+            "aMHPM" -> chars.sortedWith(compareBy { -it.maxStats.hp }).first()
+            "aLHPM" -> chars.sortedWith(compareBy { it.maxStats.hp }).first()
+            "AMHPM" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
+            "ALHPM" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
+            "EMHPM" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
+            "ELHPM" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
+            // HP LEFT
+            "aMHP" -> chars.sortedWith(compareBy { -it.stats.hp }).first()
+            "aLHP" -> chars.sortedWith(compareBy { it.stats.hp }).first()
+            "AMHP" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
+            "ALHP" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
+            "EMHP" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
+            "ELHP" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
+            // DIRECT
+            "SELF" -> chars[state.charTurn]
+            "ALLY" -> chars.filter { it.team == chars[state.charTurn].team }.shuffled().first()
+            "ENN" -> chars.filter { it.team != chars[state.charTurn].team }.shuffled().first()
+            else -> chars[state.charTurn]
         }
     }
 

@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite
  * Created by yopox on 06/09/2017.
  */
 
-data class Stats(var hp: Int = 0, var mp: Int = 0)
+data class Stats(var hp: Int = 0, var mp: Int = 0, var atk: Int = 0, var wsd: Int = 0, var def: Int = 0, var spd: Int = 0)
 
 class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
     private val ia = IA()
-    private var stats = Stats()
-    private var maxStats = Stats()
+    var stats = Stats()
+    var maxStats = Stats()
 
     fun updatePos(camera: Camera) {
 

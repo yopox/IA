@@ -14,10 +14,13 @@ interface IAHandler {
             "DEF" -> def(chars, state)
             "WPN" -> wpn(chars, state)
             "SPL" -> spl(chars, state)
+            "PRO" -> pro(chars, state)
             else -> wait(chars, state)
         }
 
     }
+
+    fun pro(chars: Array<Perso>, state: State)
 
     fun wait(chars: Array<Perso>, state: State)
 

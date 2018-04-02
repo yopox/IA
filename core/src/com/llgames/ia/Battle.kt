@@ -25,13 +25,12 @@ class Battle : KtxScreen {
 
     private fun prepareChars(): Array<Perso> {
         val pos = arrayOf(floatArrayOf(-0.2f, 0.5f),
-                floatArrayOf(0f, 0.5f),
                 floatArrayOf(0.2f, 0.5f),
                 floatArrayOf(-0.2f, -0.5f),
-                floatArrayOf(0f, -0.5f),
                 floatArrayOf(0.2f, -0.5f))
         val textures = arrayOf("char2.png", "char.png")
-        return Array(6, { i -> Perso(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], "Char" + i.toString(), i / 3, i % 3) })
+        val names = arrayListOf("yopox", "speedcy", "nico", "antoine")
+        return Array(4, { i -> Perso(Texture(textures[i / 2]), 16, 32, pos[i][0], pos[i][1], names[i], i / 2, i % 2) })
     }
 
     override fun render(delta: Float) {

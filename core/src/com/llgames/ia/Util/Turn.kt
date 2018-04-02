@@ -43,15 +43,15 @@ class Turn() : IAHandler {
         actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " is defending himself!"))
     }
 
-    override fun wpn(chars: Array<Perso>, state: State) {
+    override fun wpn(chars: Array<Perso>, state: State, target: Perso) {
         TODO("not implemented")
     }
 
-    override fun spl(chars: Array<Perso>, state: State) {
+    override fun spl(chars: Array<Perso>, state: State, target: Perso) {
         TODO("not implemented")
     }
 
-    override fun pro(chars: Array<Perso>, state: State) {
+    override fun pro(chars: Array<Perso>, state: State, target: Perso) {
         TODO("not implemented")
     }
 

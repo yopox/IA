@@ -29,44 +29,44 @@ class IA {
                     Action()
             ))
 
-    fun getRule(chars: Array<Perso>, state: State): Rule {
-        return iaStep(0, chars, state)
+    fun getRule(fighters: Array<Fighter>, state: State): Rule {
+        return iaStep(0, fighters, state)
     }
 
-    private fun iaStep(index: Int, chars: Array<Perso>, state: State): Rule {
+    private fun iaStep(index: Int, fighters: Array<Fighter>, state: State): Rule {
         // Default rule
         if (index == rules.size)
             return DEFAULT_RULE
 
-        return if (gateCheck(rules[index].gate, chars, state)) {
+        return if (gateCheck(rules[index].gate, fighters, state)) {
             rules[index]
         } else {
-            iaStep(index + 1, chars, state)
+            iaStep(index + 1, fighters, state)
         }
     }
 
-    private fun gateCheck(gate: LogicG, chars: Array<Perso>, state: State): Boolean {
+    private fun gateCheck(gate: LogicG, fighters: Array<Fighter>, state: State): Boolean {
         return when (gate.id) {
-            "ID" -> condCheck(gate.c1, chars, state)
-            "NOT" -> !condCheck(gate.c1, chars, state)
-            "AND" -> condCheck(gate.c1, chars, state) and condCheck(gate.c2, chars, state)
-            "OR" -> condCheck(gate.c1, chars, state) or condCheck(gate.c2, chars, state)
-            "XOR" -> condCheck(gate.c1, chars, state) xor condCheck(gate.c2, chars, state)
-            "NAND" -> !(condCheck(gate.c1, chars, state) and condCheck(gate.c2, chars, state))
-            "NOR" -> !(condCheck(gate.c1, chars, state) or condCheck(gate.c2, chars, state))
-            "NXOR" -> !(condCheck(gate.c1, chars, state) xor condCheck(gate.c2, chars, state))
+            "ID" -> condCheck(gate.c1, fighters, state)
+            "NOT" -> !condCheck(gate.c1, fighters, state)
+            "AND" -> condCheck(gate.c1, fighters, state) and condCheck(gate.c2, fighters, state)
+            "OR" -> condCheck(gate.c1, fighters, state) or condCheck(gate.c2, fighters, state)
+            "XOR" -> condCheck(gate.c1, fighters, state) xor condCheck(gate.c2, fighters, state)
+            "NAND" -> !(condCheck(gate.c1, fighters, state) and condCheck(gate.c2, fighters, state))
+            "NOR" -> !(condCheck(gate.c1, fighters, state) or condCheck(gate.c2, fighters, state))
+            "NXOR" -> !(condCheck(gate.c1, fighters, state) xor condCheck(gate.c2, fighters, state))
             else -> false
         }
     }
 
-    private fun condCheck(cond: Condition?, chars: Array<Perso>, state: State): Boolean {
+    private fun condCheck(cond: Condition?, fighters: Array<Fighter>, state: State): Boolean {
         return when (cond?.id) {
             "E1T" -> true
             "EXT" -> state.turn.rem(cond.value) == 0
-            "MXHP" -> getTarget(cond.target, chars, state) getPourcent "HP" >= cond.value
-            "LXHP" -> getTarget(cond.target, chars, state) getPourcent "HP" <= cond.value
-            "MXMP" -> getTarget(cond.target, chars, state) getPourcent "MP" >= cond.value
-            "LXMP" -> getTarget(cond.target, chars, state) getPourcent "MP" <= cond.value
+            "MXHP" -> getTarget(cond.target, fighters, state) getPercent "HP" >= cond.value
+            "LXHP" -> getTarget(cond.target, fighters, state) getPercent "HP" <= cond.value
+            "MXMP" -> getTarget(cond.target, fighters, state) getPercent "MP" >= cond.value
+            "LXMP" -> getTarget(cond.target, fighters, state) getPercent "MP" <= cond.value
             else -> false
         }
     }
@@ -104,26 +104,26 @@ class IA {
 
 }
 
-fun getTarget(target: String, chars: Array<Perso>, state: State): Perso {
+fun getTarget(target: String, fighters: Array<Fighter>, state: State): Fighter {
     return when (target) {
     // HP MAX
-        "aMHPM" -> chars.sortedWith(compareBy { -it.maxStats.hp }).first()
-        "aLHPM" -> chars.sortedWith(compareBy { it.maxStats.hp }).first()
-        "AMHPM" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
-        "ALHPM" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
-        "EMHPM" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
-        "ELHPM" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
+        "aMHPM" -> fighters.sortedWith(compareBy { -it.maxStats.hp }).first()
+        "aLHPM" -> fighters.sortedWith(compareBy { it.maxStats.hp }).first()
+        "AMHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
+        "ALHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
+        "EMHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
+        "ELHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
     // HP LEFT
-        "aMHP" -> chars.sortedWith(compareBy { -it.stats.hp }).first()
-        "aLHP" -> chars.sortedWith(compareBy { it.stats.hp }).first()
-        "AMHP" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
-        "ALHP" -> chars.filter { it.team == chars[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
-        "EMHP" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
-        "ELHP" -> chars.filter { it.team != chars[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
+        "aMHP" -> fighters.sortedWith(compareBy { -it.stats.hp }).first()
+        "aLHP" -> fighters.sortedWith(compareBy { it.stats.hp }).first()
+        "AMHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
+        "ALHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
+        "EMHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
+        "ELHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
     // DIRECT
-        "SELF" -> chars[state.charTurn]
-        "ALLY" -> chars.filter { it.team == chars[state.charTurn].team }.shuffled().first()
-        "ENN" -> chars.filter { it.team != chars[state.charTurn].team }.shuffled().first()
-        else -> chars[state.charTurn]
+        "SELF" -> fighters[state.charTurn]
+        "ALLY" -> fighters.filter { it.team == fighters[state.charTurn].team }.shuffled().first()
+        "ENN" -> fighters.filter { it.team != fighters[state.charTurn].team }.shuffled().first()
+        else -> fighters[state.charTurn]
     }
 }

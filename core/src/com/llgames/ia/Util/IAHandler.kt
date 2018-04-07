@@ -5,7 +5,7 @@ package com.llgames.ia.Util
  */
 interface IAHandler {
 
-    fun newTurn(chars: Array<Perso>, state: State) {
+    fun newTurn(chars: Array<Fighter>, state: State) {
 
         // Get the rule
         val rule = chars[state.charTurn].getRule(chars, state)
@@ -20,14 +20,14 @@ interface IAHandler {
 
     }
 
-    fun pro(chars: Array<Perso>, state: State, target: Perso)
+    fun pro(fighters: Array<Fighter>, state: State, target: Fighter)
 
-    fun wait(chars: Array<Perso>, state: State)
+    fun wait(fighters: Array<Fighter>, state: State)
 
-    fun def(chars: Array<Perso>, state: State)
+    fun def(fighters: Array<Fighter>, state: State)
 
-    fun wpn(chars: Array<Perso>, state: State, target: Perso)
+    fun wpn(fighters: Array<Fighter>, state: State, target: Fighter)
 
-    fun spl(chars: Array<Perso>, state: State, target: Perso)
+    fun spl(fighters: Array<Fighter>, state: State, target: Fighter)
 
 }

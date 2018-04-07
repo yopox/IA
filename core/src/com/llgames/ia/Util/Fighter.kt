@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 
 data class Stats(var hp: Int = 0, var mp: Int = 0, var atk: Int = 0, var wsd: Int = 0, var def: Int = 0, var spd: Int = 0)
 
-class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
+class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, val name: String, val team: Int, val id: Int) : Sprite(texture, srcWidth, srcHeight) {
     private val ia = IA()
     var stats = Stats()
     var maxStats = Stats()
@@ -36,11 +36,11 @@ class Perso(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: 
         this.draw(batch)
     }
 
-    fun getRule(chars: Array<Perso>, state: State): IA.Rule {
-        return ia.getRule(chars, state)
+    fun getRule(fighters: Array<Fighter>, state: State): IA.Rule {
+        return ia.getRule(fighters, state)
     }
 
-    infix fun getPourcent(value: String): Int {
+    infix fun getPercent(value: String): Int {
         return when (value) {
             "HP" -> 100 * stats.hp / maxStats.hp
             "MP" -> 100 * stats.mp / maxStats.mp

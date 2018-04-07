@@ -1,6 +1,5 @@
 package com.llgames.ia.Util
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -19,14 +18,14 @@ class Manager() {
     var turnManager = Turn()
     val viewport = FitViewport(320f, 180f, camera)
 
-    fun init(chars: Array<Perso>) {
+    fun init(fighters: Array<Fighter>) {
         viewport.apply()
         camera.init()
-        gui.init(chars)
-        turnManager.newTurn(chars, state)
+        gui.init(fighters)
+        turnManager.newTurn(fighters, state)
     }
 
-    fun update(chars: Array<Perso>) {
+    fun update(fighters: Array<Fighter>) {
 
         // Update frame
         state.frame = state.frame + 1
@@ -34,19 +33,19 @@ class Manager() {
             state.frame = 0
             //TODO: Handle turn order
             state.charTurn = (state.charTurn + 1)
-            if (state.charTurn == chars.size) {
+            if (state.charTurn == fighters.size) {
                 state.charTurn = 0
                 state.turn++
             }
-            turnManager.newTurn(chars, state)
+            turnManager.newTurn(fighters, state)
         }
 
         // Frame subactions
-        turnManager.update(state.frame, camera, console, chars)
+        turnManager.update(state.frame, camera, console, fighters)
 
         // Update components
         camera.update()
-        chars.map { it.updatePos(camera) }
+        fighters.map { it.updatePos(camera) }
         if (state.frame % 2 == 0) {
             console.update()
         }
@@ -58,8 +57,8 @@ class Manager() {
         console.draw(batch, font)
     }
 
-    fun debug(batch: Batch, font: BitmapFont, chars: Array<Perso>) {
-        gui.debug(batch, font, camera, chars, state)
+    fun debug(batch: Batch, font: BitmapFont, fighters: Array<Fighter>) {
+        gui.debug(batch, font, camera, fighters, state)
     }
 
     fun resize(width: Int, height: Int) {

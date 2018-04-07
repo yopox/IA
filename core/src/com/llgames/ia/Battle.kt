@@ -1,12 +1,10 @@
 package com.llgames.ia
 
-import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.utils.viewport.FitViewport
 import com.llgames.ia.Gif.GifRecorder
 import com.llgames.ia.Util.*
 import ktx.app.KtxScreen
@@ -17,20 +15,20 @@ class Battle : KtxScreen {
     val bg = Texture("bg.png").apply {
         setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
     }
-    private val chars = prepareChars()
+    private val chars = prepareFighters()
     private val manager = Manager().apply { init(chars) }
-    val font = BitmapFont(Gdx.files.internal("m5x7.fnt"), false)
+    val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
     val recorder = GifRecorder(batch)
     val debug: Boolean = true
 
-    private fun prepareChars(): Array<Perso> {
-        val pos = arrayOf(floatArrayOf(-0.2f, 0.5f),
-                floatArrayOf(0.2f, 0.5f),
-                floatArrayOf(-0.2f, -0.5f),
-                floatArrayOf(0.2f, -0.5f))
+    private fun prepareFighters(): Array<Fighter> {
+        val pos = arrayOf(floatArrayOf(-0.2f, 0.45f),
+                floatArrayOf(0.2f, 0.45f),
+                floatArrayOf(-0.2f, -0.45f),
+                floatArrayOf(0.2f, -0.45f))
         val textures = arrayOf("char2.png", "char.png")
-        val names = arrayListOf("yopox", "speedcy", "nico", "antoine")
-        return Array(4, { i -> Perso(Texture(textures[i / 2]), 16, 32, pos[i][0], pos[i][1], names[i], i / 2, i % 2) })
+        val names = arrayListOf("elyopox", "Skaama_", "RiptoGamer", "Bydl0_")
+        return Array(4, { i -> Fighter(Texture(textures[i / 2]), 16, 32, pos[i][0], pos[i][1], names[i], i / 2, i % 2) })
     }
 
     override fun render(delta: Float) {

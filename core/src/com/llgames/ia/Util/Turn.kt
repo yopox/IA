@@ -14,19 +14,19 @@ class Turn() : IAHandler {
 
     private val actions: MutableList<TurnAction> = mutableListOf()
 
-    override fun newTurn(chars: Array<Perso>, state: State) {
+    override fun newTurn(fighters: Array<Fighter>, state: State) {
 
         actions.clear()
 
         // Move the camera to the playing character        
-        val text = if (chars[state.charTurn].team == 0) "ally" else "foe"
+        val text = if (fighters[state.charTurn].team == 0) "ally" else "foe"
         actions.add(TurnAction(0, "cam", strContent = text))
 
-        super.newTurn(chars, state)
+        super.newTurn(fighters, state)
 
     }
 
-    fun update(frame: Int, camera: Camera, console: Console, chars: Array<Perso>) {
+    fun update(frame: Int, camera: Camera, console: Console, chars: Array<Fighter>) {
 
         actions
                 .filter { frame == it.frame }
@@ -39,24 +39,24 @@ class Turn() : IAHandler {
 
     }
 
-    override fun def(chars: Array<Perso>, state: State) {
-        actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " is defending himself!"))
+    override fun def(fighters: Array<Fighter>, state: State) {
+        actions.add(TurnAction(10, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
     }
 
-    override fun wpn(chars: Array<Perso>, state: State, target: Perso) {
+    override fun wpn(fighters: Array<Fighter>, state: State, target: Fighter) {
         TODO("not implemented")
     }
 
-    override fun spl(chars: Array<Perso>, state: State, target: Perso) {
+    override fun spl(fighters: Array<Fighter>, state: State, target: Fighter) {
         TODO("not implemented")
     }
 
-    override fun pro(chars: Array<Perso>, state: State, target: Perso) {
+    override fun pro(fighters: Array<Fighter>, state: State, target: Fighter) {
         TODO("not implemented")
     }
 
-    override fun wait(chars: Array<Perso>, state: State) {
-        actions.add(TurnAction(10, "txt", strContent = chars[state.charTurn].name + " does nothing."))
+    override fun wait(fighters: Array<Fighter>, state: State) {
+        actions.add(TurnAction(10, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
     }
 
 }

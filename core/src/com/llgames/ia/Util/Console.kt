@@ -22,8 +22,8 @@ class Console {
 
         val posX = 28f;
 
-        font.draw(batch, lines[0], posX, 39f)
-        font.draw(batch, lines[1], posX, 25f)
+        font.draw(batch, lines[0], posX, 32f)
+        font.draw(batch, lines[1], posX, 16f)
     }
     
     infix fun write(text: String) {

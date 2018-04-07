@@ -1,4 +1,4 @@
-package com.llgames.ia.Util
+package com.llgames.ia.battle
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont

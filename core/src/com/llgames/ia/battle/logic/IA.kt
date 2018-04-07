@@ -1,4 +1,7 @@
-package com.llgames.ia.Util
+package com.llgames.ia.battle.logic
+
+import com.llgames.ia.battle.Fighter
+import com.llgames.ia.battle.State
 
 /**
  * Created by yopox on 26/11/2017.

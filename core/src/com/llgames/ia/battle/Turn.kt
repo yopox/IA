@@ -1,4 +1,6 @@
-package com.llgames.ia.Util
+package com.llgames.ia.battle
+
+import com.llgames.ia.battle.logic.IAHandler
 
 /**
  * Turn is used to manage the different actions happening in a turn.

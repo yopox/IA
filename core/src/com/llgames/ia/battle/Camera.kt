@@ -1,4 +1,4 @@
-package com.llgames.ia.Util
+package com.llgames.ia.battle
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 
@@ -36,8 +36,8 @@ class Camera() : OrthographicCamera() {
     infix fun moveTo(destination: String) {
         val bonusShift = Math.PI * (Math.random() - 0.5) / 8
         when (destination) {
-            "foe" -> moveCam(Companion.CAM_2 - angle + bonusShift, Companion.MOVE_DURATION, "sin")
-            else -> moveCam(Companion.CAM_1 - angle + bonusShift, Companion.MOVE_DURATION, "sin")
+            "foe" -> moveCam(CAM_2 - angle + bonusShift, MOVE_DURATION, "sin")
+            else -> moveCam(CAM_1 - angle + bonusShift, MOVE_DURATION, "sin")
         }
     }
 

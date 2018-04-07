@@ -1,4 +1,4 @@
-package com.llgames.ia.Gif;
+package com.llgames.ia.gif;
 
 // https://github.com/Anuken/GDXGifRecorder
 

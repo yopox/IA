@@ -18,16 +18,15 @@ class Battle : KtxScreen {
     private val manager: Manager
     private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
     private val recorder = GifRecorder(batch)
-    private val debug: Boolean = true
 
     init {
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
-        val pos = arrayOf(floatArrayOf(-0.2f, 0.45f),
-                floatArrayOf(0f, 0.45f),
-                floatArrayOf(0.2f, 0.45f),
-                floatArrayOf(-0.2f, -0.45f),
+        val pos = arrayOf(floatArrayOf(-0.2f, -0.45f),
                 floatArrayOf(0f, -0.45f),
-                floatArrayOf(0.2f, -0.45f))
+                floatArrayOf(0.2f, -0.45f),
+                floatArrayOf(-0.2f, 0.45f),
+                floatArrayOf(0f, 0.45f),
+                floatArrayOf(0.2f, 0.45f))
         val textures = arrayOf("char2.png", "char.png")
         val names = arrayListOf("A", "B", "C", "D", "E", "F")
         fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i % 3) })
@@ -38,7 +37,7 @@ class Battle : KtxScreen {
     override fun render(delta: Float) {
 
         // Update
-        manager.update(fighters)45
+        manager.update(fighters)
 
         // Clear screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
@@ -59,9 +58,7 @@ class Battle : KtxScreen {
         fighters.map { it.drawChar(batch, manager.camera) }
         fighters.sortByDescending { -3 * it.team - it.id }
 
-        if (debug) {
-            manager.debug(batch, font, fighters)
-        }
+        manager.debug(batch, font, fighters)
 
         batch.end()
 

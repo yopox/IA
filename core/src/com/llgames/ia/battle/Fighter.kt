@@ -4,14 +4,21 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.llgames.ia.battle.logic.LFighter
+import java.util.*
+import kotlin.math.sign
 
 /**
  * Created by yopox on 06/09/2017.
  */
 
-class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX: Float, private var posY: Float, name: String, team: Int, id: Int) : LFighter(name, team, id) {
+class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private val depX: Float, private val depY: Float, name: String, team: Int, id: Int) : LFighter(name, team, id) {
 
     val sprite = Sprite(texture, srcWidth, srcHeight)
+    private var upcomingPos = Array(2, { _ -> Vector<Float>()})
+    private var posX: Float = depX
+    private var posY: Float = depY
+    var forceFacing: Fighter? = null
+    private var blink = 0
 
     fun updatePos(camera: Camera) {
 
@@ -29,11 +36,41 @@ class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private var posX
     }
 
     fun drawChar(batch: Batch, camera: Camera) {
+        if (upcomingPos[0].size > 0) posX = upcomingPos[0].removeAt(0)
+        if (upcomingPos[1].size > 0) posY = upcomingPos[1].removeAt(0)
+
+        if (blink > 0) {
+            sprite.setAlpha((blink / 5 + 1) % 2f)
+            blink--
+        }
+
         val oX = camera.center[0]
-        sprite.setFlip(sprite.x + 16 < oX, false)
+        when (forceFacing) {
+            null -> sprite.setFlip(sprite.x + 16 < oX, false)
+            else -> sprite.setFlip(forceFacing!!.sprite.x + 16 >= oX, false)
+        }
+
         sprite.draw(batch)
     }
 
+    infix fun moveTo(fighter: Fighter) {
+        val finalX = fighter.posX
+        val finalY = (Math.abs(fighter.posY) - 0.15f) * Math.signum(fighter.posY)
 
+        upcomingPos[0].addAll(Array(30, {i -> (i + 1) / 30f * (finalX - depX) + depX}))
+        upcomingPos[1].addAll(Array(30, {i -> (i + 1) / 30f * (finalY - depY) + depY}))
+    }
+
+    fun resetPos() {
+        val fromX = posX
+        val fromY = posY
+
+        upcomingPos[0].addAll(Array(30, {i -> (i + 1) / 30f * (depX - fromX) + fromX}))
+        upcomingPos[1].addAll(Array(30, {i -> (i + 1) / 30f * (depY - fromY) + fromY}))
+    }
+
+    fun blink() {
+        blink = 30
+    }
 
 }

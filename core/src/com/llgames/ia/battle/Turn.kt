@@ -12,7 +12,7 @@ import com.llgames.ia.battle.logic.damageCalculation
  * - [frame, "def", [0], ""]
  */
 
-data class TurnAction(val frame: Int = 0, val id: String = "cam", val intContent: Array<Int> = arrayOf(0), val strContent: String = "Default text.")
+data class TurnAction(val frame: Int = 0, val id: String = "cam", val strContent: String = "Default text.", val fighterContent: Array<Fighter>? = null)
 
 class Turn() : IAHandler {
 
@@ -39,13 +39,18 @@ class Turn() : IAHandler {
                         "cam" -> camera moveTo it.strContent
                         "txt" -> console write it.strContent
                         "gui" -> gui.update(fighters)
+                        "move" -> it.fighterContent!![0] moveTo it.fighterContent[1]
+                        "resetPos" -> it.fighterContent!![0].resetPos()
+                        "face" -> it.fighterContent!![0].forceFacing = it.fighterContent[1]
+                        "releaseFace" -> it.fighterContent!![0].forceFacing = null
+                        "blink" -> it.fighterContent!![0].blink()
                     }
                 }
 
     }
 
     override fun def(fighters: Array<Fighter>, state: State) {
-        actions.add(TurnAction(30, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
+        actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
     }
 
     override fun wpn(fighters: Array<Fighter>, state: State, target: Fighter) {
@@ -61,14 +66,19 @@ class Turn() : IAHandler {
     }
 
     override fun wait(fighters: Array<Fighter>, state: State) {
-        actions.add(TurnAction(30, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
+        actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
     }
 
     override fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: IA.Weapon?) {
         super.atk(fighters, state, target, weapon)
-        actions.add(TurnAction(30, "txt", strContent = fighters[state.charTurn].name + " attacks " + target.name + "!"))
-        actions.add(TurnAction(100, "txt", strContent = target.name + " lost " + damageCalculation(fighters[state.charTurn], target, weapon) + "HP!"))
-        actions.add(TurnAction(100, "gui"))
+        actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " attacks " + target.name + "!"))
+        actions.add(TurnAction(15, "move", fighterContent = arrayOf(fighters[state.charTurn], target)))
+        actions.add(TurnAction(15, "face", fighterContent = arrayOf(fighters[state.charTurn], target)))
+        actions.add(TurnAction(60, "txt", strContent = target.name + " lost " + damageCalculation(fighters[state.charTurn], target, weapon) + "HP!"))
+        actions.add(TurnAction(60, "gui"))
+        actions.add(TurnAction(60, "blink", fighterContent = arrayOf(target)))
+        actions.add(TurnAction(90, "resetPos", fighterContent = arrayOf(fighters[state.charTurn])))
+        actions.add(TurnAction(105, "releaseFace", fighterContent = arrayOf(fighters[state.charTurn])))
     }
 
 }

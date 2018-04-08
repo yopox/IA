@@ -12,21 +12,20 @@ class GUI() {
     private var hp = Array(2, { _ -> Array(3, { _ -> 0 }) })
     private var mp = Array(2, { _ -> Array(3, { _ -> 0 }) })
 
-    fun init(chars: Array<Fighter>) {
-        // Set names
-        for (char in chars) {
-            names[char.team][char.id] = char.name
-        }
+    fun init(fighters: Array<Fighter>) {
+        fighters.forEach { names[it.team][it.id] = it.name }
+        update(fighters)
     }
 
     fun update(chars: Array<Fighter>) {
-        // TODO : Update stats
+        chars.forEach { hp[it.team][it.id] = it.stats.hp }
+        chars.forEach { mp[it.team][it.id] = it.stats.mp }
     }
 
     fun draw(batch: Batch, font: BitmapFont) {
 
         val posX = floatArrayOf(28f, 78f, 108f);
-        val posY = floatArrayOf(177f, 166f, 155f);
+        val posY = floatArrayOf(175f, 164f, 153f);
 
         for (i in 0..1) {
             for (j in 0..2) {

@@ -9,13 +9,17 @@ import com.llgames.ia.battle.State
 
 class IA {
 
+    // RULES
+
     data class LogicG(var id: String = "ID", var c1: Condition, var c2: Condition? = null)
 
     data class Rule(var gate: LogicG, var act: Action)
 
     data class Condition(var id: String = "E1T", var target: String = "", var value: Int = -1)
 
-    data class Action(var id: String = "WAIT", var target: String = "")
+    data class Action(var id: String = "WAIT", var target: String = "", var weapon: Weapon? = null)
+
+    data class Weapon(var damage: Int = 1)
 
     private val DEFAULT_RULE = Rule(
             LogicG(id = "ID", c1 = Condition(id = "E1T")),
@@ -24,12 +28,8 @@ class IA {
 
     private var rules = arrayOf(
             Rule(
-                    LogicG(id = "NOT", c1 = Condition(id = "EXT", value = 2)),
-                    Action(id = "DEF")
-            ),
-            Rule(
                     LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                    Action()
+                    Action(id = "ATK", target = "ENN", weapon = Weapon())
             ))
 
     fun getRule(fighters: Array<Fighter>, state: State): Rule {
@@ -65,7 +65,7 @@ class IA {
     private fun condCheck(cond: Condition?, fighters: Array<Fighter>, state: State): Boolean {
         return when (cond?.id) {
             "E1T" -> true
-            "EXT" -> state.turn.rem(cond.value) == 0
+            "EXT" -> state.turn % cond.value == 0
             "MXHP" -> getTarget(cond.target, fighters, state) getPercent "HP" >= cond.value
             "LXHP" -> getTarget(cond.target, fighters, state) getPercent "HP" <= cond.value
             "MXMP" -> getTarget(cond.target, fighters, state) getPercent "MP" >= cond.value

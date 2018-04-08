@@ -29,7 +29,7 @@ class Manager() {
 
         // Update frame
         state.frame = state.frame + 1
-        if (state.frame == 120) {
+        if (state.frame == 180) {
             state.frame = 0
             //TODO: Handle turn order
             state.charTurn = (state.charTurn + 1)
@@ -41,7 +41,7 @@ class Manager() {
         }
 
         // Frame subactions
-        turnManager.update(state.frame, camera, console, fighters)
+        turnManager.update(state.frame, camera, console, fighters, gui)
 
         // Update components
         camera.update()

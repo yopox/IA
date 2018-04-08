@@ -18,9 +18,14 @@ interface IAHandler {
             "WPN" -> wpn(fighters, state, getTarget(rule.act.target, fighters, state))
             "SPL" -> spl(fighters, state, getTarget(rule.act.target, fighters, state))
             "PRO" -> pro(fighters, state, getTarget(rule.act.target, fighters, state))
+            "ATK" -> atk(fighters, state, getTarget(rule.act.target, fighters, state), rule.act.weapon)
             else -> wait(fighters, state)
         }
 
+    }
+
+    fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: IA.Weapon?) {
+        fighters[state.charTurn].attack(target, weapon)
     }
 
     fun pro(fighters: Array<Fighter>, state: State, target: Fighter)

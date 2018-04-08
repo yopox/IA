@@ -23,19 +23,22 @@ class Battle : KtxScreen {
     init {
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
         val pos = arrayOf(floatArrayOf(-0.2f, 0.45f),
+                floatArrayOf(0f, 0.45f),
                 floatArrayOf(0.2f, 0.45f),
                 floatArrayOf(-0.2f, -0.45f),
+                floatArrayOf(0f, -0.45f),
                 floatArrayOf(0.2f, -0.45f))
         val textures = arrayOf("char2.png", "char.png")
-        val names = arrayListOf("elyopox", "Skaama_", "RiptoGamer", "Bydl0_")
-        fighters = Array(4, { i -> Fighter(Texture(textures[i / 2]), 16, 32, pos[i][0], pos[i][1], names[i], i / 2, i % 2) })
+        val names = arrayListOf("A", "B", "C", "D", "E", "F")
+        fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i % 3) })
+        fighters.forEach { it.prepare() }
         manager = Manager().apply { init(fighters) }
     }
 
     override fun render(delta: Float) {
 
         // Update
-        manager.update(fighters)
+        manager.update(fighters)45
 
         // Clear screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)

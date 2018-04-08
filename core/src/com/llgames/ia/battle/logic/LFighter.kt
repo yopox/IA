@@ -12,6 +12,14 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     var stats = Stats()
     var maxStats = Stats()
 
+    init {
+        maxStats = HUMAN.copy()
+    }
+
+    fun prepare() {
+        stats = maxStats.copy()
+    }
+
     fun getRule(fighters: Array<Fighter>, state: State): IA.Rule {
         return ia.getRule(fighters, state)
     }
@@ -28,4 +36,17 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
         return ia.toString()
     }
 
+    fun attack(target: Fighter, weapon: IA.Weapon?) {
+        target.stats.hp -= damageCalculation(this, target, weapon)
+        //TODO: Implement death
+    }
+
+}
+
+fun damageCalculation(fighter: LFighter, target: LFighter, weapon: IA.Weapon?): Int {
+    if (weapon == null)
+        return 0
+
+    //TODO: Cool damage formula
+    return weapon.damage
 }

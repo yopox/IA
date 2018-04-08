@@ -1,6 +1,8 @@
 package com.llgames.ia.battle
 
+import com.llgames.ia.battle.logic.IA
 import com.llgames.ia.battle.logic.IAHandler
+import com.llgames.ia.battle.logic.damageCalculation
 
 /**
  * Turn is used to manage the different actions happening in a turn.
@@ -28,7 +30,7 @@ class Turn() : IAHandler {
 
     }
 
-    fun update(frame: Int, camera: Camera, console: Console, chars: Array<Fighter>) {
+    fun update(frame: Int, camera: Camera, console: Console, fighters: Array<Fighter>, gui: GUI) {
 
         actions
                 .filter { frame == it.frame }
@@ -36,13 +38,14 @@ class Turn() : IAHandler {
                     when (it.id) {
                         "cam" -> camera moveTo it.strContent
                         "txt" -> console write it.strContent
+                        "gui" -> gui.update(fighters)
                     }
                 }
 
     }
 
     override fun def(fighters: Array<Fighter>, state: State) {
-        actions.add(TurnAction(10, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
+        actions.add(TurnAction(30, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
     }
 
     override fun wpn(fighters: Array<Fighter>, state: State, target: Fighter) {
@@ -58,7 +61,14 @@ class Turn() : IAHandler {
     }
 
     override fun wait(fighters: Array<Fighter>, state: State) {
-        actions.add(TurnAction(10, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
+        actions.add(TurnAction(30, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
+    }
+
+    override fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: IA.Weapon?) {
+        super.atk(fighters, state, target, weapon)
+        actions.add(TurnAction(30, "txt", strContent = fighters[state.charTurn].name + " attacks " + target.name + "!"))
+        actions.add(TurnAction(100, "txt", strContent = target.name + " lost " + damageCalculation(fighters[state.charTurn], target, weapon) + "HP!"))
+        actions.add(TurnAction(100, "gui"))
     }
 
 }

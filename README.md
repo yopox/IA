@@ -4,10 +4,9 @@
 
 - [x] dev thread
 - [x] ia mockup
-- [ ] implement Job
 - [ ] implement stats
+- [ ] implement Weapon
 - [ ] damage
 - [ ] end of fight
-- [ ] implement Weapon
 - [ ] battle movements
 - [ ] test fight

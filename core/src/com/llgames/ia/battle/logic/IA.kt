@@ -29,7 +29,7 @@ class IA {
     private var rules = arrayOf(
             Rule(
                     LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                    Action(id = "ATK", target = "ENN", weapon = Weapon())
+                    Action(id = "ATK", target = "ALHP", weapon = Weapon())
             ))
 
     fun getRule(fighters: Array<Fighter>, state: State): Rule {

@@ -71,14 +71,22 @@ class Turn() : IAHandler {
 
     override fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: IA.Weapon?) {
         super.atk(fighters, state, target, weapon)
-        actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " attacks " + target.name + "!"))
-        actions.add(TurnAction(15, "move", fighterContent = arrayOf(fighters[state.charTurn], target)))
-        actions.add(TurnAction(15, "face", fighterContent = arrayOf(fighters[state.charTurn], target)))
-        actions.add(TurnAction(60, "txt", strContent = target.name + " lost " + damageCalculation(fighters[state.charTurn], target, weapon) + "HP!"))
-        actions.add(TurnAction(60, "gui"))
-        actions.add(TurnAction(60, "blink", fighterContent = arrayOf(target)))
-        actions.add(TurnAction(90, "resetPos", fighterContent = arrayOf(fighters[state.charTurn])))
-        actions.add(TurnAction(105, "releaseFace", fighterContent = arrayOf(fighters[state.charTurn])))
+        val actor = fighters[state.charTurn]
+
+        if (target.id != actor.id || target.team != actor.team) {
+            actions.add(TurnAction(15, "move", fighterContent = arrayOf(actor, target)))
+            actions.add(TurnAction(15, "face", fighterContent = arrayOf(actor, target)))
+            actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks " + target.name + "!"))
+            actions.add(TurnAction(105, "resetPos", fighterContent = arrayOf(actor)))
+            actions.add(TurnAction(120, "releaseFace", fighterContent = arrayOf(actor)))
+        } else {
+            actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks itself!"))
+        }
+
+        actions.add(TurnAction(75, "txt", strContent = target.name + " lost " + damageCalculation(actor, target, weapon) + "HP!"))
+        actions.add(TurnAction(75, "gui"))
+        actions.add(TurnAction(75, "blink", fighterContent = arrayOf(target)))
+
     }
 
 }

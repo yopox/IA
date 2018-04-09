@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.*;
 
 /** Records and saves GIFs. */
 public class GifRecorder{
-    private static final float defaultSize = 300;
+    private static final float defaultSize = 640;
 
     private int resizeKey = Keys.CONTROL_LEFT, openKey = Keys.E, recordKey = Keys.T;
     private RecorderController controller = new DefaultController();
@@ -52,10 +52,10 @@ public class GifRecorder{
 
     public GifRecorder(Batch batch, FileHandle exportdirectory, FileHandle workdirectory) {
         this.batch = batch;
-        gifx = -defaultSize / 2;
-        gify = -defaultSize / 2;
-        gifwidth = defaultSize;
-        gifheight = defaultSize;
+        gifx = -640 / 2;
+        gify = -360 / 2;
+        gifwidth = 640;
+        gifheight = 360;
         this.workdirectory = workdirectory;
         this.exportdirectory = exportdirectory;
 

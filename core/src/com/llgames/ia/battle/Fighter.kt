@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.llgames.ia.battle.logic.LFighter
 import java.util.*
-import kotlin.math.sign
 
 /**
  * Created by yopox on 06/09/2017.

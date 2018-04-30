@@ -3,21 +3,17 @@ package com.llgames.ia.battle.logic
 import com.llgames.ia.battle.Fighter
 import com.llgames.ia.battle.State
 
-data class Stats(var hp: Int = 0, var mp: Int = 0, var atk: Int = 0, var wsd: Int = 0, var def: Int = 0, var spd: Int = 0)
+data class Jet(var type: String, var elem: String, var damage: Int)
 
-val HUMAN = Stats(100, 25, 25, 25, 25, 25);
+data class Weapon(var jets: Array<Jet>)
 
 open class LFighter(val name: String, val team: Int, val id: Int) {
     private val ia = IA()
     var stats = Stats()
     var maxStats = Stats()
 
-    init {
-        maxStats = HUMAN.copy()
-    }
-
     fun prepare() {
-        stats = maxStats.copy()
+        stats.setTo(maxStats)
     }
 
     fun getRule(fighters: Array<Fighter>, state: State): IA.Rule {
@@ -36,17 +32,27 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
         return ia.toString()
     }
 
-    fun attack(target: Fighter, weapon: IA.Weapon?) {
+    fun attack(target: Fighter, weapon: Weapon?) {
         target.stats.hp -= damageCalculation(this, target, weapon)
         //TODO: Implement death
     }
 
 }
 
-fun damageCalculation(fighter: LFighter, target: LFighter, weapon: IA.Weapon?): Int {
+fun damageCalculation(fighter: LFighter, target: LFighter, weapon: Weapon?): Int {
     if (weapon == null)
         return 0
 
-    //TODO: Cool damage formula
-    return weapon.damage
+    // Attack
+
+    val coeff = 1 + fighter.stats.atk["general"]!! / 100
+    var sum = 0
+
+    for ((t, e, d) in weapon.jets) {
+        sum += (d + fighter.stats.atkB[t]!! + fighter.stats.atkB[e]!!) *
+                    (1 + fighter.stats.atk[t]!! / 100) *
+                    (1 + fighter.stats.atk[e]!! / 100)
+    }
+
+    return coeff * sum
 }

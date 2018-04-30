@@ -1,7 +1,7 @@
 package com.llgames.ia.battle
 
-import com.llgames.ia.battle.logic.IA
 import com.llgames.ia.battle.logic.IAHandler
+import com.llgames.ia.battle.logic.Weapon
 import com.llgames.ia.battle.logic.damageCalculation
 
 /**
@@ -69,7 +69,7 @@ class Turn() : IAHandler {
         actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
     }
 
-    override fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: IA.Weapon?) {
+    override fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: Weapon?) {
         super.atk(fighters, state, target, weapon)
         val actor = fighters[state.charTurn]
 

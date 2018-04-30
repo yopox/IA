@@ -19,8 +19,6 @@ class IA {
 
     data class Action(var id: String = "WAIT", var target: String = "", var weapon: Weapon? = null)
 
-    data class Weapon(var damage: Int = 1)
-
     private val DEFAULT_RULE = Rule(
             LogicG(id = "ID", c1 = Condition(id = "E1T")),
             Action()
@@ -29,7 +27,7 @@ class IA {
     private var rules = arrayOf(
             Rule(
                     LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                    Action(id = "ATK", target = "ALHP", weapon = Weapon())
+                    Action(id = "ATK", target = "ELHP", weapon = Weapon(arrayOf(Jet("blade", "neutral", 10))))
             ))
 
     fun getRule(fighters: Array<Fighter>, state: State): Rule {

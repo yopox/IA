@@ -24,7 +24,7 @@ interface IAHandler {
 
     }
 
-    fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: IA.Weapon?) {
+    fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: Weapon?) {
         fighters[state.charTurn].attack(target, weapon)
     }
 

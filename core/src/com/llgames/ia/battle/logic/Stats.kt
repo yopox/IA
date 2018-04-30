@@ -11,7 +11,7 @@ class Stats {
     var atkB: MutableMap<String, Int>
     var defB: MutableMap<String, Int>
 
-    var hp = 0
+    var hp = 100
     var mp = 0
 
     init {

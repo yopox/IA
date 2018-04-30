@@ -24,18 +24,18 @@ interface IAHandler {
 
     }
 
-    fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: Weapon?) {
-        fighters[state.charTurn].attack(target, weapon)
+    fun atk(fighters: Array<Fighter>, state: State, target: Fighter?, weapon: Weapon?) {
+        target?.let { fighters[state.charTurn].attack(target, weapon) }
     }
 
-    fun pro(fighters: Array<Fighter>, state: State, target: Fighter)
+    fun pro(fighters: Array<Fighter>, state: State, target: Fighter?)
 
     fun wait(fighters: Array<Fighter>, state: State)
 
     fun def(fighters: Array<Fighter>, state: State)
 
-    fun wpn(fighters: Array<Fighter>, state: State, target: Fighter)
+    fun wpn(fighters: Array<Fighter>, state: State, target: Fighter?)
 
-    fun spl(fighters: Array<Fighter>, state: State, target: Fighter)
+    fun spl(fighters: Array<Fighter>, state: State, target: Fighter?)
 
 }

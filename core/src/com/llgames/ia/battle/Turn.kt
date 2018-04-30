@@ -1,6 +1,7 @@
 package com.llgames.ia.battle
 
 import com.llgames.ia.battle.logic.IAHandler
+import com.llgames.ia.battle.logic.Jet
 import com.llgames.ia.battle.logic.Weapon
 import com.llgames.ia.battle.logic.damageCalculation
 
@@ -53,15 +54,15 @@ class Turn() : IAHandler {
         actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
     }
 
-    override fun wpn(fighters: Array<Fighter>, state: State, target: Fighter) {
+    override fun wpn(fighters: Array<Fighter>, state: State, target: Fighter?) {
         TODO("not implemented")
     }
 
-    override fun spl(fighters: Array<Fighter>, state: State, target: Fighter) {
+    override fun spl(fighters: Array<Fighter>, state: State, target: Fighter?) {
         TODO("not implemented")
     }
 
-    override fun pro(fighters: Array<Fighter>, state: State, target: Fighter) {
+    override fun pro(fighters: Array<Fighter>, state: State, target: Fighter?) {
         TODO("not implemented")
     }
 
@@ -69,24 +70,37 @@ class Turn() : IAHandler {
         actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
     }
 
-    override fun atk(fighters: Array<Fighter>, state: State, target: Fighter, weapon: Weapon?) {
+    override fun atk(fighters: Array<Fighter>, state: State, target: Fighter?, weapon: Weapon?) {
         super.atk(fighters, state, target, weapon)
         val actor = fighters[state.charTurn]
 
-        if (target.id != actor.id || target.team != actor.team) {
-            actions.add(TurnAction(15, "move", fighterContent = arrayOf(actor, target)))
-            actions.add(TurnAction(15, "face", fighterContent = arrayOf(actor, target)))
-            actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks " + target.name + "!"))
-            actions.add(TurnAction(105, "resetPos", fighterContent = arrayOf(actor)))
-            actions.add(TurnAction(120, "releaseFace", fighterContent = arrayOf(actor)))
-        } else {
-            actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks itself!"))
+        target?.let {
+
+            if (target.id != actor.id || target.team != actor.team) {
+                actions.add(TurnAction(15, "move", fighterContent = arrayOf(actor, target)))
+                actions.add(TurnAction(15, "face", fighterContent = arrayOf(actor, target)))
+                actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks " + target.name + "!"))
+                actions.add(TurnAction(105, "resetPos", fighterContent = arrayOf(actor)))
+                actions.add(TurnAction(120, "releaseFace", fighterContent = arrayOf(actor)))
+            } else {
+                actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks itself!"))
+            }
+
+            actions.add(TurnAction(75, "txt", strContent = "${target.name} lost " + hpLost(damageCalculation(actor, target, weapon)) + " HP!"))
+            actions.add(TurnAction(75, "gui"))
+            actions.add(TurnAction(75, "blink", fighterContent = arrayOf(target)))
+
         }
-
-        actions.add(TurnAction(75, "txt", strContent = target.name + " lost " + damageCalculation(actor, target, weapon) + "HP!"))
-        actions.add(TurnAction(75, "gui"))
-        actions.add(TurnAction(75, "blink", fighterContent = arrayOf(target)))
-
     }
 
+}
+
+fun hpLost(jets: ArrayList<Jet>): String {
+    var damage = 0
+
+    if (jets.size == 1) return "${jets[0].damage}"
+
+    jets.forEach { damage += it.damage }
+    val detail = jets.fold("", { acc, jet -> "$acc${jet.damage}+" })
+    return "$damage (${detail.dropLast(1)})"
 }

@@ -2,6 +2,10 @@ package com.llgames.ia.battle.logic
 
 import com.llgames.ia.battle.Fighter
 import com.llgames.ia.battle.State
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.truncate
 
 data class Jet(var type: String, var elem: String, var damage: Int)
 
@@ -33,26 +37,37 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     }
 
     fun attack(target: Fighter, weapon: Weapon?) {
-        target.stats.hp -= damageCalculation(this, target, weapon)
+
+        for ((_, _, damage) in damageCalculation(this, target, weapon)) {
+            target.stats.hp -= damage
+        }
         //TODO: Implement death
+
     }
 
 }
 
-fun damageCalculation(fighter: LFighter, target: LFighter, weapon: Weapon?): Int {
-    if (weapon == null)
-        return 0
+fun atkStat(atk: Int) = max(-100, atk) / 100.0
 
-    // Attack
+fun defStat(def: Int) = min(100, def) / 100.0
 
-    val coeff = 1 + fighter.stats.atk["general"]!! / 100
-    var sum = 0
+fun damageCalculation(fighter: LFighter, target: LFighter, weapon: Weapon?): ArrayList<Jet> {
 
-    for ((t, e, d) in weapon.jets) {
-        sum += (d + fighter.stats.atkB[t]!! + fighter.stats.atkB[e]!!) *
-                    (1 + fighter.stats.atk[t]!! / 100) *
-                    (1 + fighter.stats.atk[e]!! / 100)
+    val coeffAtk = 1 + atkStat(fighter.stats.atk["general"]!!)
+    val coeffDef = 1 - defStat(target.stats.def["general"]!!)
+    val damageDealt = ArrayList<Jet>()
+
+    for ((t, e, d) in weapon!!.jets) {
+        // Offensive formula
+        val Ai = coeffAtk * (d + fighter.stats.atkB[t]!! + fighter.stats.atkB[e]!!) *
+                    (1 + atkStat(fighter.stats.atk[t]!!)) *
+                    (1 + atkStat(fighter.stats.atk[e]!!))
+        // Defensive formula
+        val Di = coeffDef * (Ai - target.stats.defB[t]!! - target.stats.defB[e]!!) *
+                (1 - defStat(target.stats.def[t]!!)) *
+                (1 - defStat(target.stats.def[e]!!))
+        damageDealt.add(Jet(t, e, floor(Di).toInt()))
     }
 
-    return coeff * sum
+    return damageDealt
 }

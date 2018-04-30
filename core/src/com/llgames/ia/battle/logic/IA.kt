@@ -27,7 +27,7 @@ class IA {
     private var rules = arrayOf(
             Rule(
                     LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                    Action(id = "ATK", target = "ELHP", weapon = Weapon(arrayOf(Jet("blade", "neutral", 10))))
+                    Action(id = "ATK", target = "ELHP", weapon = Weapon(arrayOf(Jet("blade", "neutral", 10), Jet("blade", "neutral", 5))))
             ))
 
     fun getRule(fighters: Array<Fighter>, state: State): Rule {
@@ -64,10 +64,10 @@ class IA {
         return when (cond?.id) {
             "E1T" -> true
             "EXT" -> state.turn % cond.value == 0
-            "MXHP" -> getTarget(cond.target, fighters, state) getPercent "HP" >= cond.value
-            "LXHP" -> getTarget(cond.target, fighters, state) getPercent "HP" <= cond.value
-            "MXMP" -> getTarget(cond.target, fighters, state) getPercent "MP" >= cond.value
-            "LXMP" -> getTarget(cond.target, fighters, state) getPercent "MP" <= cond.value
+            "MXHP" -> getTarget(cond.target, fighters, state)!! getPercent "HP" >= cond.value
+            "LXHP" -> getTarget(cond.target, fighters, state)!! getPercent "HP" <= cond.value
+            "MXMP" -> getTarget(cond.target, fighters, state)!! getPercent "MP" >= cond.value
+            "LXMP" -> getTarget(cond.target, fighters, state)!! getPercent "MP" <= cond.value
             else -> false
         }
     }
@@ -105,22 +105,22 @@ class IA {
 
 }
 
-fun getTarget(target: String, fighters: Array<Fighter>, state: State): Fighter {
+fun getTarget(target: String, fighters: Array<Fighter>, state: State): Fighter? {
     return when (target) {
     // HP MAX
-        "aMHPM" -> fighters.sortedWith(compareBy { -it.maxStats.hp }).first()
-        "aLHPM" -> fighters.sortedWith(compareBy { it.maxStats.hp }).first()
-        "AMHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
-        "ALHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
-        "EMHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { -it.maxStats.hp }).first()
-        "ELHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { it.maxStats.hp }).first()
+        "aMHPM" -> fighters.maxBy { it.maxStats.hp }
+        "aLHPM" -> fighters.minBy { it.maxStats.hp }
+        "AMHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { it.maxStats.hp }
+        "ALHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.minBy { it.maxStats.hp }
+        "EMHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.maxBy { it.maxStats.hp }
+        "ELHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.minBy { it.maxStats.hp }
     // HP LEFT
-        "aMHP" -> fighters.sortedWith(compareBy { -it.stats.hp }).first()
-        "aLHP" -> fighters.sortedWith(compareBy { it.stats.hp }).first()
-        "AMHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
-        "ALHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
-        "EMHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { -it.stats.hp }).first()
-        "ELHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.sortedWith(compareBy { it.stats.hp }).first()
+        "aMHP" -> fighters.maxBy { it.stats.hp }
+        "aLHP" -> fighters.minBy { it.stats.hp }
+        "AMHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { -it.stats.hp }
+        "ALHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.minBy { it.stats.hp }
+        "EMHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.maxBy { -it.stats.hp }
+        "ELHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.minBy { it.stats.hp }
     // DIRECT
         "SELF" -> fighters[state.charTurn]
         "ALLY" -> fighters.filter { it.team == fighters[state.charTurn].team }.shuffled().first()

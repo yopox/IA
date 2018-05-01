@@ -37,6 +37,7 @@ class Turn() : IAHandler {
                         "cam" -> camera moveTo it.strContent
                         "txt" -> console write it.strContent
                         "gui" -> gui.update(fighters)
+                        //TODO: Make it better...
                         "move" -> fighters[it.fighterContent!![0]] moveTo fighters[it.fighterContent[1]]
                         "resetPos" -> fighters[it.fighterContent!![0]].resetPos()
                         "face" -> fighters[it.fighterContent!![0]].forceFacing = fighters[it.fighterContent[1]]

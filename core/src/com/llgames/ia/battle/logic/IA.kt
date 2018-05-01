@@ -24,7 +24,7 @@ class IA {
             Rule(
                     LogicG(id = "ID", c1 = Condition(id = "E1T")),
                     Action(id = "ATK",
-                            target = Target("EL", { it.stats.hp }),
+                            target = Target("ELHP", { it.stats.hp }),
                             weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10))))
             ))
 
@@ -93,7 +93,7 @@ class IA {
     private fun toString(act: Action): String {
         var str = ""
         str += "[" + act.id
-        act.target?.let { str += it.main }
+        act.target?.let { str += " " + it.main }
         str += "]"
         return str
     }
@@ -126,7 +126,7 @@ class IA {
  */
 fun getTarget(target: IA.Target?, fighters: Array<out LFighter>, state: State): LFighter? {
     target?.let {
-        return when (target.main) {
+        return when (target.main?.slice(0..1)) {
             "aM" -> fighters.maxBy { target.carac(it) }
             "aL" -> fighters.minBy { target.carac(it) }
             "AM" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { target.carac(it) }

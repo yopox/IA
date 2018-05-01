@@ -31,7 +31,7 @@ class Battle : KtxScreen {
         val names = arrayListOf("A", "B", "C", "D", "E", "F")
 
         // Fighters creation
-        fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i % 3) })
+        fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i) })
         fighters.forEach { it.setClass(if (it.team == 1) "Dark Mage" else "White Mage") }
         fighters.forEach { it.prepare() }
 
@@ -60,7 +60,7 @@ class Battle : KtxScreen {
         // Draw fighters
         fighters.sortByDescending { it.sprite.y }
         fighters.map { it.drawChar(batch, manager.camera) }
-        fighters.sortByDescending { -3 * it.team - it.id }
+        fighters.sortBy { it.id }
 
         manager.debug(batch, font, fighters)
 

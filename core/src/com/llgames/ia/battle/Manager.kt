@@ -58,7 +58,7 @@ class Manager() {
     }
 
     fun debug(batch: Batch, font: BitmapFont, fighters: Array<Fighter>) {
-        gui.debug(batch, font, camera, fighters, state)
+        gui.debug(batch, font, fighters, state)
     }
 
     fun resize(width: Int, height: Int) {

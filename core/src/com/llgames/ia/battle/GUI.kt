@@ -19,7 +19,7 @@ class GUI() {
 
     fun update(chars: Array<Fighter>) {
         chars.forEach { hp[it.team][it.id] = it.stats.hp }
-        chars.forEach { mp[it.team][it.id] = it.stats.mp }
+        chars.forEach { mp[it.team][it.id] = 0 }
     }
 
     fun draw(batch: Batch, font: BitmapFont) {

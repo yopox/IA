@@ -16,7 +16,7 @@ class Manager() {
     private var state: State = State()
     var camera = Camera()
     var turnManager = Turn()
-    val viewport = FitViewport(320f, 180f, camera)
+    private val viewport = FitViewport(320f, 180f, camera)
 
     fun init(fighters: Array<Fighter>) {
         viewport.apply()

@@ -4,37 +4,42 @@ import com.llgames.ia.battle.Fighter
 import com.llgames.ia.battle.State
 
 /**
- * Created by yopox on 26/11/2017.
+ * **LOGIC** : On ne travaille qu'avec des [LFighter]
+ * Gère les runes et l'intelligence artificielle des combattants.
  */
 
 class IA {
-
-    // RULES
 
     data class LogicG(var id: String = "ID", var c1: Condition, var c2: Condition? = null)
 
     data class Rule(var gate: LogicG, var act: Action)
 
-    data class Condition(var id: String = "E1T", var target: String = "", var value: Int = -1)
+    data class Target(var main: String? = null, var carac: (LFighter) -> Int = { it.stats.hp })
 
-    data class Action(var id: String = "WAIT", var target: String = "", var weapon: Weapon? = null)
+    data class Condition(var id: String = "E1T", var target: Target? = null, var value: Int = -1)
 
-    private val DEFAULT_RULE = Rule(
-            LogicG(id = "ID", c1 = Condition(id = "E1T")),
-            Action()
-    )
+    data class Action(var id: String = "WAIT", var target: Target? = null, var weapon: Weapon? = null)
 
     private var rules = arrayOf(
             Rule(
                     LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                    Action(id = "ATK", target = "ELHP", weapon = Weapon(arrayOf(Jet("blade", "neutral", 10), Jet("blade", "neutral", 5))))
+                    Action(id = "ATK",
+                            target = Target("EL", { it.stats.hp }),
+                            weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10))))
             ))
 
-    fun getRule(fighters: Array<Fighter>, state: State): Rule {
+    /**
+     * Renvoie la règle utilisée ce tour-ci.
+     */
+    fun getRule(fighters: Array<out LFighter>, state: State): Rule {
         return iaStep(0, fighters, state)
     }
 
-    private fun iaStep(index: Int, fighters: Array<Fighter>, state: State): Rule {
+    /**
+     * Interroge la porte logique de la règle numéro `index`.
+     * @return la première règle qui s'applique
+     */
+    private fun iaStep(index: Int, fighters: Array<out LFighter>, state: State): Rule {
         // Default rule
         if (index == rules.size)
             return DEFAULT_RULE
@@ -46,7 +51,10 @@ class IA {
         }
     }
 
-    private fun gateCheck(gate: LogicG, fighters: Array<Fighter>, state: State): Boolean {
+    /**
+     * État de la porte logique.
+     */
+    private fun gateCheck(gate: LogicG, fighters: Array<out LFighter>, state: State): Boolean {
         return when (gate.id) {
             "ID" -> condCheck(gate.c1, fighters, state)
             "NOT" -> !condCheck(gate.c1, fighters, state)
@@ -60,14 +68,15 @@ class IA {
         }
     }
 
-    private fun condCheck(cond: Condition?, fighters: Array<Fighter>, state: State): Boolean {
+    /**
+     * État de la condition.
+     */
+    private fun condCheck(cond: Condition?, fighters: Array<out LFighter>, state: State): Boolean {
         return when (cond?.id) {
             "E1T" -> true
             "EXT" -> state.turn % cond.value == 0
             "MXHP" -> getTarget(cond.target, fighters, state)!! getPercent "HP" >= cond.value
             "LXHP" -> getTarget(cond.target, fighters, state)!! getPercent "HP" <= cond.value
-            "MXMP" -> getTarget(cond.target, fighters, state)!! getPercent "MP" >= cond.value
-            "LXMP" -> getTarget(cond.target, fighters, state)!! getPercent "MP" <= cond.value
             else -> false
         }
     }
@@ -75,7 +84,7 @@ class IA {
     private fun toString(cond: Condition): String {
         var str = ""
         str += "[" + cond.id
-        if (cond.target != "") str += " " + cond.target
+        cond.target?.let { str += it.main }
         if (cond.value != -1) str += " " + cond.value
         str += "]"
         return str
@@ -84,7 +93,7 @@ class IA {
     private fun toString(act: Action): String {
         var str = ""
         str += "[" + act.id
-        if (act.target != "") str += " " + act.target
+        act.target?.let { str += it.main }
         str += "]"
         return str
     }
@@ -103,28 +112,29 @@ class IA {
         return str
     }
 
+    companion object {
+        private val DEFAULT_RULE = Rule(
+                LogicG(id = "ID", c1 = Condition(id = "E1T")),
+                Action()
+        )
+    }
+
 }
 
-fun getTarget(target: String, fighters: Array<Fighter>, state: State): Fighter? {
-    return when (target) {
-    // HP MAX
-        "aMHPM" -> fighters.maxBy { it.maxStats.hp }
-        "aLHPM" -> fighters.minBy { it.maxStats.hp }
-        "AMHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { it.maxStats.hp }
-        "ALHPM" -> fighters.filter { it.team == fighters[state.charTurn].team }.minBy { it.maxStats.hp }
-        "EMHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.maxBy { it.maxStats.hp }
-        "ELHPM" -> fighters.filter { it.team != fighters[state.charTurn].team }.minBy { it.maxStats.hp }
-    // HP LEFT
-        "aMHP" -> fighters.maxBy { it.stats.hp }
-        "aLHP" -> fighters.minBy { it.stats.hp }
-        "AMHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { -it.stats.hp }
-        "ALHP" -> fighters.filter { it.team == fighters[state.charTurn].team }.minBy { it.stats.hp }
-        "EMHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.maxBy { -it.stats.hp }
-        "ELHP" -> fighters.filter { it.team != fighters[state.charTurn].team }.minBy { it.stats.hp }
-    // DIRECT
-        "SELF" -> fighters[state.charTurn]
-        "ALLY" -> fighters.filter { it.team == fighters[state.charTurn].team }.shuffled().first()
-        "ENN" -> fighters.filter { it.team != fighters[state.charTurn].team }.shuffled().first()
-        else -> fighters[state.charTurn]
+/**
+ * Renvoie le [LFighter] associé à la cible [IA.Target].
+ */
+fun getTarget(target: IA.Target?, fighters: Array<out LFighter>, state: State): LFighter? {
+    target?.let {
+        return when (target.main) {
+            "aM" -> fighters.maxBy { target.carac(it) }
+            "aL" -> fighters.minBy { target.carac(it) }
+            "AM" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { target.carac(it) }
+            "AL" -> fighters.filter { it.team == fighters[state.charTurn].team }.minBy { target.carac(it) }
+            "EM" -> fighters.filter { it.team != fighters[state.charTurn].team }.maxBy { target.carac(it) }
+            "EL" -> fighters.filter { it.team != fighters[state.charTurn].team }.minBy { target.carac(it) }
+            else -> fighters[state.charTurn]
+        }
     }
+    return null
 }

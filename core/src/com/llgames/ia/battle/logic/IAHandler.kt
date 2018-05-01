@@ -8,7 +8,7 @@ import com.llgames.ia.battle.State
  */
 interface IAHandler {
 
-    fun newTurn(fighters: Array<Fighter>, state: State) {
+    fun newTurn(fighters: Array<out LFighter>, state: State) {
 
         // Get the rule
         val rule = fighters[state.charTurn].getRule(fighters, state)
@@ -24,18 +24,18 @@ interface IAHandler {
 
     }
 
-    fun atk(fighters: Array<Fighter>, state: State, target: Fighter?, weapon: Weapon?) {
+    fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
         target?.let { fighters[state.charTurn].attack(target, weapon) }
     }
 
-    fun pro(fighters: Array<Fighter>, state: State, target: Fighter?)
+    fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?)
 
-    fun wait(fighters: Array<Fighter>, state: State)
+    fun wait(fighters: Array<out LFighter>, state: State)
 
-    fun def(fighters: Array<Fighter>, state: State)
+    fun def(fighters: Array<out LFighter>, state: State)
 
-    fun wpn(fighters: Array<Fighter>, state: State, target: Fighter?)
+    fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?)
 
-    fun spl(fighters: Array<Fighter>, state: State, target: Fighter?)
+    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?)
 
 }

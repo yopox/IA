@@ -29,8 +29,12 @@ class Battle : KtxScreen {
                 floatArrayOf(0.2f, 0.45f))
         val textures = arrayOf("char2.png", "char.png")
         val names = arrayListOf("A", "B", "C", "D", "E", "F")
+
+        // Fighters creation
         fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i % 3) })
+        fighters.forEach { it.setClass(if (it.team == 1) "Dark Mage" else "White Mage") }
         fighters.forEach { it.prepare() }
+
         manager = Manager().apply { init(fighters) }
     }
 

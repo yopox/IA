@@ -1,6 +1,5 @@
 package com.llgames.ia.battle.logic
 
-import com.llgames.ia.battle.Fighter
 import com.llgames.ia.battle.State
 
 /**
@@ -20,13 +19,24 @@ class IA {
 
     data class Action(var id: String = "WAIT", var target: Target? = null, var weapon: Weapon? = null)
 
-    private var rules = arrayOf(
-            Rule(
-                    LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                    Action(id = "ATK",
-                            target = Target("ELHP", { it.stats.hp }),
-                            weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10))))
-            ))
+    private var rules: Array<Rule> = arrayOf()
+
+    fun setRules(type: String) = when (type) {
+        "OFFENSIVE" -> rules = arrayOf(
+                Rule(
+                        LogicG(id = "ID", c1 = Condition(id = "E1T")),
+                        Action(id = "ATK",
+                                target = Target("ELHP", { it.stats.hp }),
+                                weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10))))
+                ))
+        "DEFENSIVE" -> rules = arrayOf(
+                Rule(
+                        LogicG(id = "ID", c1 = Condition(id = "E1T")),
+                        Action(id = "PRO",
+                                target = Target("ALHP", { it.stats.hp }))
+                ))
+        else -> rules = arrayOf()
+    }
 
     /**
      * Renvoie la règle utilisée ce tour-ci.

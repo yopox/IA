@@ -4,11 +4,11 @@ import com.llgames.ia.battle.Fighter
 import com.llgames.ia.battle.State
 
 /**
- * Created by yopox on 3/23/18.
+ * [IAHandler] s'occupe de la partie logique des actions.
  */
 interface IAHandler {
 
-    fun newTurn(fighters: Array<out LFighter>, state: State) {
+    fun play(fighters: Array<out LFighter>, state: State) {
 
         // Get the rule
         val rule = fighters[state.charTurn].getRule(fighters, state)
@@ -25,10 +25,14 @@ interface IAHandler {
     }
 
     fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
-        target?.let { fighters[state.charTurn].attack(target, weapon) }
+        target?.let {
+            fighters[state.charTurn].attack(target.protected ?: target, weapon)
+        }
     }
 
-    fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?)
+    fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+        target?.let { it.protected = fighters[state.charTurn] }
+    }
 
     fun wait(fighters: Array<out LFighter>, state: State)
 

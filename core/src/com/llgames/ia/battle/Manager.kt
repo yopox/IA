@@ -8,21 +8,27 @@ import com.badlogic.gdx.utils.viewport.FitViewport
  * Created by yopox on 27/11/2017.
  */
 
-data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0)
+data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0) {
+    fun newTurn() {
+        charTurn = 0
+        turn++
+    }
+}
 
-class Manager() {
+class Manager {
     private var gui = GUI()
     private var console = Console()
     private var state: State = State()
+    private var turnManager = Turn()
     var camera = Camera()
-    var turnManager = Turn()
     private val viewport = FitViewport(320f, 180f, camera)
 
     fun init(fighters: Array<Fighter>) {
         viewport.apply()
         camera.init()
         gui.init(fighters)
-        turnManager.newTurn(fighters, state)
+        fighters.forEach { it.setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE") }
+        turnManager.play(fighters, state)
     }
 
     fun update(fighters: Array<Fighter>) {
@@ -34,10 +40,9 @@ class Manager() {
             //TODO: Handle turn order
             state.charTurn = (state.charTurn + 1)
             if (state.charTurn == fighters.size) {
-                state.charTurn = 0
-                state.turn++
+                state.newTurn()
             }
-            turnManager.newTurn(fighters, state)
+            turnManager.play(fighters, state)
         }
 
         // Frame subactions

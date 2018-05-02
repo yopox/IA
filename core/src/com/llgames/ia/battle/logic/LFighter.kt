@@ -13,12 +13,15 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     private val ia = IA()
     var stats = Stats()
     var maxStats = Stats()
+    var protected: LFighter? = null
 
     fun setClass(c: String) = when (c) {
         "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats)
         "White Mage" -> maxStats.setTo(WHITE_MAGE.stats)
         else -> maxStats.setTo(HUMAN.stats)
     }
+
+    fun setIA(type: String) = ia.setRules(type)
 
     fun prepare() {
         stats.setTo(maxStats)

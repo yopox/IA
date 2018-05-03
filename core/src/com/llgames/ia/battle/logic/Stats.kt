@@ -2,37 +2,30 @@ package com.llgames.ia.battle.logic
 
 class Stats {
 
-    var atk = HashMap(TypesElemMap)
-    var def = HashMap(TypesElemMap)
-    var atkB = HashMap(TypesElemMap)
-    var defB = HashMap(TypesElemMap)
+    var atk = MutableList(N, { 0 })
+    var def = MutableList(N, { 0 })
+    var atkB = MutableList(N, { 0 })
+    var defB = MutableList(N, { 0 })
     var hp = 100
     var spd = 0
 
     fun setTo(maxStats: Stats) {
-        atk = HashMap(maxStats.atk)
-        def = HashMap(maxStats.def)
+        atk.forEach { i -> atk[i] = maxStats.atk[i] }
+        def.forEach { i -> def[i] = maxStats.def[i] }
         hp = maxStats.hp
+        spd = maxStats.spd
     }
 
     companion object {
-        val GENERAL = "general"
+        const val GENERAL = 0
 
-        val MAGICAL = "magical"
-        val BLADE = "blade"
-        val TYPES = arrayOf(MAGICAL, BLADE)
+        const val MAGICAL = 1
+        const val BLADE = 2
 
-        val NEUTRAL = "neutral"
-        val FIRE = "fire"
-        val ICE = "ice"
-        val ELEMENTS = arrayOf(NEUTRAL, FIRE, ICE)
-        private val TypesElemMap = HashMap<String, Int>()
-
-        init {
-            TypesElemMap[GENERAL] = 0
-            TYPES.forEach { TypesElemMap[it] = 0 }
-            ELEMENTS.forEach { TypesElemMap[it] = 0 }
-        }
+        const val NEUTRAL = 3
+        const val FIRE = 4
+        const val ICE = 5
+        const val N = 6
 
     }
 

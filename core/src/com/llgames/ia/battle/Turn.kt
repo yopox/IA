@@ -38,7 +38,7 @@ class Turn : IAHandler {
                         "cam" -> camera moveTo it.strContent
                         "txt" -> console write it.strContent
                         "gui" -> gui.update(fighters)
-                        //TODO: Make it better...
+                    //TODO: Make it better...
                         "move" -> fighters[it.fighterContent!![0]] moveTo fighters[it.fighterContent[1]]
                         "resetPos" -> fighters[it.fighterContent!![0]].resetPos()
                         "face" -> fighters[it.fighterContent!![0]].forceFacing = fighters[it.fighterContent[1]]
@@ -50,6 +50,8 @@ class Turn : IAHandler {
     }
 
     override fun def(fighters: Array<out LFighter>, state: State) {
+        super.def(fighters, state)
+
         actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
     }
 

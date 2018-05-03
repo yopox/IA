@@ -31,9 +31,13 @@ class IA {
                 ))
         "DEFENSIVE" -> rules = arrayOf(
                 Rule(
-                        LogicG(id = "ID", c1 = Condition(id = "E1T")),
+                        LogicG(id = "ID", c1 = Condition(id = "EXT", value = 2)),
                         Action(id = "PRO",
                                 target = Target("ALHP", { it.stats.hp }))
+                ),
+                Rule(
+                        LogicG(id = "ID", c1 = Condition(id = "E1T")),
+                        Action(id = "DEF")
                 ))
         else -> rules = arrayOf()
     }

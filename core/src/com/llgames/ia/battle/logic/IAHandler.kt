@@ -36,7 +36,9 @@ interface IAHandler {
 
     fun wait(fighters: Array<out LFighter>, state: State)
 
-    fun def(fighters: Array<out LFighter>, state: State)
+    fun def(fighters: Array<out LFighter>, state: State) {
+        fighters[state.charTurn].defend()
+    }
 
     fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?)
 

@@ -1,11 +1,13 @@
 package com.llgames.ia.battle.logic
 
+import com.llgames.ia.battle.Console
 import com.llgames.ia.battle.State
+import com.llgames.ia.battle.logic.Stats.Companion.GENERAL
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
-data class Jet(var type: String, var elem: String, var damage: Int)
+data class Jet(var type: Int, var elem: Int, var damage: Int)
 
 data class Weapon(var jets: Array<Jet>)
 
@@ -23,19 +25,15 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
 
     fun setIA(type: String) = ia.setRules(type)
 
+    fun getRule(fighters: Array<out LFighter>, state: State): IA.Rule = ia.getRule(fighters, state)
+
     fun prepare() {
         stats.setTo(maxStats)
     }
 
-    fun getRule(fighters: Array<out LFighter>, state: State): IA.Rule {
-        return ia.getRule(fighters, state)
-    }
-
-    infix fun getPercent(value: String): Int {
-        return when (value) {
-            "HP" -> 100 * stats.hp / maxStats.hp
-            else -> 0
-        }
+    infix fun getPercent(value: String): Int = when (value) {
+        "HP" -> 100 * stats.hp / maxStats.hp
+        else -> 0
     }
 
     fun getIAString(): String {
@@ -51,6 +49,10 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
 
     }
 
+    fun defend() {
+        stats.def[GENERAL] += 50
+    }
+
 }
 
 fun atkStat(atk: Int) = max(-100, atk) / 100.0
@@ -59,8 +61,8 @@ fun defStat(def: Int) = min(100, def) / 100.0
 
 fun damageCalculation(fighter: LFighter, target: LFighter, weapon: Weapon?): ArrayList<Jet> {
 
-    val coeffAtk = 1 + atkStat(fighter.stats.atk[Stats.GENERAL]!!)
-    val coeffDef = 1 - defStat(target.stats.def["general"]!!)
+    val coeffAtk = 1 + atkStat(fighter.stats.atk[GENERAL]!!)
+    val coeffDef = 1 - defStat(target.stats.def[GENERAL]!!)
     val damageDealt = ArrayList<Jet>()
 
     for ((t, e, d) in weapon!!.jets) {

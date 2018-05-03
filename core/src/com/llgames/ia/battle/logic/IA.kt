@@ -24,6 +24,10 @@ class IA {
     fun setRules(type: String) = when (type) {
         "OFFENSIVE" -> rules = arrayOf(
                 Rule(
+                        LogicG(id = "ID", c1 = Condition(id = "EXT", value = 2)),
+                        Action(id = "WRM")
+                ),
+                Rule(
                         LogicG(id = "ID", c1 = Condition(id = "E1T")),
                         Action(id = "ATK",
                                 target = Target("ELHP", { it.stats.hp }),

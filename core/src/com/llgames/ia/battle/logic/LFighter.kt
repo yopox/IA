@@ -1,6 +1,5 @@
 package com.llgames.ia.battle.logic
 
-import com.llgames.ia.battle.Console
 import com.llgames.ia.battle.State
 import com.llgames.ia.battle.logic.Stats.Companion.GENERAL
 import kotlin.math.floor
@@ -9,12 +8,15 @@ import kotlin.math.min
 
 data class Jet(var type: Int, var elem: Int, var damage: Int)
 
+data class Boost(var stat: String, var type: Int, var value: Int, var duration: Int)
+
 data class Weapon(var jets: Array<Jet>)
 
 open class LFighter(val name: String, val team: Int, val id: Int) {
     private val ia = IA()
     var stats = Stats()
     var maxStats = Stats()
+    var boosts: MutableList<Boost> = mutableListOf()
     var protected: LFighter? = null
 
     fun setClass(c: String) = when (c) {
@@ -28,16 +30,24 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     fun getRule(fighters: Array<out LFighter>, state: State): IA.Rule = ia.getRule(fighters, state)
 
     fun prepare() {
+        stats.setTo(maxStats, true)
+    }
+
+    fun newTurn() {
+
         stats.setTo(maxStats)
-    }
 
-    infix fun getPercent(value: String): Int = when (value) {
-        "HP" -> 100 * stats.hp / maxStats.hp
-        else -> 0
-    }
+        for (boost in boosts) {
+            boost.duration--
+            when (boost.stat) {
+                "ATK" -> stats.atk[boost.type] += boost.value
+                "DEF" -> stats.def[boost.type] += boost.value
+                else -> Unit
+            }
+        }
 
-    fun getIAString(): String {
-        return ia.toString()
+        boosts = boosts.filter { it.duration > 0 }.toMutableList()
+
     }
 
     fun attack(target: LFighter, weapon: Weapon?) {
@@ -51,6 +61,15 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
 
     fun defend() {
         stats.def[GENERAL] += 50
+    }
+
+    infix fun getPercent(value: String): Int = when (value) {
+        "HP" -> 100 * stats.hp / maxStats.hp
+        else -> 0
+    }
+
+    fun getIAString(): String {
+        return ia.toString()
     }
 
 }

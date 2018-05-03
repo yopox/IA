@@ -52,15 +52,7 @@ class Turn : IAHandler {
     override fun def(fighters: Array<out LFighter>, state: State) {
         super.def(fighters, state)
 
-        actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " is defending himself!"))
-    }
-
-    override fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?) {
-        TODO("not implemented")
-    }
-
-    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
-        TODO("not implemented")
+        actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} is defending himself!"))
     }
 
     override fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
@@ -68,12 +60,12 @@ class Turn : IAHandler {
 
         val actor = fighters[state.charTurn]
         target?.let {
-            actions.add(TurnAction(15, "txt", strContent = actor.name + " protects " + (if (target.id != actor.id) target.name else "itself") + "!"))
+            actions.add(TurnAction(15, "txt", strContent = "${actor.name} protects " + (if (target.id != actor.id) target.name else "itself") + "!"))
         }
     }
 
     override fun wait(fighters: Array<out LFighter>, state: State) {
-        actions.add(TurnAction(15, "txt", strContent = fighters[state.charTurn].name + " does nothing."))
+        actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} does nothing."))
     }
 
     override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
@@ -87,11 +79,11 @@ class Turn : IAHandler {
             if (rtarget.id != actor.id || rtarget.team != actor.team) {
                 actions.add(TurnAction(15, "move", fighterContent = arrayOf(actor.id, target.id)))
                 actions.add(TurnAction(15, "face", fighterContent = arrayOf(actor.id, rtarget.id)))
-                actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks " + target.name + "!"))
+                actions.add(TurnAction(15, "txt", strContent = "${actor.name} attacks ${target.name}!"))
                 actions.add(TurnAction(105, "resetPos", fighterContent = arrayOf(actor.id)))
                 actions.add(TurnAction(120, "releaseFace", fighterContent = arrayOf(actor.id)))
             } else {
-                actions.add(TurnAction(15, "txt", strContent = actor.name + " attacks itself!"))
+                actions.add(TurnAction(15, "txt", strContent = "${actor.name} attacks itself!"))
             }
 
             actions.add(TurnAction(75, "txt", strContent = "${rtarget.name} lost " + hpLost(damageCalculation(actor, target, weapon)) + " HP!"))
@@ -99,6 +91,19 @@ class Turn : IAHandler {
             actions.add(TurnAction(75, "blink", fighterContent = arrayOf(rtarget.id)))
 
         }
+    }
+
+    override fun wrm(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+        super.wrm(fighters, state, target)
+        actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} warms up!"))
+    }
+
+    override fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+        TODO("not implemented")
+    }
+
+    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+        TODO("not implemented")
     }
 
 }

@@ -9,14 +9,18 @@ class Stats {
     var hp = 100
     var spd = 0
 
-    fun setTo(maxStats: Stats) {
-        atk.forEach { i -> atk[i] = maxStats.atk[i] }
-        def.forEach { i -> def[i] = maxStats.def[i] }
-        hp = maxStats.hp
+    fun setTo(maxStats: Stats, setHp: Boolean = false) {
+        atk.withIndex().map { (i, j) -> atk[i] = maxStats.atk[i] }
+        def.withIndex().map { (i, j) -> def[i] = maxStats.def[i] }
+        if (setHp) hp = maxStats.hp
         spd = maxStats.spd
     }
 
     companion object {
+
+        const val ATTACK = "ATK"
+        const val DEFENSE = "DEF"
+
         const val GENERAL = 0
 
         const val MAGICAL = 1

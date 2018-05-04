@@ -40,7 +40,7 @@ class Battle : KtxScreen {
         // Fighters creation
         fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i) })
 
-        fighters.forEach { it.setClass(if (it.team == 1) "Dark Mage" else "White Mage") }
+        fighters.forEach { it.changeJob(if (it.team == 1) "Dark Mage" else "White Mage") }
         fighters.forEach { it.setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE") }
         fighters.forEach { it.prepare() }
 

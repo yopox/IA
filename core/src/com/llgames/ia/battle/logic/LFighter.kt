@@ -18,16 +18,20 @@ data class Weapon(var jets: Array<Jet>)
 
 open class LFighter(val name: String, val team: Int, val id: Int) {
     private val ia = IA()
+    var job = "HUMAN"
     var stats = Stats()
     var maxStats = Stats()
     var alive = true
     var boosts: MutableList<Boost> = mutableListOf()
     var protected: LFighter? = null
 
-    fun setClass(c: String) = when (c) {
-        "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats, true)
-        "White Mage" -> maxStats.setTo(WHITE_MAGE.stats, true)
-        else -> maxStats.setTo(HUMAN.stats, true)
+    fun changeJob(c: String) {
+        job = c
+        when (c) {
+            "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats, true)
+            "White Mage" -> maxStats.setTo(WHITE_MAGE.stats, true)
+            else -> maxStats.setTo(HUMAN.stats, true)
+        }
     }
 
     fun setIA(type: String) = ia.setRules(type)

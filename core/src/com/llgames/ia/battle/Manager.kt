@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.utils.viewport.FitViewport
 
-/**
- * Created by yopox on 27/11/2017.
- */
-
-data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0) {
+data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, var winner: Int = -1) {
     fun newTurn() {
         charTurn = 0
         turn++
     }
 }
+
+/**
+ * Gère l'état et l'avancement du combat.
+ */
 
 class Manager {
     private var gui = GUI()
@@ -27,7 +27,6 @@ class Manager {
         viewport.apply()
         camera.init()
         gui.init(fighters)
-        fighters.forEach { it.setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE") }
         turnManager.play(fighters, state)
     }
 
@@ -37,12 +36,22 @@ class Manager {
         state.frame = state.frame + 1
         if (state.frame == 180) {
             state.frame = 0
-            //TODO: Handle turn order
-            state.charTurn = (state.charTurn + 1)
-            if (state.charTurn == fighters.size) {
-                state.newTurn()
+
+            if (!checkWin(fighters)) {
+
+                // Prochain combattant en vie
+                do {
+                    state.charTurn++
+                    if (state.charTurn == fighters.size) state.newTurn()
+                } while (!fighters[state.charTurn].alive)
+
+                turnManager.play(fighters, state)
+
+            } else {
+                //TODO: Fin du combat
+                print("Fight ended. Team #${state.winner} won!")
             }
-            turnManager.play(fighters, state)
+
         }
 
         // Frame subactions
@@ -55,6 +64,20 @@ class Manager {
             console.update()
         }
 
+    }
+
+    /**
+     * Vérifie si le combat est terminé.
+     */
+    private fun checkWin(fighters: Array<Fighter>): Boolean {
+        if (fighters.none { it.team == 0 && it.alive }) {
+            state.winner = 1
+            return true
+        } else if (fighters.none { it.team == 1 && it.alive }) {
+            state.winner = 0
+            return true
+        }
+        return false
     }
 
     fun draw(batch: Batch, font: BitmapFont) {

@@ -7,18 +7,25 @@ import com.llgames.ia.battle.logic.LFighter
 import java.util.*
 
 /**
- * Created by yopox on 06/09/2017.
+ * Partie visuelle des combattants.
+ * La logique est gérée par [LFighter].
+ * @param [depX], [depY] position de départ du perso
+ * @param id identifiant unique du perso
  */
 
 class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private val depX: Float, private val depY: Float, name: String, team: Int, id: Int) : LFighter(name, team, id) {
 
     val sprite = Sprite(texture, srcWidth, srcHeight)
-    private var upcomingPos = Array(2, { _ -> Vector<Float>()})
     private var posX: Float = depX
     private var posY: Float = depY
+    // Animations
     var forceFacing: Fighter? = null
     private var blink = 0
+    private var upcomingPos = Array(2, { Vector<Float>() })
 
+    /**
+     * Modifie la position du sprite en fonction de posX et posY.
+     */
     fun updatePos(camera: Camera) {
 
         val alpha = camera.angle
@@ -52,22 +59,31 @@ class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private val depX
         sprite.draw(batch)
     }
 
+    /**
+     * Déplace le personnage face à un autre en 30 frames.
+     */
     infix fun moveTo(fighter: Fighter) {
         val finalX = fighter.posX
         val finalY = (Math.abs(fighter.posY) - 0.15f) * Math.signum(fighter.posY)
 
-        upcomingPos[0].addAll(Array(30, {i -> (i + 1) / 30f * (finalX - depX) + depX}))
-        upcomingPos[1].addAll(Array(30, {i -> (i + 1) / 30f * (finalY - depY) + depY}))
+        upcomingPos[0].addAll(Array(30, { i -> (i + 1) / 30f * (finalX - depX) + depX }))
+        upcomingPos[1].addAll(Array(30, { i -> (i + 1) / 30f * (finalY - depY) + depY }))
     }
 
+    /**
+     * Renvoie le personnage à sa position de départ [depX], [depY] en 30 frames.
+     */
     fun resetPos() {
         val fromX = posX
         val fromY = posY
 
-        upcomingPos[0].addAll(Array(30, {i -> (i + 1) / 30f * (depX - fromX) + fromX}))
-        upcomingPos[1].addAll(Array(30, {i -> (i + 1) / 30f * (depY - fromY) + fromY}))
+        upcomingPos[0].addAll(Array(30, { i -> (i + 1) / 30f * (depX - fromX) + fromX }))
+        upcomingPos[1].addAll(Array(30, { i -> (i + 1) / 30f * (depY - fromY) + fromY }))
     }
 
+    /**
+     * Fait clignotter le personnage pendant 30 frames.
+     */
     fun blink() {
         blink = 30
     }

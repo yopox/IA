@@ -16,6 +16,8 @@ class Stats {
         spd = maxStats.spd
     }
 
+    //TODO: Get rid of the companion object
+    //TODO: Create corresponding enum
     companion object {
 
         const val ATTACK = "ATK"
@@ -40,7 +42,7 @@ object HUMAN {
 
     init {
         stats.apply {
-            hp = 150
+            hp = 20
             spd = 50
             atk[Stats.GENERAL] = 5
             atk[Stats.MAGICAL] = -5
@@ -55,7 +57,7 @@ object DARK_MAGE {
 
     init {
         stats.apply {
-            hp = 125
+            hp = 18
             spd = 35
             atk[Stats.GENERAL] = 10
             atk[Stats.MAGICAL] = 5
@@ -71,7 +73,7 @@ object WHITE_MAGE {
 
     init {
         stats.apply {
-            hp = 175
+            hp = 22
             spd = 15
             atk[Stats.GENERAL] = -10
             atk[Stats.MAGICAL] = 5

@@ -10,7 +10,12 @@ import com.llgames.ia.battle.Fighter
 import com.llgames.ia.gif.GifRecorder
 import ktx.app.KtxScreen
 
-
+/**
+ * Game State correspondant aux combats.
+ * [Battle] crée les fighters et gère l'affichage mais laisse [Manager] gérer le combat.
+ * TODO: Bouton accélérer
+ * TODO: Bouton pause
+ */
 class Battle : KtxScreen {
     private val batch = SpriteBatch()
     private val bg = Texture("bg.png")
@@ -21,18 +26,22 @@ class Battle : KtxScreen {
 
     init {
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+        // Fighters positions
         val pos = arrayOf(floatArrayOf(-0.2f, -0.45f),
                 floatArrayOf(0f, -0.45f),
                 floatArrayOf(0.2f, -0.45f),
                 floatArrayOf(-0.2f, 0.45f),
                 floatArrayOf(0f, 0.45f),
                 floatArrayOf(0.2f, 0.45f))
-        val textures = arrayOf("char2.png", "char.png")
+        //TODO: Find better names
         val names = arrayListOf("A", "B", "C", "D", "E", "F")
+        val textures = arrayOf("char2.png", "char.png")
 
         // Fighters creation
         fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i) })
+
         fighters.forEach { it.setClass(if (it.team == 1) "Dark Mage" else "White Mage") }
+        fighters.forEach { it.setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE") }
         fighters.forEach { it.prepare() }
 
         manager = Manager().apply { init(fighters) }
@@ -62,10 +71,10 @@ class Battle : KtxScreen {
         fighters.map { it.drawChar(batch, manager.camera) }
         fighters.sortBy { it.id }
 
+        // Draw IA and turn number
         manager.debug(batch, font, fighters)
 
         batch.end()
-
         recorder.update()
 
     }

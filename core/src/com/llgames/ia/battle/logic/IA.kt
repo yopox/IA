@@ -99,7 +99,7 @@ class IA {
         }
     }
 
-    private fun toString(cond: Condition): String {
+    fun toString(cond: Condition): String {
         var str = ""
         str += "[" + cond.id
         cond.target?.let { str += it.main }
@@ -108,7 +108,7 @@ class IA {
         return str
     }
 
-    private fun toString(act: Action): String {
+    fun toString(act: Action): String {
         var str = ""
         str += "[" + act.id
         act.target?.let { str += " " + it.main }
@@ -133,7 +133,7 @@ class IA {
     companion object {
         private val DEFAULT_RULE = Rule(
                 LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                Action()
+                Action(id = "WAIT")
         )
     }
 
@@ -144,13 +144,14 @@ class IA {
  */
 fun getTarget(target: IA.Target?, fighters: Array<out LFighter>, state: State): LFighter? {
     target?.let {
+        val alive = fighters.filter { it.alive }
         return when (target.main?.slice(0..1)) {
-            "aM" -> fighters.maxBy { target.carac(it) }
-            "aL" -> fighters.minBy { target.carac(it) }
-            "AM" -> fighters.filter { it.team == fighters[state.charTurn].team }.maxBy { target.carac(it) }
-            "AL" -> fighters.filter { it.team == fighters[state.charTurn].team }.minBy { target.carac(it) }
-            "EM" -> fighters.filter { it.team != fighters[state.charTurn].team }.maxBy { target.carac(it) }
-            "EL" -> fighters.filter { it.team != fighters[state.charTurn].team }.minBy { target.carac(it) }
+            "aM" -> alive.maxBy { target.carac(it) }
+            "aL" -> alive.minBy { target.carac(it) }
+            "AM" -> alive.filter { it.team == fighters[state.charTurn].team }.maxBy { target.carac(it) }
+            "AL" -> alive.filter { it.team == fighters[state.charTurn].team }.minBy { target.carac(it) }
+            "EM" -> alive.filter { it.team != fighters[state.charTurn].team }.maxBy { target.carac(it) }
+            "EL" -> alive.filter { it.team != fighters[state.charTurn].team }.minBy { target.carac(it) }
             else -> fighters[state.charTurn]
         }
     }

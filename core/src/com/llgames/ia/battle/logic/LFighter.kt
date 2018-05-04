@@ -12,27 +12,41 @@ data class Boost(var stat: String, var type: Int, var value: Int, var duration: 
 
 data class Weapon(var jets: Array<Jet>)
 
+/**
+ * Partie logique des combattants.
+ */
+
 open class LFighter(val name: String, val team: Int, val id: Int) {
     private val ia = IA()
     var stats = Stats()
     var maxStats = Stats()
+    var alive = true
     var boosts: MutableList<Boost> = mutableListOf()
     var protected: LFighter? = null
 
     fun setClass(c: String) = when (c) {
-        "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats)
-        "White Mage" -> maxStats.setTo(WHITE_MAGE.stats)
-        else -> maxStats.setTo(HUMAN.stats)
+        "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats, true)
+        "White Mage" -> maxStats.setTo(WHITE_MAGE.stats, true)
+        else -> maxStats.setTo(HUMAN.stats, true)
     }
 
     fun setIA(type: String) = ia.setRules(type)
 
+    /**
+     * Renvoie la règle d'IA utilisée ce tour-ci.
+     */
     fun getRule(fighters: Array<out LFighter>, state: State): IA.Rule = ia.getRule(fighters, state)
 
+    /**
+     * Reset les stats du personnage.
+     */
     fun prepare() {
         stats.setTo(maxStats, true)
     }
 
+    /**
+     * Applique les boosts du tour.
+     */
     fun newTurn() {
 
         stats.setTo(maxStats)
@@ -46,6 +60,7 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
             }
         }
 
+        // Remove finished boosts
         boosts = boosts.filter { it.duration > 0 }.toMutableList()
 
     }
@@ -55,12 +70,21 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
         for ((_, _, damage) in damageCalculation(this, target, weapon)) {
             target.stats.hp -= damage
         }
-        //TODO: Implement death
 
     }
 
     fun defend() {
         stats.def[GENERAL] += 50
+    }
+
+    /**
+     * Tue le combattant.
+     */
+    fun kill(fighters: Array<out LFighter>) {
+        alive = false
+        stats.hp = 0
+        // Si le combattant protégeait un joueur, ce n'est plus le cas
+        fighters.forEach { if (it.protected?.id == id) it.protected = null }
     }
 
     infix fun getPercent(value: String): Int = when (value) {
@@ -80,19 +104,19 @@ fun defStat(def: Int) = min(100, def) / 100.0
 
 fun damageCalculation(fighter: LFighter, target: LFighter, weapon: Weapon?): ArrayList<Jet> {
 
-    val coeffAtk = 1 + atkStat(fighter.stats.atk[GENERAL]!!)
-    val coeffDef = 1 - defStat(target.stats.def[GENERAL]!!)
+    val coeffAtk = 1 + atkStat(fighter.stats.atk[GENERAL])
+    val coeffDef = 1 - defStat(target.stats.def[GENERAL])
     val damageDealt = ArrayList<Jet>()
 
     for ((t, e, d) in weapon!!.jets) {
         // Offensive formula
-        val Ai = coeffAtk * max(0, d + fighter.stats.atkB[t]!! + fighter.stats.atkB[e]!!) *
-                (1 + atkStat(fighter.stats.atk[t]!!)) *
-                (1 + atkStat(fighter.stats.atk[e]!!))
+        val Ai = coeffAtk * max(0, d + fighter.stats.atkB[t] + fighter.stats.atkB[e]) *
+                (1 + atkStat(fighter.stats.atk[t])) *
+                (1 + atkStat(fighter.stats.atk[e]))
         // Defensive formula
-        val Di = coeffDef * max(0.0, Ai - target.stats.defB[t]!! - target.stats.defB[e]!!) *
-                (1 - defStat(target.stats.def[t]!!)) *
-                (1 - defStat(target.stats.def[e]!!))
+        val Di = coeffDef * max(0.0, Ai - target.stats.defB[t] - target.stats.defB[e]) *
+                (1 - defStat(target.stats.def[t])) *
+                (1 - defStat(target.stats.def[e]))
         damageDealt.add(Jet(t, e, floor(Di).toInt()))
     }
 

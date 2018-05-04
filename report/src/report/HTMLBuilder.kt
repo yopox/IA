@@ -3,7 +3,7 @@ package report
 import com.llgames.ia.battle.logic.LFighter
 
 object HTMLBuilder {
-    var code = "<!DOCTYPE html>\n" +
+    private var code = "<!DOCTYPE html>\n" +
             "<html>\n" +
             "\n" +
             "<head>\n" +
@@ -42,13 +42,34 @@ object HTMLBuilder {
                     "</p>\n"
         }
 
+        sep()
+
     }
 
     fun sep() {
         code +="<div class=\"dotted\"></div>\n"
     }
 
-    fun getHTML(): String {
+    fun write(line: String) {
+        code += "$line<br>"
+    }
+
+    fun startP() {
+        code += "<p class=\"ia\">\n"
+    }
+
+    fun endP() {
+        code += "</p>\n"
+    }
+
+    fun getHTML(team: Int): String {
+        sep()
+        code += "<p class=\"teamName\">TEAM #$team WON!</p>\n"
         return "$code</body></html>"
+    }
+
+    fun newTurn(turn: Int) {
+        sep()
+        code += "<p class=\"teamName\">TURN #$turn</p>\n"
     }
 }

@@ -8,9 +8,9 @@ import kotlin.math.min
 
 data class Jet(var type: Int, var elem: Int, var damage: Int)
 
-data class Boost(var stat: String, var type: Int, var value: Int, var duration: Int)
+data class Boost(var stat: String, var type: Int, var value: Int, var duration: Int, var onSelf: Boolean = true)
 
-data class Weapon(var jets: Array<Jet>)
+data class Weapon(var jets: Array<Jet>, var boosts: Array<Boost>? = null)
 
 /**
  * Partie logique des combattants.
@@ -18,11 +18,11 @@ data class Weapon(var jets: Array<Jet>)
 
 open class LFighter(val name: String, val team: Int, val id: Int) {
     private val ia = IA()
+    var boosts: MutableList<Pair<Boost, LFighter>> = mutableListOf()
     var job = "HUMAN"
     var stats = Stats()
     var maxStats = Stats()
     var alive = true
-    var boosts: MutableList<Boost> = mutableListOf()
     var protected: LFighter? = null
 
     fun changeJob(c: String) {
@@ -49,23 +49,19 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     }
 
     /**
-     * Applique les boosts du tour.
+     * Logique de fin du tour (boosts expirés).
      */
-    fun newTurn() {
+    fun endTurn(fighters: Array<out LFighter>) {
 
-        stats.setTo(maxStats)
+        stopProtecting(fighters)
 
-        for (boost in boosts) {
+        for ((boost, target) in boosts) {
             boost.duration--
-            when (boost.stat) {
-                "ATK" -> stats.atk[boost.type] += boost.value
-                "DEF" -> stats.def[boost.type] += boost.value
-                else -> Unit
-            }
+            if (boost.duration < 0)
+                target.applyBoost(boost)
         }
 
-        // Remove finished boosts
-        boosts = boosts.filter { it.duration > 0 }.toMutableList()
+        boosts.removeIf { it.first.duration < 0 }
 
     }
 
@@ -77,18 +73,14 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
 
     }
 
-    fun defend() {
-        stats.def[GENERAL] += 50
-    }
-
     /**
      * Tue le combattant.
      */
     fun kill(fighters: Array<out LFighter>) {
         alive = false
         stats.hp = 0
-        // Si le combattant protégeait un joueur, ce n'est plus le cas
-        fighters.forEach { if (it.protected?.id == id) it.protected = null }
+        boosts.clear()
+        stopProtecting(fighters)
     }
 
     infix fun getPercent(value: String): Int = when (value) {
@@ -98,6 +90,24 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
 
     fun getIAString(): String {
         return ia.toString()
+    }
+
+    /**
+     * Assure que le combattant ne protège plus de combattant•e•s
+     */
+    private fun stopProtecting(fighters: Array<out LFighter>) {
+        fighters.forEach { if (it.protected?.id == id) it.protected = null }
+    }
+
+    /**
+     * Applique un boost.
+     */
+    fun applyBoost(boost: Boost) {
+        when (boost.stat) {
+            "ATK" -> stats.atk[boost.type] += boost.value
+            "DEF" -> stats.def[boost.type] += boost.value
+            else -> Unit
+        }
     }
 
 }

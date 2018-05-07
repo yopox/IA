@@ -14,9 +14,6 @@ interface IAHandler {
      */
     fun play(fighters: Array<out LFighter>, state: State) {
 
-        // MAJ des stats du personnage
-        fighters[state.charTurn].newTurn()
-
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
 
@@ -30,6 +27,9 @@ interface IAHandler {
             else -> wait(fighters, state)
         }
 
+        // MAJ des stats du personnage
+        fighters[state.charTurn].endTurn(fighters)
+
     }
 
     fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
@@ -42,8 +42,20 @@ interface IAHandler {
 
             // On récupère la vraie cible
             var rtarget = target.protected ?: target
+
+            // On applique les dommages
             actor.attack(rtarget, weapon)
+
+            // Log des dommages
             damage(actor, target, hpLost(damageCalculation(actor, target, weapon)))
+
+            // On applique les buffs
+            weapon?.boosts?.let {
+                for (buff in it) {
+                    val buffTarget = if (buff.onSelf) actor else rtarget
+                    applyBoost(buff, actor, buffTarget)
+                }
+            }
 
             if (rtarget.stats.hp <= 0) {
                 rtarget.kill(fighters)
@@ -60,12 +72,14 @@ interface IAHandler {
     fun wait(fighters: Array<out LFighter>, state: State)
 
     fun def(fighters: Array<out LFighter>, state: State) {
-        fighters[state.charTurn].defend()
+        val actor = fighters[state.charTurn]
+        applyBoost(Boost(Stats.DEFENSE, Stats.GENERAL, 50, 1), actor, actor)
     }
 
     fun wrm(fighters: Array<out LFighter>, state: State, target: LFighter?) {
-        fighters[state.charTurn].boosts.add(Boost(Stats.ATTACK, Stats.GENERAL, 20, 1))
-        fighters[state.charTurn].boosts.add(Boost(Stats.DEFENSE, Stats.GENERAL, 20, 1))
+        val actor = fighters[state.charTurn]
+        applyBoost(Boost(Stats.ATTACK, Stats.GENERAL, 20, 1), actor, actor)
+        applyBoost(Boost(Stats.DEFENSE, Stats.GENERAL, 20, 1), actor, actor)
     }
 
     fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?)
@@ -78,4 +92,12 @@ interface IAHandler {
 
     fun notarget(actor: LFighter)
 
+}
+
+/**
+ * Applique un boost et programme la fin du boost.
+ */
+fun applyBoost(boost: Boost, actor: LFighter, target: LFighter) {
+    target.applyBoost(boost)
+    actor.boosts.add(Pair(boost.copy(value = -boost.value), target))
 }

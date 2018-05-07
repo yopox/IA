@@ -49,13 +49,14 @@ class Manager {
 
             } else {
                 //TODO: Fin du combat
-                print("Fight ended. Team #${state.winner} won!")
+                print("Fight ended. Team #${state.winner} won!\n")
             }
 
         }
 
         // Frame subactions
-        turnManager.update(state.frame, camera, console, fighters, gui)
+        if (state.winner < 0)
+            turnManager.update(state.frame, camera, console, fighters, gui)
 
         // Update components
         camera.update()

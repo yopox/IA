@@ -65,11 +65,12 @@ object HTMLBuilder {
     fun getHTML(team: Int): String {
         sep()
         code += "<p class=\"teamName\">TEAM #$team WON!</p>\n"
+        code += "<p class=\"teamName\">END OF REPORT - PLEASE DESTROY</p>\n"
         return "$code</body></html>"
     }
 
     fun newTurn(turn: Int) {
         sep()
-        code += "<p class=\"teamName\">TURN #$turn</p>\n"
+        code += "<p class=\"teamName\">TURN $turn</p>\n"
     }
 }

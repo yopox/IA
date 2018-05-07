@@ -31,7 +31,7 @@ class IA {
                         LogicG(id = "ID", c1 = Condition(id = "E1T")),
                         Action(id = "ATK",
                                 target = Target("ELHP", { it.stats.hp }),
-                                weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10))))
+                                weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10)), arrayOf(Boost(Stats.DEFENSE, Stats.GENERAL, -10, 2, false))))
                 ))
         "DEFENSIVE" -> rules = arrayOf(
                 Rule(

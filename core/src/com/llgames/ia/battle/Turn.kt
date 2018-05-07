@@ -24,6 +24,7 @@ class Turn : IAHandler {
         // Move the camera to the playing character        
         val text = if (fighters[state.charTurn].team == 0) "ally" else "foe"
         actions.add(TurnAction(0, "cam", strContent = text))
+        actions.add(TurnAction(0, "pose", strContent = "idle", fighterContent = arrayOf(fighters[state.charTurn].id)))
 
         super.play(fighters, state)
 
@@ -44,6 +45,7 @@ class Turn : IAHandler {
                         "face" -> fighters[it.fighterContent!![0]].forceFacing = fighters[it.fighterContent[1]]
                         "releaseFace" -> fighters[it.fighterContent!![0]].forceFacing = null
                         "blink" -> fighters[it.fighterContent!![0]].blink()
+                        "pose" -> fighters[it.fighterContent!![0]].setFrame(it.strContent)
                     }
                 }
 
@@ -53,6 +55,7 @@ class Turn : IAHandler {
         super.def(fighters, state)
 
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} is defending himself!"))
+        actions.add(TurnAction(15, "pose", strContent = "defend", fighterContent = arrayOf(fighters[state.charTurn].id)))
     }
 
     override fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
@@ -107,11 +110,15 @@ class Turn : IAHandler {
     override fun damage(actor: LFighter, target: LFighter, amount: String) {
         actions.add(TurnAction(75, "txt", strContent = "${target.name} lost $amount HP!"))
         actions.add(TurnAction(75, "blink", fighterContent = arrayOf(target.id)))
+        actions.add(TurnAction(75, "pose", strContent = "damage", fighterContent = arrayOf(target.id)))
         actions.add(TurnAction(75, "gui"))
+        actions.add(TurnAction(105, "pose", strContent = "idle", fighterContent = arrayOf(target.id)))
+
     }
 
     override fun dies(actor: LFighter) {
         actions.add(TurnAction(120, "txt", strContent = "${actor.name} dies!"))
+        actions.add(TurnAction(120, "pose", strContent = "death", fighterContent = arrayOf(actor.id)))
     }
 
 }

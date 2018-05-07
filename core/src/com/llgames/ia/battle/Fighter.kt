@@ -21,14 +21,14 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
     val sprite = Sprite(Texture("chars.png"), 0, 6, 16, 24)
     private var posX: Float = depX
     private var posY: Float = depY
+    private var srcX = 0
+    private var srcY = 6
+    private val width = 16
+    private val height = 24
     // Animations
     var forceFacing: Fighter? = null
     private var blink = 0
     private var upcomingPos = Array(2, { Vector<Float>() })
-
-    init {
-        sprite.setCenter(8f, 18f)
-    }
 
     /**
      * Modifie la position du sprite en fonction de posX et posY.
@@ -69,13 +69,29 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
     override fun changeJob(c: String) {
         super.changeJob(c)
 
-        when (c) {
-            "Dark Mage" -> sprite.setRegion(0, 336, 16, 24)
-            "White Mage" -> sprite.setRegion(0, 306, 16, 24)
-            "Paladin" -> sprite.setRegion(0, 126, 16, 24)
-            else -> sprite.setRegion(0, 6, 16, 24)
+        val newY = when (c) {
+            "Dark Mage" -> 336
+            "White Mage" -> 306
+            "Paladin" ->  126
+            else -> 6
         }
 
+        sprite.setRegion(srcX, newY, width, height)
+        srcY = newY
+
+    }
+
+    /**
+     * Change la pose du personnage.
+     */
+    fun setFrame(frame: String) {
+        val newX = when (frame) {
+            "defend" -> 60
+            "damage" -> 270
+            "death" -> 300
+            else -> 0
+        }
+        sprite.setRegion(newX, srcY, width, height)
     }
 
     /**

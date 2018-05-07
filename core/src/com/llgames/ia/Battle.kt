@@ -35,14 +35,19 @@ class Battle : KtxScreen {
                 floatArrayOf(0.2f, 0.45f))
         //TODO: Find better names
         val names = arrayListOf("A", "B", "C", "D", "E", "F")
-        val textures = arrayOf("char2.png", "char.png")
 
         // Fighters creation
-        fighters = Array(6, { i -> Fighter(Texture(textures[i / 3]), 16, 32, pos[i][0], pos[i][1], names[i], i / 3, i) })
+        fighters = Array(6, { i -> Fighter(pos[i][0], pos[i][1], names[i], i / 3, i) })
 
-        fighters.forEach { it.changeJob(if (it.team == 1) "Dark Mage" else "White Mage") }
-        fighters.forEach { it.setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE") }
-        fighters.forEach { it.prepare() }
+        fighters.forEach {
+            it.apply {
+                //TODO: real chars
+                val jobs = arrayListOf("Human", "Paladin", "Dark Mage", "White Mage")
+                changeJob(jobs.shuffled().first())
+                setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE")
+                prepare()
+            }
+        }
 
         manager = Manager().apply { init(fighters) }
     }

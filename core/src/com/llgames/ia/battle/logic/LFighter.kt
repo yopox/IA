@@ -25,12 +25,13 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     var alive = true
     var protected: LFighter? = null
 
-    fun changeJob(c: String) {
+    open fun changeJob(c: String) {
         job = c
         when (c) {
-            "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats, true)
-            "White Mage" -> maxStats.setTo(WHITE_MAGE.stats, true)
-            else -> maxStats.setTo(HUMAN.stats, true)
+            "Dark Mage" -> maxStats.setTo(DARK_MAGE.stats)
+            "White Mage" -> maxStats.setTo(WHITE_MAGE.stats)
+            "Paladin" -> maxStats.setTo(PALADIN.stats)
+            else -> maxStats.setTo(HUMAN.stats)
         }
     }
 
@@ -45,7 +46,7 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
      * Reset les stats du personnage.
      */
     fun prepare() {
-        stats.setTo(maxStats, true)
+        stats.setTo(maxStats)
     }
 
     /**

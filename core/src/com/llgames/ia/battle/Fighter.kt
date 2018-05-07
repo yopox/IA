@@ -3,7 +3,10 @@ package com.llgames.ia.battle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.llgames.ia.battle.logic.DARK_MAGE
+import com.llgames.ia.battle.logic.HUMAN
 import com.llgames.ia.battle.logic.LFighter
+import com.llgames.ia.battle.logic.WHITE_MAGE
 import java.util.*
 
 /**
@@ -13,15 +16,19 @@ import java.util.*
  * @param id identifiant unique du perso
  */
 
-class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private val depX: Float, private val depY: Float, name: String, team: Int, id: Int) : LFighter(name, team, id) {
+class Fighter(private val depX: Float, private val depY: Float, name: String, team: Int, id: Int) : LFighter(name, team, id) {
 
-    val sprite = Sprite(texture, srcWidth, srcHeight)
+    val sprite = Sprite(Texture("chars.png"), 0, 6, 16, 24)
     private var posX: Float = depX
     private var posY: Float = depY
     // Animations
     var forceFacing: Fighter? = null
     private var blink = 0
     private var upcomingPos = Array(2, { Vector<Float>() })
+
+    init {
+        sprite.setCenter(8f, 18f)
+    }
 
     /**
      * Modifie la position du sprite en fonction de posX et posY.
@@ -57,6 +64,18 @@ class Fighter(texture: Texture?, srcWidth: Int, srcHeight: Int, private val depX
         }
 
         sprite.draw(batch)
+    }
+
+    override fun changeJob(c: String) {
+        super.changeJob(c)
+
+        when (c) {
+            "Dark Mage" -> sprite.setRegion(0, 336, 16, 24)
+            "White Mage" -> sprite.setRegion(0, 306, 16, 24)
+            "Paladin" -> sprite.setRegion(0, 126, 16, 24)
+            else -> sprite.setRegion(0, 6, 16, 24)
+        }
+
     }
 
     /**

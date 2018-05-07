@@ -9,10 +9,10 @@ class Stats {
     var hp = 100
     var spd = 0
 
-    fun setTo(maxStats: Stats, setHp: Boolean = false) {
+    fun setTo(maxStats: Stats) {
         atk.withIndex().map { (i, j) -> atk[i] = maxStats.atk[i] }
         def.withIndex().map { (i, j) -> def[i] = maxStats.def[i] }
-        if (setHp) hp = maxStats.hp
+        hp = maxStats.hp
         spd = maxStats.spd
     }
 
@@ -80,6 +80,19 @@ object WHITE_MAGE {
             def[Stats.GENERAL] = 5
             def[Stats.FIRE] = 5
             def[Stats.ICE] = 5
+        }
+    }
+}
+
+object PALADIN {
+    var stats = Stats()
+
+    init {
+        stats.apply {
+            hp = 40
+            spd = 12
+            atk[Stats.GENERAL] = -5
+            def[Stats.GENERAL] = 5
         }
     }
 }

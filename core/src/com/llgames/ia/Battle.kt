@@ -18,7 +18,7 @@ import ktx.app.KtxScreen
  */
 class Battle : KtxScreen {
     private val batch = SpriteBatch()
-    private val bg = Texture("bg.png")
+    private val bg = Texture("Vault_Inn.gif")
     private val fighters: Array<Fighter>
     private val manager: Manager
     private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
@@ -48,6 +48,7 @@ class Battle : KtxScreen {
                 prepare()
             }
         }
+        fighters.sortByDescending { it.stats.spd }
 
         manager = Manager().apply { init(fighters) }
     }
@@ -69,12 +70,12 @@ class Battle : KtxScreen {
         manager.draw(batch, font)
 
         // Draw Background
-        batch.draw(bg, 0f, 39f, (80 * manager.camera.angle).toInt(), 0, 320, 102)
+        batch.draw(bg, 0f, 39f, (80 * manager.camera.angle).toInt() - 20, 16, 320, 102)
 
         // Draw fighters
-        fighters.sortByDescending { it.sprite.y }
-        fighters.map { it.drawChar(batch, manager.camera) }
-        fighters.sortBy { it.id }
+        val fcopy = fighters.toMutableList()
+        fcopy.sortByDescending { it.sprite.y }
+        fcopy.map { it.drawChar(batch, manager.camera) }
 
         // Draw IA and turn number
         manager.debug(batch, font, fighters)

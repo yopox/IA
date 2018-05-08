@@ -43,7 +43,7 @@ object HUMAN {
     init {
         stats.apply {
             hp = 20
-            spd = 50
+            spd = 15
             atk[Stats.GENERAL] = 5
             atk[Stats.MAGICAL] = -5
             atk[Stats.NEUTRAL] = 5
@@ -58,7 +58,7 @@ object DARK_MAGE {
     init {
         stats.apply {
             hp = 18
-            spd = 35
+            spd = 12
             atk[Stats.GENERAL] = 10
             atk[Stats.MAGICAL] = 5
             atk[Stats.FIRE] = 5
@@ -74,7 +74,7 @@ object WHITE_MAGE {
     init {
         stats.apply {
             hp = 22
-            spd = 15
+            spd = 7
             atk[Stats.GENERAL] = -10
             atk[Stats.MAGICAL] = 5
             def[Stats.GENERAL] = 5
@@ -90,7 +90,7 @@ object PALADIN {
     init {
         stats.apply {
             hp = 40
-            spd = 12
+            spd = 20
             atk[Stats.GENERAL] = -5
             def[Stats.GENERAL] = 5
         }

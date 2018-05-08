@@ -38,12 +38,16 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
         val alpha = camera.angle
         val oX = camera.center[0]
         val oY = camera.center[1]
+        val xCoeff = 165
+        val yCoeff = 10
+        val xOff = 8
+        val yOff = 40
 
         val beta = Math.atan2(Math.sin(alpha), Math.cos(alpha)) - Math.atan2(posY.toDouble(), posX.toDouble())
         val dist = Math.sqrt(Math.pow(posY.toDouble(), 2.0) + Math.pow(posX.toDouble(), 2.0))
 
-        sprite.x = (oX + dist * Math.sin(beta) * 165 - 8).toFloat()
-        sprite.y = (oY + dist * Math.cos(beta) * 18 - 12 - 22).toFloat()
+        sprite.x = (oX + dist * Math.sin(beta) * xCoeff - xOff).toFloat()
+        sprite.y = (oY + dist * Math.cos(beta) * yCoeff - yOff).toFloat()
         sprite.setScale(1f - Math.cos(beta).toFloat() / 7)
 
     }

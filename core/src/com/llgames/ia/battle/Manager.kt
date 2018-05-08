@@ -42,7 +42,10 @@ class Manager {
                 // Prochain combattant en vie
                 do {
                     state.charTurn++
-                    if (state.charTurn == fighters.size) state.newTurn()
+                    if (state.charTurn == fighters.size) {
+                        state.newTurn()
+                        fighters.sortByDescending { it.stats.spd }
+                    }
                 } while (!fighters[state.charTurn].alive)
 
                 turnManager.play(fighters, state)

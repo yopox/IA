@@ -20,10 +20,10 @@ class Console {
 
     fun draw(batch: Batch, font: BitmapFont) {
 
-        val posX = 28f;
+        val posX = -160f + 28f
 
-        font.draw(batch, lines[0], posX, 32f)
-        font.draw(batch, lines[1], posX, 16f)
+        font.draw(batch, lines[0], posX, -90f + 32f)
+        font.draw(batch, lines[1], posX, -90f + 16f)
     }
     
     infix fun write(text: String) {

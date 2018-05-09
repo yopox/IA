@@ -45,10 +45,10 @@ class GUI {
     }
 
     companion object {
-        private const val X_START1 = 28f
-        private const val X_START2 = 58f
+        private const val X_START1 = -160f + 28f
+        private const val X_START2 = -160f + 58f
         private const val X_OFFSET = 160f
-        private const val Y_START = 175f
+        private const val Y_START = -90f + 175f
         private const val Y_OFFSET = 11f
     }
 

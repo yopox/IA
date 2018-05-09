@@ -5,7 +5,6 @@ import com.llgames.ia.battle.hpLost
 
 /**
  * [IAHandler] s'occupe de la partie logique des actions.
- * TODO: Trouver une meilleure façon de
  */
 interface IAHandler {
 
@@ -41,7 +40,7 @@ interface IAHandler {
             val actor = fighters[state.charTurn]
 
             // On récupère la vraie cible
-            var rtarget = target.protected ?: target
+            val rtarget = target.protected ?: target
 
             // On applique les dommages
             actor.attack(rtarget, weapon)

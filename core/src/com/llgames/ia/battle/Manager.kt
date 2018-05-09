@@ -2,7 +2,7 @@ package com.llgames.ia.battle
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 
 data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, var winner: Int = -1) {
     fun newTurn() {
@@ -13,6 +13,7 @@ data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, 
 
 /**
  * Gère l'état et l'avancement du combat.
+ * Vue : ExtendViewport
  */
 
 class Manager {
@@ -21,7 +22,7 @@ class Manager {
     private var state: State = State()
     private var turnManager = Turn()
     var camera = Camera()
-    private val viewport = FitViewport(320f, 180f, camera)
+    private val viewport = ExtendViewport(320f, 180f,384f, 180f, camera)
 
     fun init(fighters: Array<Fighter>) {
         viewport.apply()

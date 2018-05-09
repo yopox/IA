@@ -66,11 +66,11 @@ class Battle : KtxScreen {
         batch.projectionMatrix = manager.camera.combined
         batch.begin()
 
+        // Draw Background
+        batch.draw(bg, -192f, -90f + 39f, (80 * manager.camera.angle).toInt() - 20, 16, 384, 102)
+
         // Draw GUI
         manager.draw(batch, font)
-
-        // Draw Background
-        batch.draw(bg, 0f, 39f, (80 * manager.camera.angle).toInt() - 20, 16, 320, 102)
 
         // Draw fighters
         val fcopy = fighters.toMutableList()

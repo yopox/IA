@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 
 /**
- * GUI
+ * Affiche des informations sur les personnages dans la partie supérieure de l'écran.
  */
 
 data class GUIPart(val name: String, val team: Int, var hp: Int)
@@ -12,12 +12,11 @@ data class GUIPart(val name: String, val team: Int, var hp: Int)
 class GUI {
 
     private var parts = ArrayList<GUIPart>()
-    private var names = Array(2, { _ -> Array(3, { _ -> "" }) })
-    private var hp = Array(2, { _ -> Array(3, { _ -> 0 }) })
 
     fun init(fighters: Array<Fighter>) {
-        fighters.filter { it.team == 0 }.forEach { parts.add(GUIPart(it.name, 0, it.maxStats.hp)) }
-        fighters.filter { it.team == 1 }.forEach { parts.add(GUIPart(it.name, 1, it.maxStats.hp)) }
+        val rfighters = fighters.sortedBy { it.id }
+        rfighters.filter { it.team == 0 }.forEach { parts.add(GUIPart(it.name, 0, it.maxStats.hp)) }
+        rfighters.filter { it.team == 1 }.forEach { parts.add(GUIPart(it.name, 1, it.maxStats.hp)) }
     }
 
     fun update(fighters: Array<Fighter>) {

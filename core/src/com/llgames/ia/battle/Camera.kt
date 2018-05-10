@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 /**
  * Created by yopox on 23/08/2017.
  */
-class Camera() : OrthographicCamera() {
+class Camera : OrthographicCamera() {
     var angle = 0.0
     var center = arrayOf(viewportWidth / 2, viewportHeight / 2)
-    var nextPos = Array(0, { _ -> 0.0 })
+    var nextPos: ArrayList<Double> = ArrayList()
 
     fun init() {
         center = arrayOf(viewportWidth / 2, viewportHeight / 2)
@@ -18,9 +18,7 @@ class Camera() : OrthographicCamera() {
     override fun update() {
         super.update()
         if (nextPos.isNotEmpty()) {
-            angle = nextPos[0]
-            val copy = nextPos;
-            nextPos = Array(copy.size - 1, { i -> copy[i + 1] })
+            angle = nextPos.removeAt(0)
         }
     }
 
@@ -33,12 +31,16 @@ class Camera() : OrthographicCamera() {
     }
 
     private fun moveCam(shift: Double, duration: Int, method: String = "linear") {
-        nextPos = when (method) {
+        val calculatedPos = when (method) {
             "sin" -> Array(duration, { i -> angle + shift * Math.sin(Math.PI * (i + 1) / (2 * (duration - 1))) })
             "exp" -> Array(duration, { i -> angle + shift * (1 - Math.exp(-5.0 * (i + 1) / (duration - 1))) })
             else -> Array(duration, { i -> angle + shift * (i + 1) / duration })
         }
-        nextPos[nextPos.size - 1] = angle + shift
+        nextPos.let {
+            it.clear()
+            it.addAll(calculatedPos)
+            it[it.size - 1] = angle + shift
+        }
     }
 
     companion object {

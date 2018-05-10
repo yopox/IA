@@ -13,7 +13,7 @@ data class State(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, 
 
 /**
  * Gère l'état et l'avancement du combat.
- * Vue : ExtendViewport
+ * Vue : ExtendViewport (origine centre de l'écran, repère "usuel")
  */
 
 class Manager {

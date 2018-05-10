@@ -121,3 +121,5 @@ gradle-app.setting
 Thumbs.db
 report/index.html
 report/index.html
+key
+*.apk

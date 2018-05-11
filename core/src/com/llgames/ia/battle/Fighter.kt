@@ -24,6 +24,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
     private val height = 24
     // Animations
     var forceFacing: Fighter? = null
+    var pose = "idle"
     private var blink = 0
     private var upcomingPos = Array(2, { Vector<Float>() })
 
@@ -77,7 +78,8 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
      * Change la pose du personnage.
      */
     fun setFrame(frame: String) {
-        val newX = when (frame) {
+        pose = frame
+        val newX = when (pose) {
             "defend" -> 60
             "damage" -> 270
             "death" -> 300

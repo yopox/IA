@@ -30,7 +30,7 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
         this.maxStats = job.stats
     }
 
-    fun setIA(type: String) = ia.setRules(type)
+    fun setIA() = ia.setRules()
 
     /**
      * Renvoie la règle d'IA utilisée ce tour-ci.
@@ -45,11 +45,16 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     }
 
     /**
+     * Logique de début de tour.
+     */
+    fun startTurn(fighters: Array<out LFighter>) {
+        stopProtecting(fighters)
+    }
+
+    /**
      * Logique de fin du tour (boosts expirés).
      */
     fun endTurn(fighters: Array<out LFighter>) {
-
-        stopProtecting(fighters)
 
         for ((boost, target) in boosts) {
             boost.duration--
@@ -92,7 +97,8 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
      * Assure que le combattant ne protège plus de combattant•e•s
      */
     private fun stopProtecting(fighters: Array<out LFighter>) {
-        fighters.forEach { if (it.protected?.id == id) it.protected = null }
+        val idStop = id
+        fighters.forEach { if (it.protected?.id == idStop) it.protected = null }
     }
 
     /**

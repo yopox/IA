@@ -21,29 +21,9 @@ class IA {
 
     private var rules: Array<Rule> = arrayOf()
 
-    fun setRules(type: String) = when (type) {
-        "OFFENSIVE" -> rules = arrayOf(
-                Rule(
-                        LogicG(id = "ID", c1 = Condition(id = "EXT", value = 2)),
-                        Action(id = "WRM")
-                ),
-                Rule(
-                        LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                        Action(id = "ATK",
-                                target = Target("ELHP", { it.stats.hp }),
-                                weapon = Weapon(arrayOf(Jet(Stats.BLADE, Stats.NEUTRAL, 10)), arrayOf(Boost(Stats.DEFENSE, Stats.GENERAL, -10, 2, false))))
-                ))
-        "DEFENSIVE" -> rules = arrayOf(
-                Rule(
-                        LogicG(id = "ID", c1 = Condition(id = "EXT", value = 2)),
-                        Action(id = "PRO",
-                                target = Target("ALHP", { it.stats.hp }))
-                ),
-                Rule(
-                        LogicG(id = "ID", c1 = Condition(id = "E1T")),
-                        Action(id = "DEF")
-                ))
-        else -> rules = arrayOf()
+    fun setRules() {
+        val possible = arrayListOf(IA_TEST.leecher, IA_TEST.noBrain, IA_TEST.prudent, IA_TEST.tank)
+        rules = possible.shuffled().first()
     }
 
     /**
@@ -101,17 +81,17 @@ class IA {
 
     fun toString(cond: Condition): String {
         var str = ""
-        str += "[" + cond.id
-        cond.target?.let { str += it.main }
-        if (cond.value != -1) str += " " + cond.value
+        str += "[${cond.id}"
+        cond.target?.let { str += " ${it.main}" }
+        if (cond.value != -1) str += " ${cond.value}"
         str += "]"
         return str
     }
 
     fun toString(act: Action): String {
         var str = ""
-        str += "[" + act.id
-        act.target?.let { str += " " + it.main }
+        str += "[${act.id}"
+        act.target?.let { str += " ${it.main}" }
         str += "]"
         return str
     }
@@ -122,9 +102,9 @@ class IA {
             // GATE
             str += rule.gate.id
             // COND
-            str += " " + toString(rule.gate.c1)
-            rule.gate.c2?.let { str += " " + toString(it) }
-            str += " " + toString(rule.act)
+            str += " ${toString(rule.gate.c1)}"
+            rule.gate.c2?.let { str += " ${toString(it)}" }
+            str += " ${toString(rule.act)}"
             str += "\n"
         }
         return str

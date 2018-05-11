@@ -43,10 +43,11 @@ class Battle : KtxScreen {
 
         fighters.forEach {
             it.apply {
-                //TODO: real chars
-                val jobs = arrayListOf(JOBS.DARKMAGE, JOBS.HUMAN, JOBS.MONK, JOBS.WHITEMAGE, JOBS.PALADIN)
+                val jobs = arrayListOf(
+                        JOBS.DARKMAGE, JOBS.HUMAN, JOBS.MONK, JOBS.WHITEMAGE,
+                        JOBS.PALADIN, JOBS.THIEF, JOBS.SAMURAI, JOBS.BERSERKER)
                 changeJob(jobs.shuffled().first())
-                setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE")
+                setIA()
                 prepare()
             }
         }

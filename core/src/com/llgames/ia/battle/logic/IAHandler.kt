@@ -13,6 +13,9 @@ interface IAHandler {
      */
     fun play(fighters: Array<out LFighter>, state: State) {
 
+        // Le perso qui joue ne protège plus personne
+        fighters[state.charTurn].startTurn(fighters)
+
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
 
@@ -46,7 +49,7 @@ interface IAHandler {
             actor.attack(rtarget, weapon)
 
             // Log des dommages
-            damage(actor, target, hpLost(damageCalculation(actor, target, weapon)))
+            damage(actor, rtarget, hpLost(damageCalculation(actor, rtarget, weapon)))
 
             // On applique les buffs
             weapon?.boosts?.let {

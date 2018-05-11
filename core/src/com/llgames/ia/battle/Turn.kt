@@ -108,7 +108,7 @@ class Turn : IAHandler {
         actions.add(TurnAction(75, "blink", target = target.id))
         actions.add(TurnAction(75, "pose", strContent = "damage", actor = target.id))
         actions.add(TurnAction(75, "gui"))
-        actions.add(TurnAction(105, "pose", strContent = "idle", actor = target.id))
+        actions.add(TurnAction(105, "pose", (target as Fighter).pose, actor = target.id))
 
     }
 

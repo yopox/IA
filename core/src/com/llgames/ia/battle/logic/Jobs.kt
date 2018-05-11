@@ -53,4 +53,28 @@ object JOBS {
             atkModif = arrayOf(Stats.GENERAL to 5),
             defModif = arrayOf(Stats.GENERAL to -15),
             yPos = 66)
+
+    val THIEF = Job(
+            "THIEF",
+            20,
+            33,
+            atkModif = arrayOf(Stats.GENERAL to 5),
+            defModif = arrayOf(Stats.GENERAL to -5),
+            yPos = 96)
+
+    val SAMURAI = Job(
+            "SAMURAI",
+            25,
+            30,
+            atkModif = arrayOf(Stats.GENERAL to 15),
+            defModif = arrayOf(Stats.GENERAL to 5),
+            yPos = 186)
+
+    val BERSERKER = Job(
+            "BERSERKER",
+            35,
+            5,
+            atkModif = arrayOf(Stats.GENERAL to 20),
+            defModif = arrayOf(),
+            yPos = 216)
 }

@@ -22,7 +22,7 @@ class Manager {
     private var state: State = State()
     private var turnManager = Turn()
     var camera = Camera()
-    private val viewport = ExtendViewport(320f, 180f,384f, 180f, camera)
+    private val viewport = ExtendViewport(320f, 180f, 384f, 180f, camera)
 
     fun init(fighters: Array<Fighter>) {
         viewport.apply()
@@ -40,13 +40,18 @@ class Manager {
 
             if (!checkWin(fighters)) {
 
-                // Prochain combattant en vie
                 do {
+
                     state.charTurn++
+
                     if (state.charTurn == fighters.size) {
                         state.newTurn()
                         fighters.sortByDescending { it.stats.spd }
                     }
+
+                    if (!fighters[state.charTurn].alive)
+                        fighters[state.charTurn].endTurn(fighters)
+                    
                 } while (!fighters[state.charTurn].alive)
 
                 turnManager.play(fighters, state)

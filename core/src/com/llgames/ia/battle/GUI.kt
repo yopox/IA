@@ -38,8 +38,8 @@ class GUI {
 
     fun debug(batch: Batch, font: BitmapFont, chars: Array<Fighter>, state: State) {
 
-        font.draw(batch, "-- TURN " + (if (state.turn < 10) "0" + state.turn else state.turn) + " --", 6f, 137f)
-        font.draw(batch, chars[state.charTurn].getIAString(), 6f, 122f)
+        font.draw(batch, "-- TURN " + (if (state.turn < 10) "0" + state.turn else state.turn) + " --", -160f + 6f, -90f + 137f)
+        font.draw(batch, chars[state.charTurn].getIAString(), -160f + 6f, -90f + 122f)
 
     }
 

@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.profiling.GLProfiler
 import com.llgames.ia.battle.Manager
 import com.llgames.ia.battle.Fighter
+import com.llgames.ia.battle.logic.JOBS
 import com.llgames.ia.gif.GifRecorder
 import ktx.app.KtxScreen
 
@@ -42,7 +44,7 @@ class Battle : KtxScreen {
         fighters.forEach {
             it.apply {
                 //TODO: real chars
-                val jobs = arrayListOf("Human", "Paladin", "Dark Mage", "White Mage")
+                val jobs = arrayListOf(JOBS.DARKMAGE, JOBS.HUMAN, JOBS.MONK, JOBS.WHITEMAGE, JOBS.PALADIN)
                 changeJob(jobs.shuffled().first())
                 setIA(if (Math.random() > 0.5) "OFFENSIVE" else "DEFENSIVE")
                 prepare()
@@ -51,6 +53,7 @@ class Battle : KtxScreen {
         fighters.sortByDescending { it.stats.spd }
 
         manager = Manager().apply { init(fighters) }
+
     }
 
     override fun render(delta: Float) {

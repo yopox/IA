@@ -64,7 +64,7 @@ class Manager {
 
         // Update components
         camera.update()
-        fighters.map { it.updatePos(camera) }
+        fighters.forEach { it.updatePos(camera) }
         if (state.frame % 2 == 0) {
             console.update()
         }

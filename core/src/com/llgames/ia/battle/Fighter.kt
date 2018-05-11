@@ -3,10 +3,7 @@ package com.llgames.ia.battle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.llgames.ia.battle.logic.DARK_MAGE
-import com.llgames.ia.battle.logic.HUMAN
-import com.llgames.ia.battle.logic.LFighter
-import com.llgames.ia.battle.logic.WHITE_MAGE
+import com.llgames.ia.battle.logic.*
 import java.util.*
 
 /**
@@ -70,19 +67,10 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
         sprite.draw(batch)
     }
 
-    override fun changeJob(c: String) {
-        super.changeJob(c)
-
-        val newY = when (c) {
-            "Dark Mage" -> 336
-            "White Mage" -> 306
-            "Paladin" ->  126
-            else -> 6
-        }
-
-        sprite.setRegion(srcX, newY, width, height)
-        srcY = newY
-
+    override fun changeJob(job: Job) {
+        super.changeJob(job)
+        srcY = job.yPos
+        sprite.setRegion(srcX, srcY, width, height)
     }
 
     /**

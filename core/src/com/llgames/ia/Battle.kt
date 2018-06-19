@@ -36,7 +36,7 @@ class Battle : KtxScreen {
                 floatArrayOf(0f, 0.45f),
                 floatArrayOf(0.2f, 0.45f))
         //TODO: Find better names
-        val names = arrayListOf("A", "B", "C", "D", "E", "F")
+        val names = arrayListOf("yopox", "B", "C", "D", "E", "F")
 
         // Fighters creation
         fighters = Array(6, { i -> Fighter(pos[i][0], pos[i][1], names[i], i / 3, i) })
@@ -45,7 +45,8 @@ class Battle : KtxScreen {
             it.apply {
                 val jobs = arrayListOf(
                         JOBS.DARKMAGE, JOBS.HUMAN, JOBS.MONK, JOBS.WHITEMAGE,
-                        JOBS.PALADIN, JOBS.THIEF, JOBS.SAMURAI, JOBS.BERSERKER)
+                        JOBS.PALADIN, JOBS.THIEF, JOBS.SAMURAI, JOBS.BERSERKER,
+                        JOBS.TIMEMAGE)
                 changeJob(jobs.shuffled().first())
                 setIA()
                 prepare()

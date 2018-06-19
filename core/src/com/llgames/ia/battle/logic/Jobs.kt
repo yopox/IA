@@ -77,4 +77,12 @@ object JOBS {
             atkModif = arrayOf(Stats.GENERAL to 20),
             defModif = arrayOf(),
             yPos = 216)
+
+    val TIMEMAGE = Job(
+            "TIME MAGE",
+            30,
+            20,
+            atkModif = arrayOf(Stats.GENERAL to 1),
+            defModif = arrayOf(Stats.GENERAL to 1),
+            yPos = 366)
 }

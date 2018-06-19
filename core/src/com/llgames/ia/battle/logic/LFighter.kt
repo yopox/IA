@@ -12,6 +12,7 @@ data class Boost(var stat: String, var type: Int, var value: Int, var duration: 
 
 data class Weapon(var jets: Array<Jet>, var boosts: Array<Boost>? = null)
 
+
 /**
  * Partie logique des combattants.
  */

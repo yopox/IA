@@ -95,8 +95,17 @@ class Turn : IAHandler {
         TODO("not implemented")
     }
 
-    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
-        TODO("not implemented")
+    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, spell: Spell?) {
+        super.spl(fighters, state, target, spell)
+        val actor = fighters[state.charTurn]
+
+        target?.let {
+
+                actions.add(TurnAction(15, "pose", strContent = "cast", actor = actor.id))
+                actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell?.name} on ${if (target == actor) "itself" else target.name}!"))
+            actions.add(TurnAction(65, "pose", strContent = "idle", actor = actor.id))
+
+        }
     }
 
     override fun notarget(actor: LFighter) {

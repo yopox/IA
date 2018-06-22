@@ -17,7 +17,7 @@ class IA {
 
     data class Condition(var id: String = "E1T", var target: Target? = null, var value: Int = -1)
 
-    data class Action(var id: String = "WAIT", var target: Target? = null, var weapon: Weapon? = null)
+    data class Action(var id: String = "WAIT", var target: Target? = null, var weapon: Weapon? = null, var spell: Spell? = null)
 
     private var rules: Array<Rule> = arrayOf()
 

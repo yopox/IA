@@ -1,5 +1,6 @@
 package report
 
+import com.llgames.ia.battle.logic.JOBS
 import com.llgames.ia.battle.logic.LFighter
 
 object TeamBuilder {
@@ -14,19 +15,19 @@ object TeamBuilder {
     val fighters: Array<LFighter>
 
     init {
-        f1.changeJob("Dark Mage")
-        f1.setIA("OFFENSIVE")
-        f2.changeJob("White Mage")
-        f2.setIA("DEFENSIVE")
-        f3.changeJob("Human")
-        f3.setIA("OFFENSIVE")
+        f1.changeJob(JOBS.DARKMAGE)
+        f1.setIA()
+        f2.changeJob(JOBS.DARKMAGE)
+        f2.setIA()
+        f3.changeJob(JOBS.DARKMAGE)
+        f3.setIA()
 
-        f4.changeJob("White Mage")
-        f4.setIA("DEFENSIVE")
-        f5.changeJob("Dark Mage")
-        f5.setIA("OFFENSIVE")
-        f6.changeJob("Human")
-        f6.setIA("OFFENSIVE")
+        f4.changeJob(JOBS.DARKMAGE)
+        f4.setIA()
+        f5.changeJob(JOBS.DARKMAGE)
+        f5.setIA()
+        f6.changeJob(JOBS.DARKMAGE)
+        f6.setIA()
 
         fighters = arrayOf(f1, f2, f3, f4, f5, f6)
         fighters.forEach { it.prepare() }

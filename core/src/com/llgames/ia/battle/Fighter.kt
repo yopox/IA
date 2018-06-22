@@ -39,7 +39,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
         val xCoeff = 165
         val yCoeff = 10
         val xOff = 8
-        val yOff = 40
+        val yOff = 42
 
         val beta = Math.atan2(Math.sin(alpha), Math.cos(alpha)) - Math.atan2(posY.toDouble(), posX.toDouble())
         val dist = Math.sqrt(Math.pow(posY.toDouble(), 2.0) + Math.pow(posX.toDouble(), 2.0))
@@ -83,6 +83,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
             "defend" -> 60
             "damage" -> 270
             "death" -> 300
+            "cast" -> 180
             else -> 0
         }
         sprite.setRegion(newX, srcY, width, height)

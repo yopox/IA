@@ -20,7 +20,7 @@ import ktx.app.KtxScreen
  */
 class Battle : KtxScreen {
     private val batch = SpriteBatch()
-    private val bg = Texture("Vault_Inn.gif")
+    private val bg = Texture("Cliffs.gif")
     private val fighters: Array<Fighter>
     private val manager: Manager
     private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)

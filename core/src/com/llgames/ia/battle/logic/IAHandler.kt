@@ -22,7 +22,7 @@ interface IAHandler {
         when (rule.act.id) {
             "DEF" -> def(fighters, state)
             "WPN" -> wpn(fighters, state, getTarget(rule.act.target, fighters, state))
-            "SPL" -> spl(fighters, state, getTarget(rule.act.target, fighters, state))
+            "SPL" -> spl(fighters, state, getTarget(rule.act.target, fighters, state), rule.act.spell)
             "PRO" -> pro(fighters, state, getTarget(rule.act.target, fighters, state))
             "WRM" -> wrm(fighters, state, getTarget(rule.act.target, fighters, state))
             "ATK" -> atk(fighters, state, getTarget(rule.act.target, fighters, state), rule.act.weapon)
@@ -30,7 +30,7 @@ interface IAHandler {
         }
 
         // MAJ des stats du personnage
-        fighters[state.charTurn].endTurn(fighters)
+        fighters[state.charTurn].endTurn()
 
     }
 
@@ -46,10 +46,10 @@ interface IAHandler {
             val rtarget = target.protected ?: target
 
             // On applique les dommages
-            actor.attack(rtarget, weapon)
+            actor.attack(rtarget, weapon?.jets)
 
             // Log des dommages
-            damage(actor, rtarget, hpLost(damageCalculation(actor, rtarget, weapon)))
+            damage(actor, rtarget, hpLost(damageCalculation(actor, rtarget, weapon?.jets)))
 
             // On applique les buffs
             weapon?.boosts?.let {
@@ -86,7 +86,36 @@ interface IAHandler {
 
     fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?)
 
-    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?)
+    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, spell: Spell?) {
+
+        if (target == null) {
+            notarget(fighters[state.charTurn])
+        } else {
+
+            val actor = fighters[state.charTurn]
+
+            // On applique les dommages
+            actor.attack(target, spell?.jets)
+
+            // Log des dommages
+            damage(actor, target, hpLost(damageCalculation(actor, target, spell?.jets)))
+
+            // On applique les buffs
+            spell?.boosts?.let {
+                for (buff in it) {
+                    val buffTarget = if (buff.onSelf) actor else target
+                    applyBoost(buff, actor, buffTarget)
+                }
+            }
+
+            if (target.stats.hp <= 0) {
+                target.kill(fighters)
+                dies(target)
+            }
+
+        }
+
+    }
 
     fun damage(actor: LFighter, target: LFighter, amount: String)
 

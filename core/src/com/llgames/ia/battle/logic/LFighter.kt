@@ -10,7 +10,9 @@ data class Jet(var type: Int, var elem: Int, var damage: Int)
 
 data class Boost(var stat: String, var type: Int, var value: Int, var duration: Int, var onSelf: Boolean = true)
 
-data class Weapon(var jets: Array<Jet>, var boosts: Array<Boost>? = null)
+data class Weapon(var jets: Array<Jet>, var boosts: Array<Boost>? = null, var name: String)
+
+data class Spell(var jets: Array<Jet>, var boosts: Array<Boost>? = null, var name: String)
 
 
 /**
@@ -55,7 +57,7 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
     /**
      * Logique de fin du tour (boosts expirés).
      */
-    fun endTurn(fighters: Array<out LFighter>) {
+    fun endTurn() {
 
         for ((boost, target) in boosts) {
             boost.duration--
@@ -67,9 +69,9 @@ open class LFighter(val name: String, val team: Int, val id: Int) {
 
     }
 
-    fun attack(target: LFighter, weapon: Weapon?) {
+    fun attack(target: LFighter, jets: Array<Jet>?) {
 
-        for ((_, _, damage) in damageCalculation(this, target, weapon)) {
+        for ((_, _, damage) in damageCalculation(this, target, jets)) {
             target.stats.hp -= damage
         }
 
@@ -119,22 +121,24 @@ fun atkStat(atk: Int) = max(-100, atk) / 100.0
 
 fun defStat(def: Int) = min(100, def) / 100.0
 
-fun damageCalculation(fighter: LFighter, target: LFighter, weapon: Weapon?): ArrayList<Jet> {
+fun damageCalculation(fighter: LFighter, target: LFighter, jets: Array<Jet>?): ArrayList<Jet> {
 
     val coeffAtk = 1 + atkStat(fighter.stats.atk[GENERAL])
     val coeffDef = 1 - defStat(target.stats.def[GENERAL])
     val damageDealt = ArrayList<Jet>()
 
-    for ((t, e, d) in weapon!!.jets) {
-        // Offensive formula
-        val Ai = coeffAtk * max(0, d + fighter.stats.atkB[t] + fighter.stats.atkB[e]) *
-                (1 + atkStat(fighter.stats.atk[t])) *
-                (1 + atkStat(fighter.stats.atk[e]))
-        // Defensive formula
-        val Di = coeffDef * max(0.0, Ai - target.stats.defB[t] - target.stats.defB[e]) *
-                (1 - defStat(target.stats.def[t])) *
-                (1 - defStat(target.stats.def[e]))
-        damageDealt.add(Jet(t, e, floor(Di).toInt()))
+    if (jets != null) {
+        for ((t, e, d) in jets) {
+            // Offensive formula
+            val Ai = coeffAtk * max(0, d + fighter.stats.atkB[t] + fighter.stats.atkB[e]) *
+                    (1 + atkStat(fighter.stats.atk[t])) *
+                    (1 + atkStat(fighter.stats.atk[e]))
+            // Defensive formula
+            val Di = coeffDef * max(0.0, Ai - target.stats.defB[t] - target.stats.defB[e]) *
+                    (1 - defStat(target.stats.def[t])) *
+                    (1 - defStat(target.stats.def[e]))
+            damageDealt.add(Jet(t, e, floor(Di).toInt()))
+        }
     }
 
     return damageDealt

@@ -1,6 +1,6 @@
 android {
     buildToolsVersion "27.0.1"
-    compileSdkVersion 27
+    compileSdkVersion 28
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.llgames.ia"
         minSdkVersion 24
-        targetSdkVersion 27
+        targetSdkVersion 28
     }
 }
 

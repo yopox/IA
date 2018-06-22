@@ -50,7 +50,7 @@ class Manager {
                     }
 
                     if (!fighters[state.charTurn].alive)
-                        fighters[state.charTurn].endTurn(fighters)
+                        fighters[state.charTurn].endTurn()
                     
                 } while (!fighters[state.charTurn].alive)
 

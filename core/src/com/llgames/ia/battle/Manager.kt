@@ -22,7 +22,7 @@ class Manager {
     private var state: State = State()
     private var turnManager = Turn()
     var camera = Camera()
-    private val viewport = ExtendViewport(320f, 180f, 384f, 180f, camera)
+    private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
 
     fun init(fighters: Array<Fighter>) {
         viewport.apply()

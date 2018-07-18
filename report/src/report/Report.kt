@@ -2,7 +2,7 @@ package report
 
 import com.llgames.ia.battle.Fighter
 import com.llgames.ia.battle.State
-import com.llgames.ia.battle.logic.LFighter
+import com.llgames.ia.logic.LFighter
 import java.io.File
 
 /**

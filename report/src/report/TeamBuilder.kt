@@ -1,7 +1,7 @@
 package report
 
-import com.llgames.ia.battle.logic.JOBS
-import com.llgames.ia.battle.logic.LFighter
+import com.llgames.ia.logic.JOBS
+import com.llgames.ia.logic.LFighter
 
 object TeamBuilder {
     val f1 = LFighter("Ixous", 0, 0)

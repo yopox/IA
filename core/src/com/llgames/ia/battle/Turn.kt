@@ -1,6 +1,11 @@
 package com.llgames.ia.battle
 
 import com.llgames.ia.battle.logic.*
+import com.llgames.ia.logic.IAHandler
+import com.llgames.ia.logic.Jet
+import com.llgames.ia.logic.LFighter
+import com.llgames.ia.logic.Spell
+import com.llgames.ia.logic.Weapon
 
 /**
  * [Turn] implements [IAHandler].

@@ -1,4 +1,6 @@
-package com.llgames.ia.battle.logic
+package com.llgames.ia.def
+
+import com.llgames.ia.logic.*
 
 object ACTIONS {
     val atk = IA.Action("ATK",

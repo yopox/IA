@@ -1,6 +1,6 @@
 buildscript {
 
-    ext.kotlin_version = "1.2.41"
+    ext.kotlin_version = "1.2.30"
 
     repositories {
         mavenLocal()
@@ -14,6 +14,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.9"
     }
 }
 
@@ -93,12 +94,18 @@ project(":ios") {
 
 project(":core") {
     apply plugin: "kotlin"
+    apply plugin: 'org.jetbrains.dokka'
 
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile group: 'io.github.libktx', name: 'ktx-app', version: '1.9.8-b1'
+    }
+
+    dokka {
+        outputFormat = 'html'
+        outputDirectory = "$buildDir/doc"
     }
 }
 

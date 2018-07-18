@@ -1,6 +1,6 @@
 package report
 
-import com.llgames.ia.battle.logic.LFighter
+import com.llgames.ia.logic.LFighter
 
 object HTMLBuilder {
     private var code = "<!DOCTYPE html>\n" +

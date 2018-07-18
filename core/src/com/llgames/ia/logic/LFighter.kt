@@ -1,7 +1,7 @@
-package com.llgames.ia.battle.logic
+package com.llgames.ia.logic
 
 import com.llgames.ia.battle.State
-import com.llgames.ia.battle.logic.Stats.Companion.GENERAL
+import com.llgames.ia.logic.Stats.Companion.GENERAL
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min

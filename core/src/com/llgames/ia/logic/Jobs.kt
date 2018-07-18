@@ -1,4 +1,4 @@
-package com.llgames.ia.battle.logic
+package com.llgames.ia.logic
 
 class Job(val name: String, val hp: Int, val spd: Int, val atkModif: Array<Pair<Int, Int>>, val defModif: Array<Pair<Int, Int>>, val yPos: Int = 6) {
     var stats = Stats()

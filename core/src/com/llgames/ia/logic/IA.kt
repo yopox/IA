@@ -1,6 +1,7 @@
-package com.llgames.ia.battle.logic
+package com.llgames.ia.logic
 
 import com.llgames.ia.battle.State
+import com.llgames.ia.def.IA_TEST
 
 /**
  * **LOGIC** : On ne travaille qu'avec des [LFighter]

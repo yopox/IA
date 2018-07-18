@@ -1,9 +1,9 @@
 package report
 
 import com.llgames.ia.battle.State
-import com.llgames.ia.battle.logic.IAHandler
-import com.llgames.ia.battle.logic.LFighter
-import com.llgames.ia.battle.logic.Weapon
+import com.llgames.ia.logic.IAHandler
+import com.llgames.ia.logic.LFighter
+import com.llgames.ia.logic.Weapon
 
 object TurnLogger: IAHandler {
     override fun wait(fighters: Array<out LFighter>, state: State) {

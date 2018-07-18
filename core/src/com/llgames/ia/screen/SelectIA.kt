@@ -1,4 +1,4 @@
-package com.llgames.ia
+package com.llgames.ia.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20

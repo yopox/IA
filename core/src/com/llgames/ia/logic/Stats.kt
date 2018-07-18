@@ -1,4 +1,4 @@
-package com.llgames.ia.battle.logic
+package com.llgames.ia.logic
 
 class Stats {
 
@@ -10,8 +10,8 @@ class Stats {
     var spd = 0
 
     fun setTo(maxStats: Stats) {
-        atk.withIndex().map { (i, j) -> atk[i] = maxStats.atk[i] }
-        def.withIndex().map { (i, j) -> def[i] = maxStats.def[i] }
+        atk.withIndex().map { (i, _) -> atk[i] = maxStats.atk[i] }
+        def.withIndex().map { (i, _) -> def[i] = maxStats.def[i] }
         hp = maxStats.hp
         spd = maxStats.spd
     }

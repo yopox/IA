@@ -1,7 +1,7 @@
 package com.llgames.ia
 
 import com.badlogic.gdx.Screen
-import com.llgames.ia.screen.Battle
+import com.llgames.ia.states.Battle
 import ktx.app.KtxGame
 
 /**
@@ -10,11 +10,10 @@ import ktx.app.KtxGame
 
 class IAGame : KtxGame<Screen>() {
     override fun create() {
-        // Registering ExampleScreen in the game object: it will be
-        // accessible through ExampleScreen class:
+
+        // On ajoute tous les states
         addScreen(Battle())
-        // Changing current screen to the registered instance of the
-        // ExampleScreen class:
+
         setScreen<Battle>()
     }
 

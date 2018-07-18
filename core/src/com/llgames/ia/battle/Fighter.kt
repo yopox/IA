@@ -3,7 +3,6 @@ package com.llgames.ia.battle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.llgames.ia.battle.logic.*
 import com.llgames.ia.logic.Job
 import com.llgames.ia.logic.LFighter
 import java.util.*

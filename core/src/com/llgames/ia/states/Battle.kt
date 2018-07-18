@@ -1,4 +1,4 @@
-package com.llgames.ia.screen
+package com.llgames.ia.states
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
@@ -13,7 +13,7 @@ import ktx.app.KtxScreen
 
 /**
  * Game State correspondant aux combats.
- * [Battle] crée les fighters et gère l'affichage mais laisse [Manager] gérer le combat.
+ * [Battle] crée les fighters et gère l'affichage et laisse [Manager] gérer le combat.
  * TODO: Bouton accélérer
  * TODO: Bouton pause
  */

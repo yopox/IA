@@ -13,7 +13,7 @@ class IAGame : KtxGame<Screen>() {
     override fun create() {
 
         // On ajoute tous les states
-        addScreen(TitleScreen())
+        addScreen(TitleScreen(this))
         addScreen(Battle())
 
         setScreen<TitleScreen>()

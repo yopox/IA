@@ -1,17 +1,17 @@
 package com.llgames.ia.states
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.llgames.ia.IAGame
 import com.llgames.ia.def.General
 import ktx.app.KtxScreen
 import ktx.scene2d.*
@@ -19,9 +19,8 @@ import ktx.scene2d.*
 
 /**
  * Game State correspondant à l'écran titre.
- * TODO: Faire le layout Stage2D
  */
-class TitleScreen : KtxScreen {
+class TitleScreen(game: IAGame) : KtxScreen {
     private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
     private val rune = Texture("rune.png")
     private val stage = Stage()
@@ -37,13 +36,46 @@ class TitleScreen : KtxScreen {
         val uiSkin = Skin(Gdx.files.internal("uiskin.json"))
         Scene2DSkin.defaultSkin = uiSkin
 
-        stage.addActor(table {
-            pad(4f) // Setting table padding.
-            label("Test.") {
-                color = Color.BLACK // Setting text's color.
-                setWrap(true) // Setting label's text wrapping.
-            }.apply { skin = uiSkin }
-        })
+        val maintable = table {
+            table {
+                pad(16f)
+                label("IAProject") {
+                    setFontScale(4f)
+                    color = Color.BLACK
+                }
+                row()
+                label("build ${General.BUILD_NB}") {
+                    it.right()
+                    color = Color.BLACK
+                }
+            }
+            row()
+            table {
+                pad(16f)
+                textButton("Edit teams") {
+                    pad(8f)
+                    it.spaceRight(16f)
+                }
+                textButton("Play") {
+                    pad(8f)
+                    it.spaceRight(16f)
+                    addListener(object : InputListener() {
+                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                            return true
+                        }
+
+                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                            game.setScreen<Battle>()
+                        }
+                    })
+                }
+                textButton("Online") {
+                    pad(8f)
+                }
+            }
+        }
+
+        stage.addActor(maintable)
 
     }
 

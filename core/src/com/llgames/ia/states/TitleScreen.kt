@@ -4,12 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.llgames.ia.IAGame
 import com.llgames.ia.def.General
@@ -22,7 +20,6 @@ import ktx.scene2d.*
  */
 class TitleScreen(game: IAGame) : KtxScreen {
     private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
-    private val rune = Texture("rune.png")
     private val stage = Stage()
     private val camera = OrthographicCamera()
     private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
@@ -30,11 +27,7 @@ class TitleScreen(game: IAGame) : KtxScreen {
     init {
         font.color = Color.BLACK
 
-        Gdx.input.inputProcessor = stage
         stage.viewport = viewport
-
-        val uiSkin = Skin(Gdx.files.internal("uiskin.json"))
-        Scene2DSkin.defaultSkin = uiSkin
 
         val maintable = table {
             table {
@@ -55,6 +48,15 @@ class TitleScreen(game: IAGame) : KtxScreen {
                 textButton("Edit teams") {
                     pad(8f)
                     it.spaceRight(16f)
+                    addListener(object : InputListener() {
+                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                            return true
+                        }
+
+                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                            game.setScreen<BuildTeam>()
+                        }
+                    })
                 }
                 textButton("Play") {
                     pad(8f)
@@ -79,6 +81,11 @@ class TitleScreen(game: IAGame) : KtxScreen {
 
     }
 
+    override fun show() {
+        super.show()
+        Gdx.input.inputProcessor = stage
+    }
+
     override fun render(delta: Float) {
 
         camera.update()
@@ -87,11 +94,6 @@ class TitleScreen(game: IAGame) : KtxScreen {
         // Clear screen
         Gdx.gl.glClearColor(0.518f, 0.494f, 0.529f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        /*font.data.setScale(4f)
-        font.draw(batch, "IAProject", -15f, 80f)
-        font.data.setScale(1f)
-        font.draw(batch, "build ${General.BUILD_NB}", 83f, 40f)*/
 
         stage.draw()
 

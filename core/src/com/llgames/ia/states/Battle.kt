@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.llgames.ia.battle.Manager
 import com.llgames.ia.battle.Fighter
-import com.llgames.ia.logic.JOBS
+import com.llgames.ia.def.JOBS
 import com.llgames.ia.gif.GifRecorder
 import ktx.app.KtxScreen
 

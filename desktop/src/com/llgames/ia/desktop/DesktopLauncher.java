@@ -9,6 +9,7 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = 640;
         config.height = 360;
+        config.title = "IAProject — Desktop";
         new LwjglApplication(new IAGame(), config);
     }
 }

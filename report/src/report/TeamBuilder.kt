@@ -1,6 +1,6 @@
 package report
 
-import com.llgames.ia.logic.JOBS
+import com.llgames.ia.def.JOBS
 import com.llgames.ia.logic.LFighter
 
 object TeamBuilder {

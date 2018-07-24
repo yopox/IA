@@ -31,9 +31,8 @@ class BuildTeam(game : IAGame) : KtxScreen {
 
         stage.viewport = viewport
 
-        val maintable = table {
+        val topTable = table {
 
-            table {
                 textButton("DONE") {
                     it.spaceRight(8f)
                     addListener(object : InputListener() {
@@ -47,129 +46,58 @@ class BuildTeam(game : IAGame) : KtxScreen {
                     })
                 }
                 label("Edit your team.")
-            }
-
-            row()
-
-            table {
-                it.width(96f)
-                pad(8f, 20f, 8f, 20f)
-                textField("Perso 1") {
-                    maxLength = 9
-                    it.width(64f)
-                }
-                row()
-                table {
-                    textButton("<")
-                    label(JOBS.BERSERKER.name) {
-                        it.pad(8f)
-                        it.width(56f)
-                        setAlignment(Align.center)
-                    }
-                    textButton(">")
-                }
-                row()
-                table {
-                    pad(8f)
-                    label("HP : 179") { it.width(40f) }
-                    label("SPD : 17") { it.width(40f) }
-                    row()
-                    label("ATK : 31") { it.width(40f) }
-                    label("DEF : 07") { it.width(40f) }
-                }
-                row()
-                textButton("EQUIP") {
-                    it.spaceBottom(8f)
-                    pad(0f, 8f, 0f, 8f)
-                }
-                row()
-                textButton("IA") {
-                    it.spaceTop(8f)
-                    pad(0f, 16f, 0f, 16f)
-                }
-            }
-
-            table {
-                it.width(96f)
-                pad(8f, 20f, 8f, 20f)
-                textField("Perso 1") {
-                    maxLength = 9
-                    it.width(64f)
-                }
-                row()
-                table {
-                    textButton("<")
-                    label(JOBS.BERSERKER.name) {
-                        it.pad(8f)
-                        it.width(56f)
-                        setAlignment(Align.center)
-                    }
-                    textButton(">")
-                }
-                row()
-                table {
-                    pad(8f)
-                    label("HP : 179") { it.width(40f) }
-                    label("SPD : 17") { it.width(40f) }
-                    row()
-                    label("ATK : 31") { it.width(40f) }
-                    label("DEF : 07") { it.width(40f) }
-                }
-                row()
-                textButton("EQUIP") {
-                    it.spaceBottom(8f)
-                    pad(0f, 8f, 0f, 8f)
-                }
-                row()
-                textButton("IA") {
-                    it.spaceTop(8f)
-                    pad(0f, 16f, 0f, 16f)
-                }
-            }
-
-            table {
-                it.width(96f)
-                pad(8f, 20f, 8f, 20f)
-                textField("Perso 1") {
-                    maxLength = 9
-                    it.width(64f)
-                }
-                row()
-                table {
-                    textButton("<")
-                    label(JOBS.BERSERKER.name) {
-                        it.pad(8f)
-                        it.width(56f)
-                        setAlignment(Align.center)
-                    }
-                    textButton(">")
-                }
-                row()
-                table {
-                    pad(8f)
-                    label("HP : 179") { it.width(40f) }
-                    label("SPD : 17") { it.width(40f) }
-                    row()
-                    label("ATK : 31") { it.width(40f) }
-                    label("DEF : 07") { it.width(40f) }
-                }
-                row()
-                textButton("EQUIP") {
-                    it.spaceBottom(8f)
-                    pad(0f, 8f, 0f, 8f)
-                }
-                row()
-                textButton("IA") {
-                    it.spaceTop(8f)
-                    pad(0f, 16f, 0f, 16f)
-                }
-            }
-
-
 
         }
 
-        stage.addActor(maintable)
+        val charTables = arrayListOf<KTableWidget>()
+
+        for (i in 0..2) {
+            charTables.add(table {
+                width = 96f
+                pad(4f)
+                textField("Perso 1") {
+                    maxLength = 9
+                    it.width(64f)
+                }
+                row()
+                table {
+                    textButton("<")
+                    label(JOBS.BERSERKER.name) {
+                        it.pad(8f)
+                        it.width(56f)
+                        setAlignment(Align.center)
+                    }
+                    textButton(">")
+                }
+                row()
+                table {
+                    pad(8f)
+                    label("HP : 179") { it.width(40f) }
+                    label("SPD : 17") { it.width(40f) }
+                    row()
+                    label("ATK : 31") { it.width(40f) }
+                    label("DEF : 07") { it.width(40f) }
+                }
+                row()
+                textButton("EQUIP") {
+                    it.spaceBottom(8f)
+                    pad(0f, 8f, 0f, 8f)
+                }
+                row()
+                textButton("IA") {
+                    it.spaceTop(8f)
+                    pad(0f, 16f, 0f, 16f)
+                }
+            })
+        }
+
+        stage.addActor(table {
+            appendActor(topTable)
+            row()
+            appendActor(charTables[0])
+            appendActor(charTables[1])
+            appendActor(charTables[2])
+        })
 
     }
 

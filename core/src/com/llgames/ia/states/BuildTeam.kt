@@ -33,7 +33,8 @@ class BuildTeam(game : IAGame) : KtxScreen {
 
         val topTable = table {
 
-                textButton("DONE") {
+            label("Edit your team (it will be saved)  -  ")
+            textButton("DONE") {
                     it.spaceRight(8f)
                     addListener(object : InputListener() {
                         override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
@@ -45,7 +46,6 @@ class BuildTeam(game : IAGame) : KtxScreen {
                         }
                     })
                 }
-                label("Edit your team.")
 
         }
 
@@ -72,7 +72,7 @@ class BuildTeam(game : IAGame) : KtxScreen {
                 row()
                 table {
                     pad(8f)
-                    label("HP : 179") { it.width(40f) }
+                    label("HP : 79") { it.width(40f) }
                     label("SPD : 17") { it.width(40f) }
                     row()
                     label("ATK : 31") { it.width(40f) }
@@ -94,9 +94,11 @@ class BuildTeam(game : IAGame) : KtxScreen {
         stage.addActor(table {
             appendActor(topTable)
             row()
-            appendActor(charTables[0])
-            appendActor(charTables[1])
-            appendActor(charTables[2])
+            table {
+                appendActor(charTables[0])
+                appendActor(charTables[1])
+                appendActor(charTables[2])
+            }
         })
 
     }

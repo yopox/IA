@@ -20,7 +20,7 @@ data class Spell(var jets: Array<Jet>, var boosts: Array<Boost>? = null, var nam
  * Partie logique des combattants.
  */
 
-open class LFighter(val name: String, val team: Int, val id: Int) {
+open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     private val ia = IA()
     var boosts: MutableList<Pair<Boost, LFighter>> = mutableListOf()
     var job = JOBS.HUMAN

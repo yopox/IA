@@ -44,8 +44,7 @@ class Battle : KtxScreen {
             it.apply {
                 val jobs = arrayListOf(
                         JOBS.DARKMAGE, JOBS.HUMAN, JOBS.MONK, JOBS.WHITEMAGE,
-                        JOBS.PALADIN, JOBS.THIEF, JOBS.SAMURAI, JOBS.BERSERKER,
-                        JOBS.TIMEMAGE)
+                        JOBS.PALADIN, JOBS.THIEF)
                 changeJob(jobs.shuffled().first())
                 setIA()
                 prepare()

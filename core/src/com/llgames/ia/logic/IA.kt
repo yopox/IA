@@ -20,7 +20,7 @@ class IA {
 
     data class Action(var id: String = "WAIT", var target: Target? = null, var weapon: Weapon? = null, var spell: Spell? = null)
 
-    private var rules: Array<Rule> = arrayOf()
+    private var rules: Array<Rule> = arrayOf(DEFAULT_RULE)
 
     fun setRules() {
         val possible = arrayListOf(IA_TEST.leecher, IA_TEST.noBrain, IA_TEST.prudent, IA_TEST.tank)
@@ -82,18 +82,16 @@ class IA {
 
     fun toString(cond: Condition): String {
         var str = ""
-        str += "[${cond.id}"
-        cond.target?.let { str += " ${it.main}" }
-        if (cond.value != -1) str += " ${cond.value}"
-        str += "]"
+        str += cond.id
+        cond.target?.let { str += "-${it.main}" }
+        if (cond.value != -1) str += "-${cond.value}"
         return str
     }
 
     fun toString(act: Action): String {
         var str = ""
-        str += "[${act.id}"
-        act.target?.let { str += " ${it.main}" }
-        str += "]"
+        str += act.id
+        act.target?.let { str += "-${it.main}" }
         return str
     }
 
@@ -103,10 +101,9 @@ class IA {
             // GATE
             str += rule.gate.id
             // COND
-            str += " ${toString(rule.gate.c1)}"
-            rule.gate.c2?.let { str += " ${toString(it)}" }
-            str += " ${toString(rule.act)}"
-            str += "\n"
+            str += "-${toString(rule.gate.c1)}"
+            rule.gate.c2?.let { str += "-${toString(it)}" }
+            str += "-${toString(rule.act)}"
         }
         return str
     }

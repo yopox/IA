@@ -20,7 +20,7 @@ class IA {
 
     data class Action(var id: String = "WAIT", var target: Target? = null, var weapon: Weapon? = null, var spell: Spell? = null)
 
-    private var rules: Array<Rule> = arrayOf(DEFAULT_RULE)
+    private var rules: Array<Rule> = arrayOf(DEFAULT_RULE, DEFAULT_RULE)
 
     fun setRules() {
         val possible = arrayListOf(IA_TEST.leecher, IA_TEST.noBrain, IA_TEST.prudent, IA_TEST.tank)
@@ -103,7 +103,7 @@ class IA {
             // COND
             str += "-${toString(rule.gate.c1)}"
             rule.gate.c2?.let { str += "-${toString(it)}" }
-            str += "-${toString(rule.act)}"
+            str += "-${toString(rule.act)}+"
         }
         return str
     }

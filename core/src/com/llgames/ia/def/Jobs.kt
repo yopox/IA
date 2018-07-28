@@ -56,6 +56,15 @@ object JOBS {
             defModif = arrayOf(Stats.MAGICAL to 5, Stats.FIRE to 5, Stats.ICE to 5),
             yPos = 306)
 
+    fun getJob(job: String) : Job = when(job) {
+        MONK.name -> MONK
+        PALADIN.name -> PALADIN
+        THIEF.name -> THIEF
+        WHITEMAGE.name -> WHITEMAGE
+        DARKMAGE.name -> DARKMAGE
+        else -> HUMAN
+    }
+
     fun nextJob(job: Job) : Job = when(job) {
         HUMAN -> MONK
         MONK -> PALADIN

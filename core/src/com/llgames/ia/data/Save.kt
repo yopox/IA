@@ -1,12 +1,8 @@
 package com.llgames.ia.data
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.JsonReader
-import jdk.nashorn.internal.parser.JSONParser
+import com.llgames.ia.def.JOBS
 import org.json.JSONObject
-import com.badlogic.gdx.Gdx.files
-
 
 
 /**
@@ -17,11 +13,8 @@ object Save {
     fun saveTeam(team: Team) {
         val isLocAvailable = Gdx.files.isLocalStorageAvailable()
         if (isLocAvailable) {
-            val handle = Gdx.files.local("teams/${team.name}.txt")
+            val handle = Gdx.files.local("teams/${team.name}.ias")
             handle.writeString(team.serialize(), false)
-
-            print(team.serialize())
-
         }
     }
 
@@ -32,16 +25,30 @@ object Save {
         val isLocAvailable = Gdx.files.isLocalStorageAvailable()
         if (isLocAvailable) {
 
-            val handle = Gdx.files.local("teams/$team.txt")
-            val json = JSONObject(handle.readString())
+            try {
+                val handle = Gdx.files.local("teams/$team.ias")
 
-            // On recopie les attributs lus dans la sauvegarde
-            loadedTeam.name = json.getString("name")
+                val json = JSONObject(handle.readString())
 
-            for (i in 0..2) {
-                val objFighter = json.getJSONObject("team").getJSONObject("fighter$i")
-                loadedTeam.fighters[i].name = objFighter.getString("name")
-                print(loadedTeam.fighters[i].name)
+                // On recopie les attributs lus dans la sauvegarde
+                loadedTeam.name = json.getString("name")
+
+                // Attributs de chaque fighter
+                for (i in 0..2) {
+                    val objFighter = json.getJSONObject("team").getJSONObject("fighter$i")
+
+                    // Nom
+                    loadedTeam.fighters[i].name = objFighter.getString("name")
+
+                    // Classe
+                    loadedTeam.fighters[i].changeJob(JOBS.getJob(objFighter.getString("job")))
+
+                    // IA
+                    println(objFighter.getString("ia").split("+").map { it.split("-") })
+
+                }
+            } catch (r: RuntimeException) {
+
             }
 
         }

@@ -2,6 +2,7 @@
 
 android/assets/gifexport
 misc/*.ttf
+*.ias
 
 ## Java
 

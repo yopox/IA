@@ -22,7 +22,7 @@ class Battle : KtxScreen {
     private val bg = Texture("Cliffs.gif")
     private val fighters: Array<Fighter>
     private val manager: Manager
-    private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
+    private val font = BitmapFont(Gdx.files.internal("fonts/softsquare.fnt"), false)
     private val recorder = GifRecorder(batch)
 
     init {

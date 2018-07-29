@@ -1,10 +1,8 @@
 package com.llgames.ia.states
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -13,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.llgames.ia.IAGame
+import com.llgames.ia.data.Editor
 import com.llgames.ia.data.Save
 import com.llgames.ia.data.Team
 import com.llgames.ia.def.JOBS
@@ -23,8 +22,7 @@ import ktx.scene2d.*
 /**
  * Game State correspondant à l'écran de création de team.
  */
-class BuildTeam(game : IAGame) : KtxScreen {
-    private val font = BitmapFont(Gdx.files.internal("softsquare.fnt"), false)
+class EditTeam(game: IAGame) : KtxScreen {
     private var stage = Stage()
     private val camera = OrthographicCamera()
     private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
@@ -32,8 +30,6 @@ class BuildTeam(game : IAGame) : KtxScreen {
     private var charTables = mutableListOf<KTableWidget>()
 
     init {
-
-        font.color = Color.BLACK
 
         stage.viewport = viewport
 
@@ -73,7 +69,7 @@ class BuildTeam(game : IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                                team.changeJob(i, {j -> JOBS.previousJob(j)})
+                                team.changeJob(i, { j -> JOBS.previousJob(j) })
                                 updateGUI()
                             }
                         })
@@ -91,7 +87,7 @@ class BuildTeam(game : IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                                team.changeJob(i, {j -> JOBS.nextJob(j)})
+                                team.changeJob(i, { j -> JOBS.nextJob(j) })
                                 updateGUI()
                             }
                         })
@@ -115,6 +111,17 @@ class BuildTeam(game : IAGame) : KtxScreen {
                 textButton("IA") {
                     it.spaceTop(8f)
                     pad(0f, 16f, 0f, 16f)
+                    addListener(object : InputListener() {
+                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                            updateTeam()
+                            return true
+                        }
+
+                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                            Editor.editedLFighter = team.fighters[i]
+                            game.setScreen<EditIA>()
+                        }
+                    })
                 }
             })
         }
@@ -169,15 +176,15 @@ class BuildTeam(game : IAGame) : KtxScreen {
     }
 
     override fun hide() {
-        super.hide()
         updateTeam()
         Save.saveTeam(team)
+        super.hide()
     }
 
     override fun render(delta: Float) {
 
         camera.update()
-        stage.act(Gdx.graphics.getDeltaTime());
+        stage.act(Gdx.graphics.deltaTime);
 
         // Clear screen
         Gdx.gl.glClearColor(0.518f, 0.494f, 0.529f, 1f)

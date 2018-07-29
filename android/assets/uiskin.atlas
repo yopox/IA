@@ -90,6 +90,15 @@ default-round
   orig: 12, 20
   offset: 0, 0
   index: -1
+rune
+  rotate: false
+  xy: 176, 0
+  size: 48, 32
+  split: 5, 5, 5, 5
+  pad: 6, 6, 6, 6
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
 default-round-down
   rotate: false
   xy: 99, 29

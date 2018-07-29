@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.llgames.ia.states.Battle
-import com.llgames.ia.states.BuildTeam
+import com.llgames.ia.states.EditTeam
+import com.llgames.ia.states.EditIA
 import com.llgames.ia.states.TitleScreen
 import ktx.app.KtxGame
 import ktx.scene2d.Scene2DSkin
@@ -22,7 +23,8 @@ class IAGame : KtxGame<Screen>() {
 
         // On ajoute tous les écrans
         addScreen(TitleScreen(this))
-        addScreen(BuildTeam(this))
+        addScreen(EditTeam(this))
+        addScreen(EditIA(this))
         addScreen(Battle())
 
         setScreen<TitleScreen>()

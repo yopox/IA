@@ -46,7 +46,7 @@ class Battle : KtxScreen {
                         JOBS.DARKMAGE, JOBS.HUMAN, JOBS.MONK, JOBS.WHITEMAGE,
                         JOBS.PALADIN, JOBS.THIEF)
                 changeJob(jobs.shuffled().first())
-                setIA()
+                changeIA("ID EXT 2 ATK ELHP - ID E1T DEF")
                 prepare()
             }
         }

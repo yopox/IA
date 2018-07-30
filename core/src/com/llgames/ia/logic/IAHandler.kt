@@ -2,6 +2,7 @@ package com.llgames.ia.logic
 
 import com.llgames.ia.battle.State
 import com.llgames.ia.battle.hpLost
+import com.llgames.ia.def.Runes
 
 /**
  * [IAHandler] s'occupe de la partie logique des actions.
@@ -19,13 +20,20 @@ interface IAHandler {
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
 
-        when (rule.act.id) {
+        println(Runes.toString(rule))
+
+        var actionIndex = 0
+        while (rule[actionIndex].type != RT.ACTION) actionIndex++
+
+        val target = if (actionIndex == rule.lastIndex) null else rule[actionIndex + 1] as RuneTarget
+
+        when (rule[actionIndex].id) {
             "DEF" -> def(fighters, state)
-            "WPN" -> wpn(fighters, state, getTarget(rule.act.target, fighters, state))
-            "SPL" -> spl(fighters, state, getTarget(rule.act.target, fighters, state), rule.act.spell)
-            "PRO" -> pro(fighters, state, getTarget(rule.act.target, fighters, state))
-            "WRM" -> wrm(fighters, state, getTarget(rule.act.target, fighters, state))
-            "ATK" -> atk(fighters, state, getTarget(rule.act.target, fighters, state), rule.act.weapon)
+            "WPN" -> wpn(fighters, state, target!!.getTarget(fighters, state))
+            "SPL" -> spl(fighters, state, target!!.getTarget(fighters, state))
+            "PRO" -> pro(fighters, state, target!!.getTarget(fighters, state))
+            "WRM" -> wrm(fighters, state, target!!.getTarget(fighters, state))
+            "ATK" -> atk(fighters, state, target!!.getTarget(fighters, state))
             else -> wait(fighters, state)
         }
 
@@ -34,28 +42,29 @@ interface IAHandler {
 
     }
 
-    fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
+    fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])
         } else {
 
             val actor = fighters[state.charTurn]
+            val weapon = actor.weapon ?: LFighter.DEFAULT_WEAPON
 
             // On récupère la vraie cible
             val rtarget = target.protected ?: target
 
             // On applique les dommages
-            actor.attack(rtarget, weapon?.jets)
+            actor.attack(rtarget, weapon.jets)
 
             // Log des dommages
-            damage(actor, rtarget, hpLost(damageCalculation(actor, rtarget, weapon?.jets)))
+            damage(actor, rtarget, hpLost(damageCalculation(actor, rtarget, weapon.jets)))
 
             // On applique les buffs
-            weapon?.boosts?.let {
+            weapon.boosts?.let {
                 for (buff in it) {
                     val buffTarget = if (buff.onSelf) actor else rtarget
-                    applyBoost(buff, actor, buffTarget)
+                    buff.apply(buffTarget)
                 }
             }
 
@@ -75,36 +84,37 @@ interface IAHandler {
 
     fun def(fighters: Array<out LFighter>, state: State) {
         val actor = fighters[state.charTurn]
-        applyBoost(Boost(Stats.DEFENSE, Stats.GENERAL, 50, 1), actor, actor)
+        actor.stats.def.general += 50
     }
 
     fun wrm(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         val actor = fighters[state.charTurn]
-        applyBoost(Boost(Stats.ATTACK, Stats.GENERAL, 20, 1), actor, actor)
-        applyBoost(Boost(Stats.DEFENSE, Stats.GENERAL, 20, 1), actor, actor)
+        actor.stats.def.general += 20
+        actor.stats.atk.general += 20
     }
 
     fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?)
 
-    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, spell: Spell?) {
+    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])
         } else {
 
             val actor = fighters[state.charTurn]
+            val spell = fighters[state.charTurn].spell ?: LFighter.DEFAULT_SPELL
 
             // On applique les dommages
-            actor.attack(target, spell?.jets)
+            actor.attack(target, spell.jets)
 
             // Log des dommages
-            damage(actor, target, hpLost(damageCalculation(actor, target, spell?.jets)))
+            damage(actor, target, hpLost(damageCalculation(actor, target, spell.jets)))
 
             // On applique les buffs
-            spell?.boosts?.let {
+            spell.boosts?.let {
                 for (buff in it) {
                     val buffTarget = if (buff.onSelf) actor else target
-                    applyBoost(buff, actor, buffTarget)
+                    buff.apply(buffTarget)
                 }
             }
 
@@ -123,12 +133,4 @@ interface IAHandler {
 
     fun notarget(actor: LFighter)
 
-}
-
-/**
- * Applique un boost et programme la fin du boost.
- */
-fun applyBoost(boost: Boost, actor: LFighter, target: LFighter) {
-    target.applyBoost(boost)
-    actor.boosts.add(Pair(boost.copy(value = -boost.value), target))
 }

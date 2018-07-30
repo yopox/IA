@@ -3,7 +3,6 @@ package report
 import com.llgames.ia.battle.State
 import com.llgames.ia.logic.IAHandler
 import com.llgames.ia.logic.LFighter
-import com.llgames.ia.logic.Weapon
 
 object TurnLogger: IAHandler {
     override fun wait(fighters: Array<out LFighter>, state: State) {
@@ -11,10 +10,6 @@ object TurnLogger: IAHandler {
     }
 
     override fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?) {
-        TODO("not implemented")
-    }
-
-    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         TODO("not implemented")
     }
 
@@ -30,9 +25,9 @@ object TurnLogger: IAHandler {
         HTMLBuilder.write("${actor.name} doesn't have any target.")
     }
 
-    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
+    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         HTMLBuilder.write("${fighters[state.charTurn].name} attacks ${target?.name}!")
-        super.atk(fighters, state, target, weapon)
+        super.atk(fighters, state, target)
     }
 
     override fun def(fighters: Array<out LFighter>, state: State) {

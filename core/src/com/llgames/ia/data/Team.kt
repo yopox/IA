@@ -1,6 +1,7 @@
 package com.llgames.ia.data
 
 import com.llgames.ia.def.JOBS
+import com.llgames.ia.def.Runes
 import com.llgames.ia.logic.Job
 import com.llgames.ia.logic.LFighter
 
@@ -33,10 +34,10 @@ class Team {
 
         for (i in 0..2) {
             str += """  "fighter$i": { """ + "\n"
-            str += """   "name": "${fighters[i].name}", """
-            str += """ "job": "${fighters[i].job.name}", """
-            str += """ "equip": {}, """
-            str += """ "ia": "${fighters[i].getIAString()}"""" + "\n   }" + if (i < 2) ",\n" else "\n"
+            str += """   "name": "${fighters[i].name}", """ + "\n"
+            str += """   "job": "${fighters[i].job.name}", """ + "\n"
+            str += """   "equip": {}, """ + "\n"
+            str += """   "ia": "${fighters[i].serializeIA()}"  }""" + if (i < 2) ",\n" else "\n"
         }
 
         str += " }\n}"

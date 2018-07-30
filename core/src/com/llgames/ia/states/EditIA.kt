@@ -96,6 +96,8 @@ class EditIA(game: IAGame) : KtxScreen {
                 .children[0] as Label)
                 .setText("Choose IA rules for ${Editor.editedLFighter.name} - ")
 
+        println(Editor.editedLFighter.getIAString())
+
     }
 
     override fun render(delta: Float) {

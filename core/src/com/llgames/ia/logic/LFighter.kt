@@ -2,18 +2,17 @@ package com.llgames.ia.logic
 
 import com.llgames.ia.battle.State
 import com.llgames.ia.def.JOBS
-import com.llgames.ia.logic.Stats.Companion.GENERAL
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
-data class Jet(var type: Int, var elem: Int, var damage: Int)
+data class Jet(var type: TYPES, var elem: ELEMENTS, var damage: Int)
 
-data class Boost(var stat: String, var type: Int, var value: Int, var duration: Int, var onSelf: Boolean = true)
+data class Boost(var apply: (LFighter) -> Unit, var duration: Int, val onSelf: Boolean)
 
-data class Weapon(var jets: Array<Jet>, var boosts: Array<Boost>? = null, var name: String)
+data class Weapon(var name: String, var jets: Array<Jet>, var boosts: Array<Boost>? = null)
 
-data class Spell(var jets: Array<Jet>, var boosts: Array<Boost>? = null, var name: String)
+data class Spell(var name: String, var jets: Array<Jet>, var boosts: Array<Boost>? = null)
 
 
 /**
@@ -28,18 +27,25 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     var maxStats = Stats()
     var alive = true
     var protected: LFighter? = null
+    var weapon: Weapon? = null
+    var spell: Spell? = null
+
+    companion object {
+        val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.NEUTRAL, 5)))
+        val DEFAULT_SPELL = Spell("Pray -", arrayOf(), arrayOf(Boost({it.stats.def.general += 5}, 1, true)))
+    }
 
     open fun changeJob(job: Job) {
         this.job = job
         this.maxStats = job.stats
     }
 
-    fun setIA() = ia.setRules()
+    fun changeIA(rules: String) = ia.changeIA(rules)
 
     /**
      * Renvoie la règle d'IA utilisée ce tour-ci.
      */
-    fun getRule(fighters: Array<out LFighter>, state: State): IA.Rule = ia.getRule(fighters, state)
+    fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> = ia.getRule(fighters, state)
 
     /**
      * Reset les stats du personnage.
@@ -109,12 +115,13 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
      * Applique un boost.
      */
     fun applyBoost(boost: Boost) {
-        when (boost.stat) {
-            "ATK" -> stats.atk[boost.type] += boost.value
-            "DEF" -> stats.def[boost.type] += boost.value
-            else -> Unit
-        }
+        boost.apply(this)
     }
+
+    /**
+     * Permet de sauvegarder l'IA.
+     */
+    fun serializeIA(): String = ia.serialize()
 
 }
 
@@ -124,20 +131,32 @@ fun defStat(def: Int) = min(100, def) / 100.0
 
 fun damageCalculation(fighter: LFighter, target: LFighter, jets: Array<Jet>?): ArrayList<Jet> {
 
-    val coeffAtk = 1 + atkStat(fighter.stats.atk[GENERAL])
-    val coeffDef = 1 - defStat(target.stats.def[GENERAL])
+    val coeffAtk = 1 + atkStat(fighter.stats.atk.general)
+    val coeffDef = 1 - defStat(target.stats.def.general)
     val damageDealt = ArrayList<Jet>()
 
     if (jets != null) {
         for ((t, e, d) in jets) {
+
             // Offensive formula
-            val Ai = coeffAtk * max(0, d + fighter.stats.atkB[t] + fighter.stats.atkB[e]) *
-                    (1 + atkStat(fighter.stats.atk[t])) *
-                    (1 + atkStat(fighter.stats.atk[e]))
+            var bonusT = fighter.stats.atkB.types[t] ?: 0
+            var bonusE = fighter.stats.atkB.elements[e] ?: 0
+            val attackT = fighter.stats.atk.types[t] ?: 0
+            val attackE = fighter.stats.atk.elements[e] ?: 0
+
+            val Ai = coeffAtk * max(0, d + bonusT + bonusE) *
+                    (1 + atkStat(attackT)) *
+                    (1 + atkStat(attackE))
+
             // Defensive formula
-            val Di = coeffDef * max(0.0, Ai - target.stats.defB[t] - target.stats.defB[e]) *
-                    (1 - defStat(target.stats.def[t])) *
-                    (1 - defStat(target.stats.def[e]))
+            bonusT = fighter.stats.defB.types[t] ?: 0
+            bonusE = fighter.stats.defB.elements[e] ?: 0
+            val defT = fighter.stats.def.types[t] ?: 0
+            val defE = fighter.stats.def.elements[e] ?: 0
+
+            val Di = coeffDef * max(0.0, Ai - bonusT - bonusE) *
+                    (1 - defStat(defT)) *
+                    (1 - defStat(defE))
             damageDealt.add(Jet(t, e, floor(Di).toInt()))
         }
     }

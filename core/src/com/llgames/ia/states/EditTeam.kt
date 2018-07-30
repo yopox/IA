@@ -153,8 +153,8 @@ class EditTeam(game: IAGame) : KtxScreen {
             // Stats
             ((charTables[i].children[2] as KTableWidget).children[0] as Label).setText("HP: ${team.fighters[i].maxStats.hp}")
             ((charTables[i].children[2] as KTableWidget).children[1] as Label).setText("SPD: ${team.fighters[i].maxStats.spd}")
-            ((charTables[i].children[2] as KTableWidget).children[2] as Label).setText("ATK: ${team.fighters[i].maxStats.atk[Stats.GENERAL]}")
-            ((charTables[i].children[2] as KTableWidget).children[3] as Label).setText("DEF: ${team.fighters[i].maxStats.def[Stats.GENERAL]}")
+            ((charTables[i].children[2] as KTableWidget).children[2] as Label).setText("ATK: ${team.fighters[i].maxStats.atk.general}")
+            ((charTables[i].children[2] as KTableWidget).children[3] as Label).setText("DEF: ${team.fighters[i].maxStats.def.general}")
         }
 
     }

@@ -2,6 +2,9 @@ package com.llgames.ia.data
 
 import com.badlogic.gdx.Gdx
 import com.llgames.ia.def.JOBS
+import com.llgames.ia.logic.IA
+import com.llgames.ia.logic.LFighter
+import com.llgames.ia.logic.Stats
 import org.json.JSONObject
 
 
@@ -44,12 +47,12 @@ object Save {
                     loadedTeam.fighters[i].changeJob(JOBS.getJob(objFighter.getString("job")))
 
                     // IA
-                    println(objFighter.getString("ia").split("+").map { it.split("-") })
+                    val rules = objFighter.getString("ia")
+                    loadedTeam.fighters[i].changeIA(rules)
 
                 }
-            } catch (r: RuntimeException) {
 
-            }
+            } catch (r: RuntimeException) { }
 
         }
 

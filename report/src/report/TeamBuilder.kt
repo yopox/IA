@@ -16,18 +16,18 @@ object TeamBuilder {
 
     init {
         f1.changeJob(JOBS.DARKMAGE)
-        f1.setIA()
+        f1.changeIA("ID E1T ATK ELHP")
         f2.changeJob(JOBS.DARKMAGE)
-        f2.setIA()
+        f2.changeIA("ID E1T ATK ELHP")
         f3.changeJob(JOBS.DARKMAGE)
-        f3.setIA()
+        f3.changeIA("ID E1T ATK ELHP")
 
         f4.changeJob(JOBS.DARKMAGE)
-        f4.setIA()
+        f4.changeIA("ID E1T ATK ELHP")
         f5.changeJob(JOBS.DARKMAGE)
-        f5.setIA()
+        f5.changeIA("ID E1T ATK ELHP")
         f6.changeJob(JOBS.DARKMAGE)
-        f6.setIA()
+        f6.changeIA("ID E1T ATK ELHP")
 
         fighters = arrayOf(f1, f2, f3, f4, f5, f6)
         fighters.forEach { it.prepare() }

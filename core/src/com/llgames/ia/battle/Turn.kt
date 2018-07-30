@@ -71,8 +71,8 @@ class Turn : IAHandler {
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} does nothing."))
     }
 
-    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?, weapon: Weapon?) {
-        super.atk(fighters, state, target, weapon)
+    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+        super.atk(fighters, state, target)
         val actor = fighters[state.charTurn]
 
         target?.let {
@@ -99,9 +99,10 @@ class Turn : IAHandler {
         TODO("not implemented")
     }
 
-    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, spell: Spell?) {
-        super.spl(fighters, state, target, spell)
+    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+        super.spl(fighters, state, target)
         val actor = fighters[state.charTurn]
+        val spell = fighters[state.charTurn].spell
 
         target?.let {
 

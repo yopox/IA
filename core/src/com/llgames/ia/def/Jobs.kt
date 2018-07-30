@@ -63,6 +63,9 @@ object JOBS {
             defModif = ComplexStat(5),
             yPos = 306)
 
+    /**
+     * TODO: Faire mieux que ces trois fonctions
+     */
     fun getJob(job: String) : Job = when(job) {
         MONK.name -> MONK
         PALADIN.name -> PALADIN
@@ -72,6 +75,9 @@ object JOBS {
         else -> HUMAN
     }
 
+    /**
+     * Utile depuis l'interface pour changer de job sur un personnage.
+     */
     fun nextJob(job: Job) : Job = when(job) {
         HUMAN -> MONK
         MONK -> PALADIN

@@ -1,14 +1,25 @@
 package com.llgames.ia.def
 
-import com.llgames.ia.logic.IA
 import com.llgames.ia.logic.RT
 import com.llgames.ia.logic.Rune
 import com.llgames.ia.logic.RuneTarget
 
+/**
+ * Définition des runes utilisables.
+ * Une rune peut être sous forme de [String] (forme écrite) ou sous forme de [Rune] (implémentation).
+ *
+ * Cet objet permet d'associer l'un à l'autre.
+ * Ainsi en utilisant [fromString] on peut récupérer les objets correspondants à une règle, par
+ * ex. fromString("ID MXHP 25 SELF ATK ELHP").
+ */
 object Runes {
 
-    fun getRune(rune: String): Rune = when (rune) {
+    /**
+     * Associe une rune sous forme de texte à son objetde type [Rune].
+     */
+    private fun getRune(rune: String): Rune = when (rune) {
 
+        // Portes logiques
         "ID" -> Rune("ID", RT.GATE, arrayOf(RT.CONDITION, RT.ACTION))
         "NOT" -> Rune("NOT", RT.GATE, arrayOf(RT.CONDITION, RT.ACTION))
         "AND" -> Rune("AND", RT.GATE, arrayOf(RT.CONDITION, RT.ACTION, RT.ACTION))
@@ -18,11 +29,13 @@ object Runes {
         "NOR" -> Rune("NOR", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION))
         "NXOR" -> Rune("NXOR", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION))
 
+        // Conditions
         "E1T" -> Rune("E1T", RT.CONDITION, arrayOf())
         "EXT" -> Rune("EXT", RT.CONDITION, arrayOf(RT.VALUE))
-        "MXHP" -> Rune("EXT", RT.CONDITION, arrayOf(RT.VALUE, RT.TARGET))
-        "LXHP" -> Rune("EXT", RT.CONDITION, arrayOf(RT.VALUE, RT.TARGET))
+        "MXHP" -> Rune("MXHP", RT.CONDITION, arrayOf(RT.VALUE, RT.TARGET))
+        "LXHP" -> Rune("LXHP", RT.CONDITION, arrayOf(RT.VALUE, RT.TARGET))
 
+        // Cibles
         "SELF" -> RuneTarget("SELF")
         "aMHP" -> RuneTarget("aMHP", { it.stats.hp })
         "aLHP" -> RuneTarget("aLHP", { it.stats.hp })
@@ -31,6 +44,7 @@ object Runes {
         "EMHP" -> RuneTarget("EMHP", { it.stats.hp })
         "ELHP" -> RuneTarget("ELHP", { it.stats.hp })
 
+        // Valeurs
         "1" -> Rune("1", RT.VALUE, arrayOf())
         "2" -> Rune("2", RT.VALUE, arrayOf())
         "3" -> Rune("3", RT.VALUE, arrayOf())
@@ -54,6 +68,7 @@ object Runes {
         "85" -> Rune("85", RT.VALUE, arrayOf())
         "90" -> Rune("90", RT.VALUE, arrayOf())
 
+        // Actions
         "DEF" -> Rune("DEF", RT.ACTION, arrayOf())
         "ATK" -> Rune("ATK", RT.ACTION, arrayOf())
         "SPL" -> Rune("SPL", RT.ACTION, arrayOf())
@@ -62,13 +77,18 @@ object Runes {
         else -> Rune("", RT.ERROR, arrayOf())
     }
 
+    /**
+     * Convertit un Array<Rune> en String.
+     */
     fun toString(rule: Array<Rune>): String {
         var chaine = ""
-        for (rune in rule)
-            chaine += rune.id + " "
+        rule.map { chaine += it.id + " " }
         return chaine.dropLast(1)
     }
 
+    /**
+     * Convertit un String en Array<Rune>.
+     */
     fun fromString(chaine: String): Array<Rune> {
         val tab = chaine.split(" ")
         val rule = mutableListOf<Rune>()
@@ -76,6 +96,9 @@ object Runes {
         return rule.toTypedArray()
     }
 
+    /**
+     * Vérifie si une règle d'IA est valide.
+     */
     fun isValid(rule: Array<Rune>): Boolean {
         val pile = mutableListOf<RT>()
         for (rune in rule) {

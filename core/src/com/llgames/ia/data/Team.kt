@@ -37,7 +37,7 @@ class Team {
             str += """   "name": "${fighters[i].name}", """ + "\n"
             str += """   "job": "${fighters[i].job.name}", """ + "\n"
             str += """   "equip": {}, """ + "\n"
-            str += """   "ia": "${fighters[i].serializeIA()}"  }""" + if (i < 2) ",\n" else "\n"
+            str += """   "ia": "${fighters[i].getIAString()}"""" + "\n  }" + if (i < 2) ",\n" else "\n"
         }
 
         str += " }\n}"

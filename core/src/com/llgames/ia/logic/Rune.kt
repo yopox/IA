@@ -10,10 +10,10 @@ enum class RT {
 }
 
 /**
- * Définition d'une rune.
- * [id] : nom de la rune
- * [type] : type de la rune selon l'enum [IA.RT]
- * [next] : runes attendues à sa suite dans l'ordre
+ * L'objet [Rune] définit formellement une rune. Pour définir le comportement
+ * @param id : nom de la rune
+ * @param type : type de la rune selon l'enum [RT]
+ * @param next : runes attendues à sa suite dans l'ordre
  */
 open class Rune(val id: String, val type: RT, val next: Array<RT>) {
 

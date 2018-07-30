@@ -18,7 +18,6 @@ data class Spell(var name: String, var jets: Array<Jet>, var boosts: Array<Boost
 /**
  * Partie logique des combattants.
  */
-
 open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     private val ia = IA()
     var boosts: MutableList<Pair<Boost, LFighter>> = mutableListOf()
@@ -117,11 +116,6 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     fun applyBoost(boost: Boost) {
         boost.apply(this)
     }
-
-    /**
-     * Permet de sauvegarder l'IA.
-     */
-    fun serializeIA(): String = ia.serialize()
 
 }
 

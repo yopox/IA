@@ -4,34 +4,35 @@ import com.llgames.ia.battle.State
 import com.llgames.ia.def.Runes
 
 /**
- * On ne travaille qu'avec des [LFighter]
+ * On ne travaille qu'avec des [LFighter], partie logique des combattants.
  * Gère les runes et l'intelligence artificielle des combattants.
  *
  * Une règle d'IA est de type Array<[Rune]>.
  * Il y a forcément au moins, dans cet ordre, une porte logique, une condition et une action.
- * Une [Rune] peut spécifier les RunesTypes ([RT]) attendus à sa suite.
+ * Une [Rune] peut spécifier les types de runes ([RT]) attendus à sa suite.
  */
 
 class IA {
 
+    // Les règles d'IA
     private var rules: MutableList<Array<Rune>> = mutableListOf(DEFAULT_RULE)
 
     companion object {
         private val DEFAULT_RULE = Runes.fromString("ID E1T WAIT")
     }
 
+    /**
+     * Renvoie une copie lisible des règles d'IA.
+     */
     override fun toString(): String {
         var str = ""
-        rules.map { str += Runes.toString(it) + "\n" }
-        return str
-    }
-
-    fun serialize(): String {
-        var str = ""
         rules.map { str += Runes.toString(it) + " - " }
-        return str.dropLast(1)
+        return str.dropLast(3)
     }
 
+    /**
+     * Change les règles d'IA de l'objet.
+     */
     fun changeIA(rules: String) {
         this.rules = rules.split(" - ").map { Runes.fromString(it) }.toMutableList()
     }
@@ -44,12 +45,11 @@ class IA {
     }
 
     /**
-     * Interroge la porte logique de la règle numéro [index].
-     * @return la première règle qui s'applique
+     * Fonction récursive qui renvoie la première règle qui s'applique.
      */
     private fun iaStep(index: Int, fighters: Array<out LFighter>, state: State): Array<Rune> {
 
-        // Règle par défaut
+        // Cas de base
         if (index == rules.size)
             return DEFAULT_RULE
 
@@ -62,7 +62,10 @@ class IA {
     }
 
     /**
-     * État de la porte logique.
+     * Teste une porte logique.
+     *
+     * Pour les portes logiques à deux conditions, on appelle [condCheck] en coupant [rule]
+     * après la première condition. [condCheck] s'occupe de trouver la condition.
      */
     private fun gateCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: State): Boolean {
 
@@ -80,7 +83,7 @@ class IA {
     }
 
     /**
-     * État de la condition.
+     * Vérifie une condition.
      */
     private fun condCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: State): Boolean {
 
@@ -92,12 +95,19 @@ class IA {
         val value = if (RT.VALUE in rule[condIndex].next) rule[condIndex + 1].id.toInt() else 0
 
         return when (rule[condIndex].id) {
+            // Conditions simples
             "E1T" -> true
+
+            // Conditions avec valeur
             "EXT" -> state.turn % value == 0
+
+            // Conditions avec une cible et une valeur
+            // La conversion suivante marche car l'ordre est toujours COND VALUE TARGET
             "MXHP" -> (rule[condIndex + 2] as RuneTarget)
                     .getTarget(fighters, state)!! getPercent "HP" >= value
             "LXHP" -> (rule[condIndex + 2] as RuneTarget)
                     .getTarget(fighters, state)!! getPercent "HP" <= value
+
             else -> false
         }
     }

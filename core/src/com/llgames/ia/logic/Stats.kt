@@ -1,5 +1,10 @@
 package com.llgames.ia.logic
 
+/**
+ * Objet correspondant aux stats d'un personnage.
+ * [ComplexStat] est utilisé pour une stat qui se subdivise en une partie générale,
+ * une partie par type et une partie par élément.
+ */
 class Stats {
 
     var hp = 100

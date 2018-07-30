@@ -13,6 +13,7 @@ import ktx.app.KtxScreen
 import ktx.scene2d.*
 import com.badlogic.gdx.utils.Align
 import com.llgames.ia.data.Editor
+import com.llgames.ia.logic.RT
 
 
 /**
@@ -24,6 +25,13 @@ class EditIA(game: IAGame) : KtxScreen {
     private val viewport = ExtendViewport(640f, 360f, 720f, 360f, camera)
 
     private var mainTable: KTableWidget
+
+    private val runesColor: Map<RT, Triple<Float, Float, Float>> =
+            mapOf(RT.GATE to Triple(0.75f, 1f, 1f),
+                    RT.CONDITION to Triple(0.75f, 1f, 1f),
+                    RT.VALUE to Triple(0.75f, 1f, 1f),
+                    RT.TARGET to Triple(0.75f, 1f, 1f),
+                    RT.ACTION to Triple(0.75f, 1f, 1f))
 
     init {
 
@@ -59,23 +67,11 @@ class EditIA(game: IAGame) : KtxScreen {
                     pad(8f)
                     it.fillX()
                     align(Align.left)
-                    imageTextButton("") {
-                        isVisible = true
-                    }
-                    imageTextButton("") {
-                        isVisible = false
-                    }
-                    imageTextButton("") {
-                        isVisible = false
-                    }
-                    imageTextButton("") {
-                        isVisible = false
-                    }
-                    imageTextButton("") {
-                        isVisible = false
-                    }
-                    imageTextButton("") {
-                        isVisible = false
+
+                    for (j in 0..6) {
+                        imageTextButton("") {
+                            isVisible = false
+                        }
                     }
                 }
 
@@ -97,6 +93,8 @@ class EditIA(game: IAGame) : KtxScreen {
                 .setText("Choose IA rules for ${Editor.editedLFighter.name} - ")
 
         println(Editor.editedLFighter.getIAString())
+
+
 
     }
 

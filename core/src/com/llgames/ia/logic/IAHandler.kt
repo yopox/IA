@@ -20,13 +20,14 @@ interface IAHandler {
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
 
-        println(Runes.toString(rule))
-
+        // On récupère l'indice de la rune action
         var actionIndex = 0
         while (rule[actionIndex].type != RT.ACTION) actionIndex++
 
+        // S'il y a une [RuneTarget] derrière la rune action, on la récupère
         val target = if (actionIndex == rule.lastIndex) null else rule[actionIndex + 1] as RuneTarget
 
+        // Action du tour
         when (rule[actionIndex].id) {
             "DEF" -> def(fighters, state)
             "WPN" -> wpn(fighters, state, target!!.getTarget(fighters, state))
@@ -68,6 +69,7 @@ interface IAHandler {
                 }
             }
 
+            // Mort
             if (rtarget.stats.hp <= 0) {
                 rtarget.kill(fighters)
                 dies(rtarget)
@@ -118,6 +120,7 @@ interface IAHandler {
                 }
             }
 
+            // Mort
             if (target.stats.hp <= 0) {
                 target.kill(fighters)
                 dies(target)

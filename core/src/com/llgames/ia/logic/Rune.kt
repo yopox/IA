@@ -15,7 +15,7 @@ enum class RT {
  * @param type : type de la rune selon l'enum [RT]
  * @param next : runes attendues à sa suite dans l'ordre
  */
-open class Rune(val id: String, val type: RT, val next: Array<RT>) {
+open class Rune(val id: String, val type: RT, val next: Array<RT> = arrayOf()) {
 
     override fun toString(): String = id
 

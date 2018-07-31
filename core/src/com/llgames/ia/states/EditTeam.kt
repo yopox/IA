@@ -11,11 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.llgames.ia.IAGame
-import com.llgames.ia.data.Editor
 import com.llgames.ia.data.Save
 import com.llgames.ia.data.Team
 import com.llgames.ia.def.JOBS
-import com.llgames.ia.logic.Stats
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
@@ -118,7 +116,7 @@ class EditTeam(game: IAGame) : KtxScreen {
                         }
 
                         override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            Editor.editedLFighter = team.fighters[i]
+                            EditIA.editedLFighter = team.fighters[i]
                             game.setScreen<EditIA>()
                         }
                     })

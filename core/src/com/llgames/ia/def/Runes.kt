@@ -22,7 +22,7 @@ object Runes {
         // Portes logiques
         "ID" to Rune("ID", RT.GATE, arrayOf(RT.CONDITION, RT.ACTION)),
         "NOT" to Rune("NOT", RT.GATE, arrayOf(RT.CONDITION, RT.ACTION)),
-        "AND" to Rune("AND", RT.GATE, arrayOf(RT.CONDITION, RT.ACTION, RT.ACTION)),
+        "AND" to Rune("AND", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION)),
         "OR" to Rune("OR", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION)),
         "XOR" to Rune("XOR", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION)),
         "NAND" to Rune("NAND", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION)),
@@ -99,15 +99,18 @@ object Runes {
      * Vérifie si une règle d'IA est valide.
      */
     fun isValid(rule: Array<Rune>): Boolean {
-        val pile = mutableListOf<RT>()
-        for (rune in rule) {
+        val pile = mutableListOf(RT.GATE)
+        for (i in 0..rule.lastIndex) {
+            val rune = rule[i]
             if (pile.size > 0) {
                 val type = pile.removeAt(pile.lastIndex)
                 if (type == rune.type) {
-                    pile.addAll(rune.next)
+                    pile.addAll(rune.next.reversed())
                 } else {
                     return false
                 }
+            } else {
+                return false
             }
         }
         return true

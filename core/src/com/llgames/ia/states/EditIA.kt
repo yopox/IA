@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.llgames.ia.IAGame
+import com.llgames.ia.data.Save
+import com.llgames.ia.data.Team
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 import com.llgames.ia.def.Runes
@@ -18,8 +20,6 @@ import com.llgames.ia.logic.RT
 import com.llgames.ia.logic.Rune
 import com.llgames.ia.logic.IA
 
-
-private enum class LAST_CLICKED { NONE, IA, GUI }
 
 /**
  * Game State correspondant à l'écran d'édition d'IA.
@@ -34,7 +34,6 @@ private enum class LAST_CLICKED { NONE, IA, GUI }
  *  - Lorsque l'on modifie une rune ([clickGUI]), il faut potentiellement en ajouter
  *  ou en modifier directement à sa suite.
  *
- *  TODO: [clickGUI] Retirer les runes superflues pour une ligne normale
  *  TODO: [changePage]
  *  TODO: [saveCurrentRunes]
  *
@@ -47,7 +46,7 @@ class EditIA(game: IAGame) : KtxScreen {
     private var mainTable: KTableWidget
     private var selectedRune = Pair(0, 0)
     private var selectedGUI = Pair(0, 0)
-    private var lastClicked = LAST_CLICKED.NONE
+    private var guiType = RT.GATE
     private var selectedPage = 0
     private var currentRules = mutableListOf(mutableListOf<Rune>())
     private var complexRules = mutableListOf<Int>()
@@ -58,7 +57,9 @@ class EditIA(game: IAGame) : KtxScreen {
                     RT.VALUE to 0x90CAF9,
                     RT.TARGET to 0xA5D6A7,
                     RT.ACTION to 0xEF9A9A,
+                    RT.BLANK to 0xFFFFFF,
                     RT.ERROR to 0xB71C1C)
+    private val coolGates = arrayOf("ID", "NOT", "")
 
     init {
 
@@ -81,6 +82,7 @@ class EditIA(game: IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                                saveCurrentRunes()
                                 game.setScreen<EditTeam>()
                             }
                         })
@@ -176,6 +178,7 @@ class EditIA(game: IAGame) : KtxScreen {
 
                         for (j in 0..1) {
                             imageTextButton("") {
+                                addTextTooltip("hey")
                                 it.space(16f)
                                 it.spaceRight(32f)
                                 it.width(50f)
@@ -220,6 +223,7 @@ class EditIA(game: IAGame) : KtxScreen {
 
     companion object {
         var editedLFighter = LFighter("")
+        var editedTeam: Team? = null
     }
 
     override fun show() {
@@ -232,10 +236,9 @@ class EditIA(game: IAGame) : KtxScreen {
         (leftTable.children[0] as Label)
                 .setText("Choose IA rules for ${editedLFighter.name} - ")
 
-        lastClicked = LAST_CLICKED.NONE
+        selectedRune = Pair(0, 0)
         loadCurrentRunes()
         update()
-        setGUI(RT.GATE)
     }
 
     override fun render(delta: Float) {
@@ -275,15 +278,7 @@ class EditIA(game: IAGame) : KtxScreen {
      * Appelé quand on clique sur une des runes du joueur.
      */
     private fun clickRune() {
-        lastClicked = LAST_CLICKED.IA
-        if (selectedRune.first > currentRules.lastIndex) {
-            // On ajoute une règle
-            setGUI(RT.GATE)
-        } else {
-            // On clique sur une rune existante
-            val clickedR = currentRules[selectedRune.first][selectedRune.second]
-            setGUI(clickedR.type)
-        }
+        update()
     }
 
     /**
@@ -291,57 +286,82 @@ class EditIA(game: IAGame) : KtxScreen {
      */
     private fun clickGUI() {
         // Modification de [selectedRune]
-        if (lastClicked != LAST_CLICKED.NONE) {
 
-            val sR = Runes.runes[getITBRight(selectedGUI.first, selectedGUI.second).text.toString()]
-                    ?: Rune("x", RT.ERROR)
-            val cR = currentRules[selectedRune.first]
+        val sR = Runes.runes[getITBRight(selectedGUI.first, selectedGUI.second).text.toString()]
+                ?: Rune("", RT.ERROR)
 
-            if (selectedRune.first > currentRules.lastIndex) {
-                // Ajout d'une règle
-                currentRules.add(mutableListOf(sR))
-            } else {
-                // Modification d'une rune
-                cR[selectedRune.second] = sR
-            }
-
-            // Il faut modifier la règle selon [sR.next]
-            for (type in sR.next.reversed()) {
-                val wR = workingRules(cR, sR)
-
-                if (wR.none { it.type == type }) {
-
-                    // Cas particulier : la condition veut une cible et une valeur et il y a
-                    // déjà une rune valeur
-                    if (sR.type == RT.CONDITION
-                            && sR.next.size == 2
-                            && wR.any { it.type == RT.VALUE }
-                            && wR.none { it.type == RT.TARGET }) {
-
-                        cR.add(selectedRune.second + 2, Rune("", type))
-                    } else {
-                        cR.add(selectedRune.second + 1, Rune("", type))
-                    }
-                }
-            }
-
-            // Retirer les runes superflues si la rune est invalide
-            if (!Runes.isValid(currentRules[selectedRune.first].toTypedArray()) && cR[0].type == RT.GATE) {
-                // Règle normale
-                TODO()
-            } else if (cR[0].type == RT.ERROR) {
-                // On modifie la seconde condition d'une règle
-                val toRemove = mutableListOf<Int>()
-                for (i in 2..cR.lastIndex) {
-                    if (cR[i].type !in cR[1].next) {
-                        toRemove.add(i)
-                    }
-                }
-                toRemove.reversed().map { cR.removeAt(it) }
-            }
-            update()
+        if (selectedRune.first > currentRules.lastIndex) {
+            // Ajout d'une règle
+            currentRules.add(mutableListOf(sR))
+        } else {
+            // Modification d'une rune
+            currentRules[selectedRune.first][selectedRune.second] = sR
         }
-        lastClicked = LAST_CLICKED.GUI
+
+        val cR = currentRules[selectedRune.first]
+
+        // Il faut modifier la règle selon [sR.next]
+        for (type in sR.next.reversed()) {
+            val wR = workingRules(cR, sR)
+
+            if (wR.none { it.type == type }) {
+
+                // Cas particulier : la condition veut une cible et une valeur et il y a
+                // déjà une rune valeur
+                if (sR.type == RT.CONDITION
+                        && sR.next.size == 2
+                        && wR.any { it.type == RT.VALUE }
+                        && wR.none { it.type == RT.TARGET }) {
+
+                    cR.add(selectedRune.second + 2, Rune("", type))
+                } else {
+                    cR.add(selectedRune.second + 1, Rune("", type))
+                }
+            }
+        }
+
+        // Retirer les runes superflues si la rune est invalide
+        if (!Runes.isValid(currentRules[selectedRune.first].toTypedArray()) && cR[0].type == RT.GATE && sR.type in arrayOf(RT.CONDITION, RT.ACTION)) {
+            // Règle normale
+            val toRemove = mutableListOf<Int>()
+            val index = selectedRune.second
+            val wR = workingRules(cR, sR)
+            for (i in 0..wR.lastIndex) {
+                if (wR[i].type !in sR.next) {
+                    toRemove.add(i + index + 1)
+                }
+            }
+            toRemove.reversed().map { cR.removeAt(it) }
+        } else if (cR[0].type == RT.BLANK) {
+            // On modifie la seconde condition d'une règle
+            val toRemove = mutableListOf<Int>()
+            for (i in 2..cR.lastIndex) {
+                if (cR[i].type !in cR[1].next) {
+                    toRemove.add(i)
+                }
+            }
+            toRemove.reversed().map { cR.removeAt(it) }
+        }
+
+        // Édition d'une nouvelle rune
+        if (sR.type == RT.GATE && cR.size == 1) {
+            cR.add(Rune("", RT.CONDITION))
+            cR.add(Rune("", RT.ACTION))
+        }
+
+        // Retirer ou ajouter une règle complexe
+        if (selectedRune.first + 1 in complexRules) {
+            // La règle était complexe
+            if (cR[0].id in coolGates) {
+                // Elle ne l'est plus
+                currentRules.removeAt(selectedRune.first + 1)
+            }
+        } else if (cR[0].id !in coolGates && selectedRune.first !in complexRules) {
+            // La règle est complexe
+            currentRules.add(selectedRune.first + 1, mutableListOf(Rune("", RT.BLANK), Rune("", RT.CONDITION)))
+        }
+        updateComplexRules()
+        update()
     }
 
     private fun workingRules(runes: MutableList<Rune>, sR: Rune): MutableList<Rune> = when (sR.type) {
@@ -356,14 +376,23 @@ class EditIA(game: IAGame) : KtxScreen {
      * TODO: Gérer les pages
      */
     private fun setGUI(type: RT) {
-        selectedPage = 0
+        if (guiType != type) {
+            selectedPage = 0
+            guiType = type
+        }
         val runes = Runes.runes.filter { (_, rune) -> rune.type == type }.toList()
         for (i in 0..3) {
             for (j in 0..1) {
+
                 val index = 2 * i + j + 8 * selectedPage
                 val tib = getITBRight(i, j)
+
                 // On affiche les runes sélectionnables
-                if (index <= runes.lastIndex && !(type == RT.GATE && currentRules.lastIndex > 3 && index > 1)) {
+                val sR = if (currentRules.lastIndex >= selectedRune.first) currentRules[selectedRune.first][selectedRune.second] else Rune("", RT.ERROR)
+
+                // On ne veut pas toujours afficher toutes les portes logiques
+                val casParticulier = type == RT.GATE && index > 1 && sR.id in coolGates && (currentRules.lastIndex == 4 || selectedRune.first == 4)
+                if (index <= runes.lastIndex && !casParticulier) {
                     setColor(tib, type)
                     tib.text = runes[index].second.id
                     tib.isVisible = true
@@ -401,9 +430,20 @@ class EditIA(game: IAGame) : KtxScreen {
                 currentRules.removeAt(i - 1)
             } else if (i + 1 in complexRules) {
                 currentRules.removeAt(i)
-                complexRules.remove(i + 1)
             }
+
+            updateComplexRules()
+
+            selectedRune = Pair(0, 0)
             update()
+        }
+    }
+
+    private fun updateComplexRules() {
+        complexRules.clear()
+        for (i in 0..currentRules.lastIndex) {
+            if (currentRules[i][0].type == RT.BLANK)
+                complexRules.add(i)
         }
     }
 
@@ -411,11 +451,34 @@ class EditIA(game: IAGame) : KtxScreen {
      * Change la priorité d'une règle.
      */
     private fun moveRune(s: String, i: Int) {
-        if (s == "UP" && i > 0) {
-            println("UP")
-        } else if (s == "DOWN" && i < 4) {
-            println("DOWN")
+        val cxR = i + 1 in complexRules
+        if (s == "UP") {
+            val cxRSwitch = i - 1 in complexRules
+            if (!cxRSwitch) {
+                // On échange avec une règle simple
+                val rR = currentRules.removeAt(i - 1)
+                if (cxR) {
+                    currentRules.add(i + 1, rR)
+                } else {
+                    currentRules.add(i, rR)
+                }
+            } else {
+                // On échange avec une règle complexe
+                val rR2 = currentRules.removeAt(i - 1)
+                val rR1 = currentRules.removeAt(i - 2)
+                val offset = if (cxR) 1 else 0
+                currentRules.add(i - 1 + offset, rR1)
+                currentRules.add(i + offset, rR2)
+            }
+        } else if (s == "DOWN") {
+            // On utilise le code du UP sur la rune à échanger
+            if (cxR) moveRune("UP", i + 2) else moveRune("UP", i + 1)
         }
+
+        selectedRune = Pair(0, 0)
+
+        updateComplexRules()
+        update()
     }
 
     /**
@@ -427,7 +490,7 @@ class EditIA(game: IAGame) : KtxScreen {
             for (j in 0..6) {
                 val tib = getITBLeft(i, j)
                 // On affiche les règles d'IA du personnage
-                if (i <= currentRules.lastIndex && j <= currentRules[i].lastIndex && currentRules[i][j].type != RT.ERROR) {
+                if (i <= currentRules.lastIndex && j <= currentRules[i].lastIndex && currentRules[i][j].type != RT.BLANK) {
                     tib.isVisible = true
                     tib.text = currentRules[i][j].id
                     setColor(tib, currentRules[i][j].type)
@@ -446,6 +509,28 @@ class EditIA(game: IAGame) : KtxScreen {
             setColor(tib, RT.GATE)
             tib.touchable = Touchable.enabled
         }
+
+        // MAJ du GUI
+        if (currentRules.size > 0 && selectedRune.first <= currentRules.lastIndex) {
+            setGUI(currentRules[selectedRune.first][selectedRune.second].type)
+        } else {
+            setGUI(RT.GATE)
+        }
+
+
+        for (i in 0..4) {
+            val table = ((mainTable.children[0] as KTableWidget)
+                    .children[i + 1] as KTableWidget)
+            val upButton = table.children[0] as KTextButton
+            val downButton = table.children[1] as KTextButton
+            val delButton = table.children[2] as KTextButton
+            val lI = currentRules.lastIndex
+            val cR = if (i <= lI) currentRules[i][0] else Rune("", RT.ERROR)
+            upButton.isVisible = i in 1..lI && cR.type != RT.BLANK
+            downButton.isVisible = i < lI && !(i + 1 == lI && i + 1 in complexRules) && cR.type != RT.BLANK
+            delButton.isVisible = i <= lI && cR.type != RT.BLANK
+        }
+
     }
 
     /**
@@ -460,7 +545,7 @@ class EditIA(game: IAGame) : KtxScreen {
 
         for (rule in runes) {
 
-            if (rule[0].id in arrayOf("ID", "NOT")) {
+            if (rule[0].id in coolGates) {
                 // Cas simple : on ajoute la règle
                 currentRules.add(rule.toMutableList())
 
@@ -480,9 +565,51 @@ class EditIA(game: IAGame) : KtxScreen {
                 }
                 currentRules.add(rule.filterIndexed { index, _ -> index !in secondLine }.toMutableList())
                 currentRules.add(rule.filterIndexed { index, _ -> index in secondLine }.toMutableList())
-                currentRules[currentRules.lastIndex].add(0, Rune("NotVis", RT.ERROR))
+                currentRules[currentRules.lastIndex].add(0, Rune("", RT.BLANK))
                 complexRules.add(currentRules.lastIndex)
             }
+        }
+
+    }
+
+    /**
+     * Met à jour l'IA de [editedLFighter] selon [currentRules].
+     */
+    private fun saveCurrentRunes() {
+        val rulesToSave = mutableListOf<MutableList<Rune>>()
+        for (i in 0..currentRules.lastIndex) {
+            if (i + 1 !in complexRules && i !in complexRules) {
+                // Règle simple
+                if (currentRules[i].none { it.id == "" })
+                    rulesToSave.add(currentRules[i])
+            } else if (i !in complexRules) {
+                // Règle compliquée : il faut fusionner
+                val rule = mutableListOf<Rune>()
+
+                // Porte logique
+                rule.add(currentRules[i][0])
+
+                // Condition 1
+                val actionIndex = currentRules[i].withIndex().first({ (_, r) -> r.type == RT.ACTION }).index
+                for (j in 1..actionIndex - 1)
+                    rule.add(currentRules[i][j])
+
+                // Condition 2
+                for (j in 1..currentRules[i + 1].lastIndex)
+                    rule.add(currentRules[i + 1][j])
+
+                // Reste
+                for (j in actionIndex..currentRules[i].lastIndex)
+                    rule.add(currentRules[i][j])
+
+                if (rule.none { it.id == "" })
+                    rulesToSave.add(rule)
+            }
+        }
+
+        editedTeam?.let {
+            editedLFighter.changeIA(rulesToSave.map { Runes.toString(it.toTypedArray()) }.joinToString(" - "))
+            Save.saveTeam(editedTeam!!)
         }
 
     }

@@ -117,6 +117,7 @@ class EditTeam(game: IAGame) : KtxScreen {
 
                         override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                             EditIA.editedLFighter = team.fighters[i]
+                            EditIA.editedTeam = team
                             game.setScreen<EditIA>()
                         }
                     })

@@ -6,7 +6,7 @@ import com.llgames.ia.battle.State
  * Différents types de runes.
  */
 enum class RT {
-    GATE, CONDITION, VALUE, TARGET, ACTION, ERROR
+    GATE, CONDITION, VALUE, TARGET, ACTION, BLANK, ERROR
 }
 
 /**

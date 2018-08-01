@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "com.llgames.ia"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 28
     }
 }

@@ -34,9 +34,6 @@ import com.llgames.ia.logic.IA
  *  - Lorsque l'on modifie une rune ([clickGUI]), il faut potentiellement en ajouter
  *  ou en modifier directement à sa suite.
  *
- *  TODO: [changePage]
- *  TODO: [saveCurrentRunes]
- *
  */
 class EditIA(game: IAGame) : KtxScreen {
     private var stage = Stage()
@@ -178,7 +175,6 @@ class EditIA(game: IAGame) : KtxScreen {
 
                         for (j in 0..1) {
                             imageTextButton("") {
-                                addTextTooltip("hey")
                                 it.space(16f)
                                 it.spaceRight(32f)
                                 it.width(50f)
@@ -206,12 +202,28 @@ class EditIA(game: IAGame) : KtxScreen {
                     textButton("<-") {
                         it.spaceRight(16f)
                         pad(8f, 16f, 8f, 16f)
-                        changePage(-1)
+                        addListener(object : InputListener() {
+                            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                                return true
+                            }
+
+                            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                                changePage(-1)
+                            }
+                        })
                     }
                     textButton("->") {
                         it.spaceLeft(16f)
                         pad(8f, 16f, 8f, 16f)
-                        changePage(1)
+                        addListener(object : InputListener() {
+                            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                                return true
+                            }
+
+                            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                                changePage(1)
+                            }
+                        })
                     }
                 }
             }
@@ -372,15 +384,19 @@ class EditIA(game: IAGame) : KtxScreen {
 
     /**
      * Permet de modifier les runes affichées dans l'interface.
-     *
-     * TODO: Gérer les pages
      */
     private fun setGUI(type: RT) {
+        val runes = Runes.runes.filter { (_, rune) -> rune.type == type }.toList()
         if (guiType != type) {
             selectedPage = 0
             guiType = type
+        } else {
+            if (runes.size >= 8) {
+                selectedPage = (selectedPage + runes.size / 8) % (runes.size / 8)
+            } else {
+                selectedPage = 0
+            }
         }
-        val runes = Runes.runes.filter { (_, rune) -> rune.type == type }.toList()
         for (i in 0..3) {
             for (j in 0..1) {
 
@@ -418,6 +434,8 @@ class EditIA(game: IAGame) : KtxScreen {
      * Change la page de runes affichée.
      */
     private fun changePage(i: Int) {
+        selectedPage += i
+        update()
     }
 
     /**

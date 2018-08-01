@@ -41,7 +41,11 @@ class IA {
      * Renvoie la règle utilisée ce tour-ci.
      */
     fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> {
-        return iaStep(0, fighters, state)
+        val rule =  iaStep(0, fighters, state)
+        // Si la rune ONCE a été utilisée
+        if (rule.any { it.id == "ONCE" })
+            fighters[state.charTurn].onceUsed = true
+        return rule
     }
 
     /**
@@ -97,9 +101,12 @@ class IA {
         return when (rule[condIndex].id) {
             // Conditions simples
             "E1T" -> true
+            "ONCE" -> !fighters[state.charTurn].onceUsed
 
             // Conditions avec valeur
             "EXT" -> state.turn % value == 0
+            "TX" -> state.turn == value
+            "T>X" -> state.turn > value
 
             // Conditions avec une cible et une valeur
             // La conversion suivante marche car l'ordre est toujours COND VALUE TARGET

@@ -28,6 +28,7 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     var protected: LFighter? = null
     var weapon: Weapon? = null
     var spell: Spell? = null
+    var onceUsed = false
 
     companion object {
         val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.NEUTRAL, 5)))

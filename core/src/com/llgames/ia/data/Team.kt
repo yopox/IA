@@ -6,14 +6,14 @@ import com.llgames.ia.logic.Job
 import com.llgames.ia.logic.LFighter
 
 /**
- * Définit une équipe de trois personnages.
+ * Définit une équipe de personnages.
  * TODO: [name] ne doit pas contenir de "
  */
 class Team {
 
     var name = "main_team"
 
-    val fighters = arrayOf(
+    var fighters = mutableListOf<LFighter>(
             LFighter("Bartz"),
             LFighter("Faris", id = 1),
             LFighter("Galuf", id = 2))

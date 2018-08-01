@@ -1,8 +1,7 @@
 package report
 
-import com.llgames.ia.battle.Fighter
-import com.llgames.ia.battle.State
 import com.llgames.ia.logic.LFighter
+import com.llgames.ia.states.BattleState
 import java.io.File
 
 /**
@@ -12,7 +11,7 @@ import java.io.File
 fun main(args: Array<String>) {
     HTMLBuilder.declareTeams(TeamBuilder.fighters)
 
-    var state = State(1, -1, -1, -1)
+    var state = BattleState(1, -1, -1, -1)
     HTMLBuilder.newTurn(state.turn)
 
     while (!checkWin(TeamBuilder.fighters, state)) {
@@ -37,7 +36,7 @@ fun main(args: Array<String>) {
     print("done")
 }
 
-fun checkWin(fighters: Array<LFighter>, state: State): Boolean {
+fun checkWin(fighters: Array<LFighter>, state: BattleState): Boolean {
     if (fighters.none { it.team == 0 && it.alive }) {
         state.winner = 1
         return true

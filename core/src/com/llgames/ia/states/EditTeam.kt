@@ -72,7 +72,7 @@ class EditTeam(game: IAGame) : KtxScreen {
                             }
                         })
                     }
-                    label(JOBS.HUMAN.name) {
+                    label(JOBS.getJob("").name) {
                         it.pad(8f)
                         it.width(56f)
                         setAlignment(Align.center)

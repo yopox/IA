@@ -1,15 +1,15 @@
 package report
 
-import com.llgames.ia.battle.State
 import com.llgames.ia.logic.IAHandler
 import com.llgames.ia.logic.LFighter
+import com.llgames.ia.states.BattleState
 
 object TurnLogger: IAHandler {
-    override fun wait(fighters: Array<out LFighter>, state: State) {
+    override fun wait(fighters: Array<out LFighter>, state: BattleState) {
         HTMLBuilder.write("${fighters[state.charTurn].name} waits.")
     }
 
-    override fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun wpn(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         TODO("not implemented")
     }
 
@@ -25,22 +25,22 @@ object TurnLogger: IAHandler {
         HTMLBuilder.write("${actor.name} doesn't have any target.")
     }
 
-    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun atk(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         HTMLBuilder.write("${fighters[state.charTurn].name} attacks ${target?.name}!")
         super.atk(fighters, state, target)
     }
 
-    override fun def(fighters: Array<out LFighter>, state: State) {
+    override fun def(fighters: Array<out LFighter>, state: BattleState) {
         HTMLBuilder.write("${fighters[state.charTurn].name} defends himself!")
         super.def(fighters, state)
     }
 
-    override fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun pro(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         HTMLBuilder.write("${fighters[state.charTurn].name} protects ${target?.name}!")
         super.pro(fighters, state, target)
     }
 
-    override fun wrm(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun wrm(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         HTMLBuilder.write("${fighters[state.charTurn].name} warms up!")
         super.wrm(fighters, state, target)
     }

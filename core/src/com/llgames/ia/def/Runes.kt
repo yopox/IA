@@ -30,7 +30,6 @@ object Runes {
             "NXOR" to Rune("NXOR", RT.GATE, arrayOf(RT.CONDITION, RT.CONDITION, RT.ACTION)),
 
             // Conditions
-            "E1T" to Rune("E1T", RT.CONDITION),
             "EXT" to Rune("EXT", RT.CONDITION, arrayOf(RT.VALUE)),
             "TX" to Rune("TX", RT.CONDITION, arrayOf(RT.VALUE)),
             "T>X" to Rune("T>X", RT.CONDITION, arrayOf(RT.VALUE)),

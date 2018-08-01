@@ -1,7 +1,8 @@
 package com.llgames.ia.logic
 
-import com.llgames.ia.battle.State
 import com.llgames.ia.def.Runes
+import com.llgames.ia.states.BattleState
+import kotlin.math.max
 
 /**
  * On ne travaille qu'avec des [LFighter], partie logique des combattants.
@@ -18,7 +19,7 @@ class IA {
     private var rules: MutableList<Array<Rune>> = mutableListOf(DEFAULT_RULE)
 
     companion object {
-        private val DEFAULT_RULE = Runes.fromString("ID E1T WAIT")
+        private val DEFAULT_RULE = Runes.fromString("ID EXT 1 WAIT")
     }
 
     /**
@@ -40,7 +41,7 @@ class IA {
     /**
      * Renvoie la règle utilisée ce tour-ci.
      */
-    fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> {
+    fun getRule(fighters: Array<out LFighter>, state: BattleState): Array<Rune> {
         val rule =  iaStep(0, fighters, state)
         // Si la rune ONCE a été utilisée
         if (rule.any { it.id == "ONCE" })
@@ -51,7 +52,7 @@ class IA {
     /**
      * Fonction récursive qui renvoie la première règle qui s'applique.
      */
-    private fun iaStep(index: Int, fighters: Array<out LFighter>, state: State): Array<Rune> {
+    private fun iaStep(index: Int, fighters: Array<out LFighter>, state: BattleState): Array<Rune> {
 
         // Cas de base
         if (index == rules.size)
@@ -71,7 +72,7 @@ class IA {
      * Pour les portes logiques à deux conditions, on appelle [condCheck] en coupant [rule]
      * après la première condition. [condCheck] s'occupe de trouver la condition.
      */
-    private fun gateCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: State): Boolean {
+    private fun gateCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: BattleState): Boolean {
 
         return when (rule[0].id) {
             "ID" -> condCheck(rule, fighters, state)
@@ -89,7 +90,7 @@ class IA {
     /**
      * Vérifie une condition.
      */
-    private fun condCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: State): Boolean {
+    private fun condCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: BattleState): Boolean {
 
         // Il n'est pas sûr que rule[0] soit une rune de type RT.CONDITION
         var condIndex = 0
@@ -100,11 +101,10 @@ class IA {
 
         return when (rule[condIndex].id) {
             // Conditions simples
-            "E1T" -> true
             "ONCE" -> !fighters[state.charTurn].onceUsed
 
             // Conditions avec valeur
-            "EXT" -> state.turn % value == 0
+            "EXT" -> state.turn % max(value, 1) == 0
             "TX" -> state.turn == value
             "T>X" -> state.turn > value
 

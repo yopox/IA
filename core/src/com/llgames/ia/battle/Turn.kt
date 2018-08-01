@@ -5,6 +5,7 @@ import com.llgames.ia.logic.Jet
 import com.llgames.ia.logic.LFighter
 import com.llgames.ia.logic.Spell
 import com.llgames.ia.logic.Weapon
+import com.llgames.ia.states.BattleState
 
 /**
  * [Turn] implements [IAHandler].
@@ -18,7 +19,7 @@ class Turn : IAHandler {
 
     private val actions: MutableList<TurnAction> = mutableListOf()
 
-    override fun play(fighters: Array<out LFighter>, state: State) {
+    override fun play(fighters: Array<out LFighter>, state: BattleState) {
 
         actions.clear()
 
@@ -51,14 +52,14 @@ class Turn : IAHandler {
 
     }
 
-    override fun def(fighters: Array<out LFighter>, state: State) {
+    override fun def(fighters: Array<out LFighter>, state: BattleState) {
         super.def(fighters, state)
 
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} is defending himself!"))
         actions.add(TurnAction(15, "pose", strContent = "defend", actor = fighters[state.charTurn].id))
     }
 
-    override fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun pro(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         super.pro(fighters, state, target)
 
         val actor = fighters[state.charTurn]
@@ -67,11 +68,11 @@ class Turn : IAHandler {
         }
     }
 
-    override fun wait(fighters: Array<out LFighter>, state: State) {
+    override fun wait(fighters: Array<out LFighter>, state: BattleState) {
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} does nothing."))
     }
 
-    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun atk(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         super.atk(fighters, state, target)
         val actor = fighters[state.charTurn]
 
@@ -90,16 +91,16 @@ class Turn : IAHandler {
         }
     }
 
-    override fun wrm(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun wrm(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         super.wrm(fighters, state, target)
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} warms up!"))
     }
 
-    override fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun wpn(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         TODO("not implemented")
     }
 
-    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    override fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         super.spl(fighters, state, target)
         val actor = fighters[state.charTurn]
         val spell = fighters[state.charTurn].spell

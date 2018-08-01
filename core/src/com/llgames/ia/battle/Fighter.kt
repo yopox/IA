@@ -23,6 +23,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
     private var srcY = 6
     private val width = 16
     private val height = 24
+
     // Animations
     var forceFacing: Fighter? = null
     var pose = "idle"

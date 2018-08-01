@@ -1,8 +1,7 @@
 package com.llgames.ia.logic
 
-import com.llgames.ia.battle.State
 import com.llgames.ia.battle.hpLost
-import com.llgames.ia.def.Runes
+import com.llgames.ia.states.BattleState
 
 /**
  * [IAHandler] s'occupe de la partie logique des actions.
@@ -12,7 +11,7 @@ interface IAHandler {
     /**
      * Fonction appelée au début du tour d'un joueur.
      */
-    fun play(fighters: Array<out LFighter>, state: State) {
+    fun play(fighters: Array<out LFighter>, state: BattleState) {
 
         // Le perso qui joue ne protège plus personne
         fighters[state.charTurn].startTurn(fighters)
@@ -43,7 +42,7 @@ interface IAHandler {
 
     }
 
-    fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    fun atk(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])
@@ -78,26 +77,26 @@ interface IAHandler {
         }
     }
 
-    fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    fun pro(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         target?.let { it.protected = fighters[state.charTurn] }
     }
 
-    fun wait(fighters: Array<out LFighter>, state: State)
+    fun wait(fighters: Array<out LFighter>, state: BattleState)
 
-    fun def(fighters: Array<out LFighter>, state: State) {
+    fun def(fighters: Array<out LFighter>, state: BattleState) {
         val actor = fighters[state.charTurn]
         actor.stats.def.general += 50
     }
 
-    fun wrm(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    fun wrm(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         val actor = fighters[state.charTurn]
         actor.stats.def.general += 20
         actor.stats.atk.general += 20
     }
 
-    fun wpn(fighters: Array<out LFighter>, state: State, target: LFighter?)
+    fun wpn(fighters: Array<out LFighter>, state: BattleState, target: LFighter?)
 
-    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?) {
+    fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])

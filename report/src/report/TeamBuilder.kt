@@ -15,19 +15,19 @@ object TeamBuilder {
     val fighters: Array<LFighter>
 
     init {
-        f1.changeJob(JOBS.DARKMAGE)
-        f1.changeIA("ID E1T ATK ELHP")
-        f2.changeJob(JOBS.DARKMAGE)
-        f2.changeIA("ID E1T ATK ELHP")
-        f3.changeJob(JOBS.DARKMAGE)
-        f3.changeIA("ID E1T ATK ELHP")
+        f1.changeJob(JOBS.getJob("DARKMAGE"))
+        f1.changeIA("ID EXT 1 ATK ELHP")
+        f2.changeJob(JOBS.getJob("DARKMAGE"))
+        f2.changeIA("ID EXT 1 ATK ELHP")
+        f3.changeJob(JOBS.getJob("DARKMAGE"))
+        f3.changeIA("ID EXT 1 ATK ELHP")
 
-        f4.changeJob(JOBS.DARKMAGE)
-        f4.changeIA("ID E1T ATK ELHP")
-        f5.changeJob(JOBS.DARKMAGE)
-        f5.changeIA("ID E1T ATK ELHP")
-        f6.changeJob(JOBS.DARKMAGE)
-        f6.changeIA("ID E1T ATK ELHP")
+        f4.changeJob(JOBS.getJob("DARKMAGE"))
+        f4.changeIA("ID EXT 1 ATK ELHP")
+        f5.changeJob(JOBS.getJob("DARKMAGE"))
+        f5.changeIA("ID EXT 1 ATK ELHP")
+        f6.changeJob(JOBS.getJob("DARKMAGE"))
+        f6.changeIA("ID EXT 1 ATK ELHP")
 
         fighters = arrayOf(f1, f2, f3, f4, f5, f6)
         fighters.forEach { it.prepare() }

@@ -25,7 +25,7 @@ class IAGame : KtxGame<Screen>() {
         addScreen(TitleScreen(this))
         addScreen(EditTeam(this))
         addScreen(EditIA(this))
-        addScreen(Battle())
+        addScreen(Battle(this))
 
         setScreen<TitleScreen>()
 

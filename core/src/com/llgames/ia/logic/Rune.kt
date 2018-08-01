@@ -1,6 +1,6 @@
 package com.llgames.ia.logic
 
-import com.llgames.ia.battle.State
+import com.llgames.ia.states.BattleState
 
 /**
  * Différents types de runes.
@@ -27,7 +27,7 @@ class RuneTarget(id: String, var carac: (LFighter) -> Int = { it.stats.hp })
     /**
      * Renvoie le [LFighter] associé à la cible.
      */
-    fun getTarget(fighters: Array<out LFighter>, state: State): LFighter? {
+    fun getTarget(fighters: Array<out LFighter>, state: BattleState): LFighter? {
         val alive = fighters.filter { it.alive }
         return when (id.slice(0..1)) {
             "aM" -> alive.maxBy { carac(it) }

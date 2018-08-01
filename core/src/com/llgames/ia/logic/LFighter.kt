@@ -1,7 +1,7 @@
 package com.llgames.ia.logic
 
-import com.llgames.ia.battle.State
 import com.llgames.ia.def.JOBS
+import com.llgames.ia.states.BattleState
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -21,7 +21,7 @@ data class Spell(var name: String, var jets: Array<Jet>, var boosts: Array<Boost
 open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     private val ia = IA()
     var boosts: MutableList<Pair<Boost, LFighter>> = mutableListOf()
-    var job = JOBS.HUMAN
+    var job = JOBS.getJob("HUMAN")
     var stats = Stats()
     var maxStats = Stats()
     var alive = true
@@ -45,7 +45,7 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     /**
      * Renvoie la règle d'IA utilisée ce tour-ci.
      */
-    fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> = ia.getRule(fighters, state)
+    fun getRule(fighters: Array<out LFighter>, state: BattleState): Array<Rune> = ia.getRule(fighters, state)
 
     /**
      * Reset les stats du personnage.
@@ -72,7 +72,12 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
                 target.applyBoost(boost)
         }
 
-        boosts.removeIf { it.first.duration < 0 }
+        val toRemove = mutableListOf<Int>()
+        for (i in 0..boosts.lastIndex) {
+            if (boosts[i].first.duration < 0)
+                toRemove.add(i)
+        }
+        toRemove.reversed().map { boosts.removeAt(it) }
 
     }
 

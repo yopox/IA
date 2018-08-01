@@ -42,7 +42,7 @@ class TitleScreen(game: IAGame) : KtxScreen {
             row()
             table {
                 pad(16f)
-                textButton("Edit teams") {
+                textButton("Edit team") {
                     pad(8f)
                     it.spaceRight(16f)
                     addListener(object : InputListener() {

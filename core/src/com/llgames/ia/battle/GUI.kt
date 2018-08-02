@@ -6,21 +6,25 @@ import com.llgames.ia.states.BattleState
 
 /**
  * Affiche des informations sur les personnages dans la partie supérieure de l'écran.
- *
- * TODO: Construire [parts] à l'initialisation et le MAJ uniquement dans [init] (à renommer)
  */
 
-data class GUIPart(val name: String, val team: Int, var hp: Int)
+data class GUIPart(var name: String, val id: Int, val team: Int, var hp: Int, var visible: Boolean = true)
 
 class GUI {
 
-    private var parts = ArrayList<GUIPart>()
+    private var parts = MutableList<GUIPart>(6, { GUIPart("?", it, it / 3, 0) })
 
-    fun init(fighters: Array<Fighter>) {
+    fun setFighters(fighters: Array<Fighter>) {
         val rfighters = fighters.sortedBy { it.id }
-        if (parts.size == 0) {
-            rfighters.filter { it.team == 0 }.forEach { parts.add(GUIPart(it.name, 0, it.maxStats.hp)) }
-            rfighters.filter { it.team == 1 }.forEach { parts.add(GUIPart(it.name, 1, it.maxStats.hp)) }
+        for (part in parts) {
+            val fighter = rfighters.filter { it.team == part.team && it.id == part.id }.firstOrNull()
+            if (fighter == null) {
+                part.visible = false
+            } else {
+                part.visible = true
+                part.hp = fighter.maxStats.hp
+                part.name = fighter.name
+            }
         }
     }
 
@@ -34,8 +38,10 @@ class GUI {
 
         for (i in 0..1) {
             for ((j, part) in parts.filter { it.team == i }.withIndex()) {
-                font.draw(batch, part.name, X_START1 + X_OFFSET * i, Y_START - Y_OFFSET * j)
-                font.draw(batch, "HP:" + part.hp, X_START2 + X_OFFSET * i, Y_START - Y_OFFSET * j)
+                if (part.visible) {
+                    font.draw(batch, part.name, X_START1 + X_OFFSET * i, Y_START - Y_OFFSET * j)
+                    font.draw(batch, "HP:" + part.hp, X_START2 + X_OFFSET * i, Y_START - Y_OFFSET * j)
+                }
             }
         }
 

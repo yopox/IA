@@ -89,7 +89,7 @@ class Battle(game: IAGame) : KtxScreen {
         fighters.sortByDescending { it.stats.spd }
 
         // Mise à jour des éléments visuels
-        gui.init(fighters)
+        gui.setFighters(fighters)
         bState = BattleState()
 
         // Début du premier tour

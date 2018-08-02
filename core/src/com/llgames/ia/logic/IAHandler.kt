@@ -63,8 +63,9 @@ interface IAHandler {
             // On applique les buffs
             weapon.boosts?.let {
                 for (buff in it) {
-                    val buffTarget = if (buff.onSelf) actor else rtarget
-                    buff.apply(buffTarget)
+                    val buffTarget = if (buff.second) actor else target
+                    buff.first.apply(buffTarget)
+                    buffTarget.boosts.add(buff.first)
                 }
             }
 
@@ -85,7 +86,7 @@ interface IAHandler {
 
     fun def(fighters: Array<out LFighter>, state: BattleState) {
         val actor = fighters[state.charTurn]
-        actor.stats.def.general += 50
+        actor.boosts.add(Boost({ it.stats.def.general += 50 }, 1))
     }
 
     fun wrm(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
@@ -106,16 +107,19 @@ interface IAHandler {
             val spell = fighters[state.charTurn].spell ?: LFighter.DEFAULT_SPELL
 
             // On applique les dommages
-            actor.attack(target, spell.jets)
+            if (spell.jets.isNotEmpty()) {
+                actor.attack(target, spell.jets)
+                // Log des dommages
+                damage(actor, target, hpLost(damageCalculation(actor, target, spell.jets)))
+            }
 
-            // Log des dommages
-            damage(actor, target, hpLost(damageCalculation(actor, target, spell.jets)))
 
             // On applique les buffs
             spell.boosts?.let {
                 for (buff in it) {
-                    val buffTarget = if (buff.onSelf) actor else target
-                    buff.apply(buffTarget)
+                    val buffTarget = if (buff.second) actor else target
+                    buff.first.apply(buffTarget)
+                    buffTarget.boosts.add(buff.first)
                 }
             }
 

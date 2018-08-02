@@ -30,6 +30,6 @@ object TeamBuilder {
         f6.changeIA("ID EXT 1 ATK ELHP")
 
         fighters = arrayOf(f1, f2, f3, f4, f5, f6)
-        fighters.forEach { it.prepare() }
+        fighters.forEach { it.resetStats(true) }
     }
 }

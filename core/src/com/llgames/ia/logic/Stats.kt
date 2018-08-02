@@ -14,11 +14,15 @@ class Stats {
     var atkB = ComplexStat()
     var defB = ComplexStat()
 
-    fun setTo(maxStats: Stats) {
+    fun setTo(maxStats: Stats, setHp: Boolean) {
         atk = maxStats.atk.copy()
         def = maxStats.def.copy()
-        hp = maxStats.hp
+        if (setHp) hp = maxStats.hp
         spd = maxStats.spd
+    }
+
+    override fun toString(): String {
+        return "hp: $hp ; atk: ${atk.general} ; def: ${def.general} ; spd: $spd"
     }
 
 }

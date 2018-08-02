@@ -31,7 +31,7 @@ data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int
 class Battle(game: IAGame) : KtxScreen {
 
     private val batch = SpriteBatch()
-    private val bg = Texture("Cliffs.gif")
+    private val bg = Texture("Mogall_Forest.gif")
     private val font = BitmapFont(Gdx.files.internal("fonts/softsquare.fnt"), false)
 
     private var camera = Camera()
@@ -85,7 +85,7 @@ class Battle(game: IAGame) : KtxScreen {
         fighters = tempTeam.toTypedArray()
 
         // Préparation au combat
-        fighters.map { it.prepare() }
+        fighters.map { it.resetStats(true) }
         fighters.sortByDescending { it.stats.spd }
 
         // Mise à jour des éléments visuels

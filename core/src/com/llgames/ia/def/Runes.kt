@@ -11,6 +11,8 @@ import com.llgames.ia.logic.RuneTarget
  * Cet objet permet d'associer l'un à l'autre.
  * Ainsi en utilisant [fromString] on peut récupérer les objets correspondants à une règle, par
  * ex. fromString("ID MXHP 25 SELF ATK ELHP").
+ *
+ * Pour ajouter une rune en jeu il faut l'ajouter dans [runes] puis gérer son comportement dans [Rune]
  */
 object Runes {
 

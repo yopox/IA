@@ -103,12 +103,12 @@ class Turn : IAHandler {
     override fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
         super.spl(fighters, state, target)
         val actor = fighters[state.charTurn]
-        val spell = fighters[state.charTurn].spell
+        val spell = fighters[state.charTurn].spell ?: LFighter.DEFAULT_SPELL
 
         target?.let {
 
                 actions.add(TurnAction(15, "pose", strContent = "cast", actor = actor.id))
-                actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell?.name} on ${if (target == actor) "itself" else target.name}!"))
+                actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell.name} on ${if (target == actor) "itself" else target.name}!"))
             actions.add(TurnAction(65, "pose", strContent = "idle", actor = actor.id))
 
         }

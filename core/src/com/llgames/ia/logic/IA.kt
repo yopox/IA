@@ -2,7 +2,6 @@ package com.llgames.ia.logic
 
 import com.llgames.ia.def.Runes
 import com.llgames.ia.states.BattleState
-import kotlin.math.max
 
 /**
  * On ne travaille qu'avec des [LFighter], partie logique des combattants.
@@ -42,7 +41,7 @@ class IA {
      * Renvoie la règle utilisée ce tour-ci.
      */
     fun getRule(fighters: Array<out LFighter>, state: BattleState): Array<Rune> {
-        val rule =  iaStep(0, fighters, state)
+        val rule = iaStep(0, fighters, state)
         // Si la rune ONCE a été utilisée
         if (rule.any { it.id == "ONCE" })
             fighters[state.charTurn].onceUsed = true
@@ -59,63 +58,10 @@ class IA {
             return DEFAULT_RULE
 
         // On teste la porte logique
-        return if (gateCheck(rules[index], fighters, state)) {
+        return if (RUNE_LOGIC.gateCheck(rules[index], fighters, state)) {
             rules[index]
         } else {
             iaStep(index + 1, fighters, state)
-        }
-    }
-
-    /**
-     * Teste une porte logique.
-     *
-     * Pour les portes logiques à deux conditions, on appelle [condCheck] en coupant [rule]
-     * après la première condition. [condCheck] s'occupe de trouver la condition.
-     */
-    private fun gateCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: BattleState): Boolean {
-
-        return when (rule[0].id) {
-            "ID" -> condCheck(rule, fighters, state)
-            "NOT" -> !condCheck(rule, fighters, state)
-            "AND" -> condCheck(rule, fighters, state) and condCheck(rule.copyOfRange(2, rule.lastIndex), fighters, state)
-            "OR" -> condCheck(rule, fighters, state) or condCheck(rule.copyOfRange(2, rule.lastIndex), fighters, state)
-            "XOR" -> condCheck(rule, fighters, state) xor condCheck(rule.copyOfRange(2, rule.lastIndex), fighters, state)
-            "NAND" -> !(condCheck(rule, fighters, state) and condCheck(rule.copyOfRange(2, rule.lastIndex), fighters, state))
-            "NOR" -> !(condCheck(rule, fighters, state) or condCheck(rule.copyOfRange(2, rule.lastIndex), fighters, state))
-            "NXOR" -> !(condCheck(rule, fighters, state) xor condCheck(rule.copyOfRange(2, rule.lastIndex), fighters, state))
-            else -> false
-        }
-    }
-
-    /**
-     * Vérifie une condition.
-     */
-    private fun condCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: BattleState): Boolean {
-
-        // Il n'est pas sûr que rule[0] soit une rune de type RT.CONDITION
-        var condIndex = 0
-        while (rule[condIndex].type != RT.CONDITION)
-            condIndex++
-
-        val value = if (RT.VALUE in rule[condIndex].next) rule[condIndex + 1].id.toInt() else 0
-
-        return when (rule[condIndex].id) {
-            // Conditions simples
-            "ONCE" -> !fighters[state.charTurn].onceUsed
-
-            // Conditions avec valeur
-            "EXT" -> state.turn % max(value, 1) == 0
-            "TX" -> state.turn == value
-            "T>X" -> state.turn > value
-
-            // Conditions avec une cible et une valeur
-            // La conversion suivante marche car l'ordre est toujours COND VALUE TARGET
-            "MXHP" -> (rule[condIndex + 2] as RuneTarget)
-                    .getTarget(fighters, state)!! getPercent "HP" >= value
-            "LXHP" -> (rule[condIndex + 2] as RuneTarget)
-                    .getTarget(fighters, state)!! getPercent "HP" <= value
-
-            else -> false
         }
     }
 

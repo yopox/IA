@@ -8,19 +8,25 @@ import kotlin.math.min
 
 data class Jet(var type: TYPES, var elem: ELEMENTS, var damage: Int)
 
-data class Boost(var apply: (LFighter) -> Unit, var duration: Int, val onSelf: Boolean)
+/**
+ * Définition d'un [Boost].
+ * @param [apply] est une fonction qui applique le boost voulu
+ */
+data class Boost(var apply: (LFighter) -> Unit, var duration: Int)
 
-data class Weapon(var name: String, var jets: Array<Jet>, var boosts: Array<Boost>? = null)
+data class Weapon(var name: String, var jets: Array<Jet>, var boosts: Array<Pair<Boost, Boolean>>? = null)
 
-data class Spell(var name: String, var jets: Array<Jet>, var boosts: Array<Boost>? = null)
+data class Spell(var name: String, var jets: Array<Jet>, var boosts: Array<Pair<Boost, Boolean>>? = null)
 
 
 /**
  * Partie logique des combattants.
+ *
+ * //TODO: équipements
  */
 open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     private val ia = IA()
-    var boosts: MutableList<Pair<Boost, LFighter>> = mutableListOf()
+    var boosts: MutableList<Boost> = mutableListOf()
     var job = JOBS.getJob("HUMAN")
     var stats = Stats()
     var maxStats = Stats()
@@ -32,7 +38,7 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
 
     companion object {
         val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.NEUTRAL, 5)))
-        val DEFAULT_SPELL = Spell("Pray -", arrayOf(), arrayOf(Boost({it.stats.def.general += 5}, 1, true)))
+        val DEFAULT_SPELL = Spell("Pray +", arrayOf(), arrayOf(Pair(Boost({it.stats.def.general += 20}, 2), false)))
     }
 
     open fun changeJob(job: Job) {
@@ -50,8 +56,9 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     /**
      * Reset les stats du personnage.
      */
-    fun prepare() {
-        stats.setTo(maxStats)
+    fun resetStats(setHp: Boolean = false) {
+        stats.setTo(maxStats, setHp)
+        // TODO: Tenir compte des bonus d'équipements
     }
 
     /**
@@ -66,15 +73,17 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
      */
     fun endTurn() {
 
-        for ((boost, target) in boosts) {
+        resetStats()
+
+        for (boost in boosts) {
             boost.duration--
-            if (boost.duration < 0)
-                target.applyBoost(boost)
+            if (boost.duration >= 0)
+                this.applyBoost(boost)
         }
 
         val toRemove = mutableListOf<Int>()
         for (i in 0..boosts.lastIndex) {
-            if (boosts[i].first.duration < 0)
+            if (boosts[i].duration < 0)
                 toRemove.add(i)
         }
         toRemove.reversed().map { boosts.removeAt(it) }
@@ -119,7 +128,7 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     /**
      * Applique un boost.
      */
-    fun applyBoost(boost: Boost) {
+    private fun applyBoost(boost: Boost) {
         boost.apply(this)
     }
 

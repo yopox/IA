@@ -49,8 +49,8 @@ class GUI {
 
     fun debug(batch: Batch, font: BitmapFont, chars: Array<Fighter>, state: BattleState) {
 
-        font.draw(batch, "-- TURN " + (if (state.turn < 10) "0" + state.turn else state.turn) + " --", -160f + 6f, -90f + 137f)
-        font.draw(batch, chars[state.charTurn].getIAString().replace(" - ", "\n"), -160f + 6f, -90f + 122f)
+        font.draw(batch, "TURN " + (if (state.turn < 10) "0" + state.turn else state.turn) + " - ${chars[state.charTurn].name}", -160f + 6f, -90f + 133f)
+        font.draw(batch, chars[state.charTurn].getIAString().replace(" - ", "\n"), -160f + 6f, -90f + 118f)
 
     }
 

@@ -27,12 +27,14 @@ data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int
  *
  * TODO: Bouton accélérer
  * TODO: Bouton pause
+ * TODO: Animation en fin/début de tour ?
  */
-class Battle(game: IAGame) : KtxScreen {
+class Battle(private val game: IAGame) : KtxScreen {
 
     private val batch = SpriteBatch()
-    private val bg = Texture("Mogall_Forest.gif")
+    private val bg = Texture("Colosso.gif")
     private val font = BitmapFont(Gdx.files.internal("fonts/softsquare.fnt"), false)
+    private val IAfont = BitmapFont(Gdx.files.internal("fonts/skullboy.fnt"), false)
 
     private var camera = Camera()
     private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
@@ -43,11 +45,8 @@ class Battle(game: IAGame) : KtxScreen {
     private var bState: BattleState = BattleState()
     private var fighters = arrayOf<Fighter>()
     private var pos: Array<FloatArray>
-    private val game: IAGame
-
 
     init {
-        this.game = game
 
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
         // Fighters positions
@@ -145,7 +144,7 @@ class Battle(game: IAGame) : KtxScreen {
         fcopy.map { it.drawChar(batch, camera) }
 
         // Draw IA and turn number
-        debug(batch, font, fighters)
+        debug(batch, IAfont, fighters)
 
         batch.end()
 

@@ -4,9 +4,9 @@ Jeu en cours de développement.
 
 ![Combat](http://llgames.fr/ia.gif)
 
-## Internal testing
+## Tester
 
-Pour rejoindre les tests internes Android : [Google Play](https://play.google.com/apps/internaltest/4697874376730199437)
+Pour exécuter une [release desktop](https://github.com/yopox/IA/releases), il faut exécuter `java -cp RELEASE.jar com.llgames.ia.desktop.DesktopLauncher`
 
 ### Feedback
 

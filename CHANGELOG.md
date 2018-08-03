@@ -7,7 +7,7 @@
 ## v0.1.1 Colosso Update
 
 - Readable IA debug font
-
+- More balanced jobs
 
 <a name="0.1.0"></a>
 ## v0.1.0 Mogall Forest Update

@@ -37,7 +37,7 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     var onceUsed = false
 
     companion object {
-        val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.NEUTRAL, 5)))
+        val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.DARK, 5)))
         val DEFAULT_SPELL = Spell("Pray +", arrayOf(), arrayOf(Pair(Boost({it.stats.def.general += 20}, 2), false)))
     }
 

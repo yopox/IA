@@ -32,9 +32,9 @@ data class ComplexStat(var general: Int = 0,
                        var elements: MutableMap<ELEMENTS, Int> = mutableMapOf())
 
 enum class TYPES {
-    MAGICAL, PHYSICAL, BLADE
+    MAGICAL, PHYSICAL
 }
 
 enum class ELEMENTS {
-    NEUTRAL, FIRE, ICE
+    DARK, LIGHT
 }

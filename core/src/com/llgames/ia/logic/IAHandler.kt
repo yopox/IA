@@ -29,8 +29,8 @@ interface IAHandler {
         // Action du tour
         when (rule[actionIndex].id) {
             "DEF" -> def(fighters, state)
-            "WPN" -> wpn(fighters, state, target!!.getTarget(fighters, state))
-            "SPL" -> spl(fighters, state, target!!.getTarget(fighters, state))
+            "SPL1" -> spl(fighters, state, target!!.getTarget(fighters, state), 1)
+            "SPL2" -> spl(fighters, state, target!!.getTarget(fighters, state), 2)
             "PRO" -> pro(fighters, state, target!!.getTarget(fighters, state))
             "WRM" -> wrm(fighters, state, target!!.getTarget(fighters, state))
             "ATK" -> atk(fighters, state, target!!.getTarget(fighters, state))
@@ -95,16 +95,17 @@ interface IAHandler {
         actor.stats.atk.general += 20
     }
 
-    fun wpn(fighters: Array<out LFighter>, state: BattleState, target: LFighter?)
-
-    fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
+    fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?, nSpl: Int) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])
         } else {
 
             val actor = fighters[state.charTurn]
-            val spell = fighters[state.charTurn].spell ?: LFighter.DEFAULT_SPELL
+            val spell = when (nSpl) {
+                1 -> actor.spell1 ?: LFighter.DEFAULT_SPELL
+                else -> actor.spell2 ?: LFighter.DEFAULT_SPELL
+            }
 
             // On applique les dommages
             if (spell.jets.isNotEmpty()) {
@@ -112,7 +113,6 @@ interface IAHandler {
                 // Log des dommages
                 damage(actor, target, hpLost(damageCalculation(actor, target, spell.jets)))
             }
-
 
             // On applique les buffs
             spell.boosts?.let {

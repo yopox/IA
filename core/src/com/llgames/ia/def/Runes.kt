@@ -77,7 +77,8 @@ object Runes {
             // Actions
             "DEF" to Rune("DEF", RT.ACTION),
             "ATK" to Rune("ATK", RT.ACTION, arrayOf(RT.TARGET)),
-            "SPL" to Rune("SPL", RT.ACTION, arrayOf(RT.TARGET)),
+            "SPL1" to Rune("SPL1", RT.ACTION, arrayOf(RT.TARGET)),
+            "SPL2" to Rune("SPL2", RT.ACTION, arrayOf(RT.TARGET)),
             "PRO" to Rune("PRO", RT.ACTION, arrayOf(RT.TARGET)),
             "WAIT" to Rune("WAIT", RT.ACTION)
 

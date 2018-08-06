@@ -3,13 +3,11 @@ package com.llgames.ia.battle
 import com.llgames.ia.logic.IAHandler
 import com.llgames.ia.logic.Jet
 import com.llgames.ia.logic.LFighter
-import com.llgames.ia.logic.Spell
-import com.llgames.ia.logic.Weapon
 import com.llgames.ia.states.BattleState
 
 /**
  * [Turn] implements [IAHandler].
- * Turn is used to **show** the different actions happening in a turn.
+ * Turn is used to show the different actions happening in a turn.
  * See [Turn.update] for available TurnActions id.
  */
 
@@ -96,19 +94,18 @@ class Turn : IAHandler {
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} warms up!"))
     }
 
-    override fun wpn(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
-        TODO("not implemented")
-    }
-
-    override fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
-        super.spl(fighters, state, target)
+    override fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?, nSpl: Int) {
+        super.spl(fighters, state, target, nSpl)
         val actor = fighters[state.charTurn]
-        val spell = fighters[state.charTurn].spell ?: LFighter.DEFAULT_SPELL
+        val spell = when (nSpl) {
+            1 -> actor.spell1 ?: LFighter.DEFAULT_SPELL
+            else -> actor.spell2 ?: LFighter.DEFAULT_SPELL
+        }
 
         target?.let {
 
-                actions.add(TurnAction(15, "pose", strContent = "cast", actor = actor.id))
-                actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell.name} on ${if (target == actor) "itself" else target.name}!"))
+            actions.add(TurnAction(15, "pose", strContent = "cast", actor = actor.id))
+            actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell.name} on ${if (target == actor) "itself" else target.name}!"))
             actions.add(TurnAction(65, "pose", strContent = "idle", actor = actor.id))
 
         }

@@ -22,7 +22,8 @@ data class Spell(var name: String, var jets: Array<Jet>, var boosts: Array<Pair<
 /**
  * Partie logique des combattants.
  *
- * //TODO: équipements
+ * TODO: équipements
+ *
  */
 open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     private val ia = IA()
@@ -33,11 +34,12 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     var alive = true
     var protected: LFighter? = null
     var weapon: Weapon? = null
-    var spell: Spell? = null
+    var spell1: Spell? = null
+    var spell2: Spell? = null
     var onceUsed = false
 
     companion object {
-        val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.DARK, 5)))
+        val DEFAULT_WEAPON = Weapon("Fists", arrayOf(Jet(TYPES.PHYSICAL, ELEMENTS.LIGHT, 5)))
         val DEFAULT_SPELL = Spell("Pray +", arrayOf(), arrayOf(Pair(Boost({it.stats.def.general += 20}, 2), false)))
     }
 

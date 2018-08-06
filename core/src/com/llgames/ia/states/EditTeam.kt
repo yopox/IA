@@ -104,6 +104,18 @@ class EditTeam(game: IAGame) : KtxScreen {
                 textButton("EQUIP") {
                     it.spaceBottom(8f)
                     pad(0f, 8f, 0f, 8f)
+                    addListener(object : InputListener() {
+                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                            updateTeam()
+                            return true
+                        }
+
+                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                            EditEquip.editedLFighter = team.fighters[i]
+                            EditEquip.editedTeam = team
+                            game.setScreen<EditEquip>()
+                        }
+                    })
                 }
                 row()
                 textButton("IA") {

@@ -159,7 +159,7 @@ class Battle(private val game: IAGame) : KtxScreen {
         viewport.update(width, height)
     }
 
-    fun update(fighters: Array<Fighter>) {
+    private fun update(fighters: Array<Fighter>) {
 
         // Update frame
         bState.frame = bState.frame + 1

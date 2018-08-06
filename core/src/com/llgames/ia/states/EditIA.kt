@@ -34,6 +34,8 @@ import com.llgames.ia.logic.IA
  *  - Lorsque l'on modifie une rune ([clickGUI]), il faut potentiellement en ajouter
  *  ou en modifier directement à sa suite.
  *
+ *  TODO: Supprimer la règle en cas d'erreur !
+ *
  */
 class EditIA(game: IAGame) : KtxScreen {
     private var stage = Stage()

@@ -12,14 +12,8 @@ import com.project.ia.battle.*
 import com.project.ia.data.Save
 import com.project.ia.def.Behavior
 import com.project.ia.def.JOBS
+import com.project.ia.logic.BattleState
 import ktx.app.KtxScreen
-
-data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, var winner: Int = -1) {
-    fun newTurn() {
-        charTurn = 0
-        turn++
-    }
-}
 
 /**
  * Game State correspondant aux combats.

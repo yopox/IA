@@ -1,6 +1,5 @@
 package com.project.ia.logic
 
-import com.project.ia.states.BattleState
 import kotlin.math.max
 
 /**

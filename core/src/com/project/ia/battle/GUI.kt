@@ -2,7 +2,7 @@ package com.project.ia.battle
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.project.ia.states.BattleState
+import com.project.ia.logic.BattleState
 
 /**
  * Affiche des informations sur les personnages dans la partie supérieure de l'écran.

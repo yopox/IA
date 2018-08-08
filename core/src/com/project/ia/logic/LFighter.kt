@@ -2,7 +2,6 @@ package com.project.ia.logic
 
 import com.project.ia.def.Equip
 import com.project.ia.def.JOBS
-import com.project.ia.states.BattleState
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min

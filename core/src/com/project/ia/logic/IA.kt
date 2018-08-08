@@ -1,7 +1,6 @@
 package com.project.ia.logic
 
 import com.project.ia.def.Runes
-import com.project.ia.states.BattleState
 
 /**
  * On ne travaille qu'avec des [LFighter], partie logique des combattants.

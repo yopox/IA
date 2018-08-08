@@ -2,7 +2,6 @@ package com.project.ia.logic
 
 import com.project.ia.battle.hpLost
 import com.project.ia.def.Equip
-import com.project.ia.states.BattleState
 
 /**
  * [IAHandler] s'occupe de la partie logique des actions.

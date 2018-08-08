@@ -4,7 +4,7 @@ import com.project.ia.def.Equip
 import com.project.ia.logic.IAHandler
 import com.project.ia.logic.Jet
 import com.project.ia.logic.LFighter
-import com.project.ia.states.BattleState
+import com.project.ia.logic.BattleState
 
 /**
  * [Turn] implements [IAHandler].

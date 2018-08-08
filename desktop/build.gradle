@@ -3,7 +3,7 @@ apply plugin: "kotlin"
 sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-project.ext.mainClassName = "com.llgames.ia.desktop.DesktopLauncher"
+project.ext.mainClassName = "com.project.ia.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../android/assets")
 
 task run(dependsOn: classes, type: JavaExec) {
@@ -28,9 +28,9 @@ task dist(type: Jar) {
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}
     from files(project.assetsDir)
- 
+
     manifest {
-        attributes 'Battle-Class': project.mainClassName
+        attributes 'Main-Class': 'com.project.ia.desktop.DesktopLauncher'
     }
 }
 

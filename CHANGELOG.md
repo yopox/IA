@@ -1,16 +1,17 @@
 ## Table of contents
-1. [v0.1.0 Mogall Forest Update](#0.1.0)
-2. [v0.1.1 Colosso Update](#0.1.1)
 
+1. [v0.1.0 Mogall Forest](#0.1.0)
+2. [v0.1.1 Mogall Forest](#0.1.1)
+
+## v0.1 Mogall Forest Update
 
 <a name="0.1.1"></a>
-## v0.1.1 Colosso Update
 
 - Readable IA debug font
 - More balanced jobs
+- Edit equipments
 
 <a name="0.1.0"></a>
-## v0.1.0 Mogall Forest Update
 
 - Edit one team (names, class, IA)
 - Save one team

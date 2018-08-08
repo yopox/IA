@@ -22,6 +22,7 @@ allprojects {
     apply plugin: "idea"
 
     version = '0.1.1'
+
     ext {
         appName = "IA"
         gdxVersion = '1.9.8'

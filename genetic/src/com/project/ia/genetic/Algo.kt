@@ -1,10 +1,8 @@
 package com.project.ia.genetic
 
-import java.time.Duration
-import java.time.Instant
-
 object CONFIG {
-    const val NTEAMS = 100
+    const val NTEAMS = 20
+    const val N_GEN = 20
     const val MAX_TURNS = 100
 }
 
@@ -16,60 +14,52 @@ object Algo {
 
     fun main() {
 
-        // Préparation des deux équipes
-        val fighters: Array<GFighter>
-        val tempTeam = mutableListOf<GFighter>()
+        // Création des équipes
+        val teams = MutableList(CONFIG.NTEAMS) { GTeam() }
 
-        val team1 = GTeam(0)
-        val team2 = GTeam(1)
+        // Boucle sur les générations
+        for (gen in 1..CONFIG.N_GEN) {
 
-        tempTeam.addAll(team1.fighters)
-        tempTeam.addAll(team2.fighters)
+            // Reset du fitness
+            teams.map { it.fitness = 0 }
 
-        fighters = tempTeam.toTypedArray()
+            // On fait combattre chaque équipe contre les autres
+            for (i in 0 until CONFIG.NTEAMS) {
+                for (j in 0 until CONFIG.NTEAMS) {
+                    if (i != j) {
+                        val state = GBattle.fight(teams[i], teams[j])
 
-        // Préparation au combat
-        fighters.map { it.resetStats(true) }
-        fighters.sortByDescending { it.stats.spd }
+                        // Bonus de fitness pour la team gagnante
+                        when (state.winner) {
+                            0 -> teams[i].fitness += 1000 + (1000 - 10 * state.turn)
+                            1 -> teams[j].fitness += 1000 + (1000 - 10 * state.turn)
+                        }
 
-        val turnManager = GTurn()
-        val state = GState()
-
-        val start = Instant.now()
-
-        turnManager.play(fighters, state)
-
-        while (state.winner == -1) {
-
-            do {
-
-                state.charTurn++
-
-                if (state.charTurn == fighters.size) {
-                    state.newTurn()
-                    fighters.sortByDescending { it.stats.spd }
+                    }
                 }
-
-                if (!fighters[state.charTurn].alive)
-                    fighters[state.charTurn].endTurn()
-
-            } while (!fighters[state.charTurn].alive)
-
-            turnManager.play(fighters, state)
-
-            if (fighters.none { it.team == 0 && it.alive }) {
-                state.winner = 1
-            } else if (fighters.none { it.team == 1 && it.alive }) {
-                state.winner = 0
             }
 
+            // Sélection des meilleures teams
+            teams.sortByDescending { it.fitness }
+            teams.dropLast(CONFIG.NTEAMS / 2)
+
+            // Affichage de la meilleure team
+            println("----GEN $gen----")
+            println("Best fitness : ${teams[0].fitness}")
+            for (i in 0..2) {
+                println("Fighter #${i + 1} :")
+                println("----- ${teams[0].fighters[i].job.name}")
+                println("----- ${teams[0].fighters[i].getIAString()}")
+            }
+
+            // Ajout de nouvelles teams
+            for (i in 0 until CONFIG.NTEAMS / 2)
+                teams.add(GTeam())
+
+            // Mutations
+            teams.map { it.mutate() }
+
         }
-
-        val finish = Instant.now()
-
-        println("Team #${state.winner} won in ${Duration.between(start, finish).toMillis()}ms")
-
-
     }
 }
 

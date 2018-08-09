@@ -146,4 +146,13 @@ object Runes {
         }
         return rule.subList(lastIndex + 1, rule.lastIndex + 1)
     }
+
+    /**
+     * Renvoie une rune aléatoire d'un type donné.
+     */
+    fun getRandom(type: RT): Rune {
+        val runesType = Runes.runes.filter { it.component2().type == type }
+        val randomKey = runesType.keys.toList().shuffled().first()
+        return Runes.runes[randomKey]!!
+    }
 }

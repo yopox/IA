@@ -10,7 +10,6 @@ import com.project.ia.logic.Rune
  *
  * TODO: Génération de [GFighter] aléatoires
  * TODO: Calcul du fitness
- * TODO: Mutations
  */
 class GTeam() {
     var fighters: Array<GFighter> = arrayOf()
@@ -101,7 +100,27 @@ class GTeam() {
      * Peut faire muter la team.
      */
     fun mutate(): GTeam {
-        return copy()
+        val mutation = copy()
+
+        for (i in 0..2)
+            if (Math.random() > CONFIG.MUTATION_PROB)
+                mutation.fighters[i].mutate()
+
+        return mutation
+    }
+
+    companion object {
+        fun reproduce(team1: GTeam, team2: GTeam): GTeam {
+            val res = GTeam()
+
+            for (i in 0..2)
+                if (Math.random() > .5)
+                    res.fighters[i] = team1.fighters[i]
+                else
+                    res.fighters[i] = team2.fighters[i]
+
+            return res
+        }
     }
 
 }

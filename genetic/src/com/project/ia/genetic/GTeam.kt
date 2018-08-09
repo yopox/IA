@@ -75,8 +75,25 @@ class GTeam() {
      */
     fun copy(): GTeam {
         val res = GTeam()
-        for (i in 0..2)
-            res.fighters[i] = fighters[i] // Besoin d'une copie ?
+
+        for (i in 0..2) {
+
+            res.fighters[i].name = fighters[i].name
+            res.fighters[i].changeJob(fighters[i].job)
+            res.fighters[i].team = fighters[i].team
+            res.fighters[i].id = fighters[i].id
+
+            // Copie de l'IA
+            res.fighters[i].changeIA(fighters[i].getIAString())
+
+            // Copie de l'équipement
+            res.fighters[i].weapon = fighters[i].weapon
+            res.fighters[i].spell1 = fighters[i].spell1
+            res.fighters[i].spell2 = fighters[i].spell2
+            res.fighters[i].relic = fighters[i].relic
+
+        }
+
         return res
     }
 

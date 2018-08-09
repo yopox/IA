@@ -22,7 +22,7 @@ data class ActiveBoost(val boost: Boost, val target: LFighter)
 /**
  * Partie logique des combattants.
  */
-open class LFighter(var name: String, var team: Int = 0, val id: Int = 0) {
+open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
     private val ia = IA()
     var boosts: MutableList<ActiveBoost> = mutableListOf()
     var job = JOBS.getJob("HUMAN")

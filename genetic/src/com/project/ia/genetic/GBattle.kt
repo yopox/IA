@@ -10,10 +10,10 @@ object GBattle {
         val tempTeam = mutableListOf<GFighter>()
 
         team1.fighters.map { it.team = 0 }
-        team2.fighters.map { it.team = 1 }
+        tempTeam.addAll(team1.copy().fighters)
 
-        tempTeam.addAll(team1.fighters)
-        tempTeam.addAll(team2.fighters)
+        team2.fighters.map { it.team = 1 }
+        tempTeam.addAll(team2.copy().fighters)
 
         val fighters = tempTeam.toTypedArray()
 
@@ -26,9 +26,6 @@ object GBattle {
         val state = GState()
 
         turnManager.play(fighters, state)
-
-        fighters.map { println("Team ${it.team} - ${it.job.name} ${it.stats.hp}HP") }
-
 
         while (state.winner == -1) {
 

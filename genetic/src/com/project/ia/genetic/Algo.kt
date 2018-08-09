@@ -41,7 +41,7 @@ object Algo {
 
             // Sélection des meilleures teams
             teams.sortByDescending { it.fitness }
-            teams.dropLast(CONFIG.NTEAMS / 2)
+            teams = teams.dropLast(CONFIG.NTEAMS / 2)
 
             // Affichage de la meilleure team
             println("----GEN $gen----")

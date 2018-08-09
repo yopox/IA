@@ -27,6 +27,9 @@ object GBattle {
 
         turnManager.play(fighters, state)
 
+        fighters.map { println("Team ${it.team} - ${it.job.name} ${it.stats.hp}HP") }
+
+
         while (state.winner == -1) {
 
             // On regarde si le combat est fini

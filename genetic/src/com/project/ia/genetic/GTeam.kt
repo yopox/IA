@@ -71,10 +71,20 @@ class GTeam() {
     }
 
     /**
+     * Copie la team.
+     */
+    fun copy(): GTeam {
+        val res = GTeam()
+        for (i in 0..2)
+            res.fighters[i] = fighters[i] // Besoin d'une copie ?
+        return res
+    }
+
+    /**
      * Peut faire muter la team.
      */
-    fun mutate() {
-
+    fun mutate(): GTeam {
+        return copy()
     }
 
 }

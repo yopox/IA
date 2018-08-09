@@ -4,6 +4,8 @@ object CONFIG {
     const val NTEAMS = 20
     const val N_GEN = 20
     const val MAX_TURNS = 100
+    const val RATIO_KEPT = .2 // doit être moins que .3, et c'est conseillé qu'il soit même moins que .25
+    const val NTEAMS_KEPT = (NTEAMS * RATIO_KEPT).toInt()
 }
 
 /**
@@ -12,7 +14,7 @@ object CONFIG {
 
 object Algo {
 
-    fun main() {
+   /* fun main() {
 
         // Création des équipes
         val teams = MutableList(CONFIG.NTEAMS) { GTeam() }
@@ -31,8 +33,12 @@ object Algo {
 
                         // Bonus de fitness pour la team gagnante
                         when (state.winner) {
-                            0 -> teams[i].fitness += 1000 + (1000 - 10 * state.turn)
-                            1 -> teams[j].fitness += 1000 + (1000 - 10 * state.turn)
+                            0 -> teams[i].fitness += 1000 + kotlin.math.max(1000 - 10 * state.turn, 0)
+                            1 -> teams[j].fitness += 1000 + kotlin.math.max(1000 - 10 * state.turn, 0)
+                            //-2 -> {
+                            //    teams[i].fitness += 500
+                            //    teams[j].fitness += 500
+                            //}
                         }
 
                     }
@@ -41,7 +47,10 @@ object Algo {
 
             // Sélection des meilleures teams
             teams.sortByDescending { it.fitness }
-            teams = teams.dropLast(CONFIG.NTEAMS / 2)
+
+            for(i in CONFIG.NTEAMS - 1 downTo CONFIG.NTEAMS_KEPT)
+                teams.removeAt(i)
+
 
             // Affichage de la meilleure team
             println("----GEN $gen----")
@@ -52,14 +61,25 @@ object Algo {
                 println("----- ${teams[0].fighters[i].getIAString()}")
             }
 
-            // Ajout de nouvelles teams
-            for (i in 0 until CONFIG.NTEAMS / 2)
-                teams.add(GTeam())
+            // Ajout des teams mutées
+            val mteams = mutableListOf<GTeam>()
+            for (t in teams)
+                mteams.add(t.mutate())
+            mteams.forEach { teams.add(it) }
 
-            // Mutations
-            teams.map { it.mutate() }
+            // TODO: Ajout des teams descendantes
+
+            // Ajout de nouvelles teams
+            while (teams.size != CONFIG.NTEAMS)
+                teams.add(GTeam())
 
         }
     }
+    */
+    fun main() {
+       val team1 = GTeam()
+
+       GBattle.fight(team1, team1)
+   }
 }
 

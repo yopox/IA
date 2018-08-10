@@ -19,30 +19,25 @@ class GFighter(name: String, team: Int, id: Int) : LFighter(name, team, id) {
     fun mutate() {
 
         // Mutation du job
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.25)
             changeJob(JOBS.randomJob())
-        }
 
         // Mutation de l'équipement
-        if (Math.random() < 0.25) {
-            weapon = Equip.WEAPONS.keys.elementAt(Random().nextInt(Equip.WEAPONS.size))
-        }
+        if (Math.random() < 0.25)
+            weapon = Equip.randomWeapon()
 
 
         // Mutation du sort 1
-        if (Math.random() < 0.25) {
-            spell1 = Equip.SPELLS.keys.elementAt(Random().nextInt(Equip.SPELLS.size))
-        }
+        if (Math.random() < 0.25)
+            spell1 = Equip.randomSpell()
 
         // Mutation du sort 2
-        if (Math.random() < 0.25) {
-            spell1 = Equip.SPELLS.keys.elementAt(Random().nextInt(Equip.SPELLS.size))
-        }
+        if (Math.random() < 0.25)
+            spell1 = Equip.randomSpell()
 
         // Mutation de la relique
-        if (Math.random() < 0.25) {
-            relic = Equip.RELICS.keys.elementAt(Random().nextInt(Equip.RELICS.size))
-        }
+        if (Math.random() < 0.25)
+            relic = Equip.randomRelic()
 
         // Mutation de l'IA
         while (Math.random() < .4) {

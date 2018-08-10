@@ -4,7 +4,7 @@ import java.util.Random
 
 object CONFIG {
     const val NTEAMS = 50
-    const val N_GEN = 3000
+    const val N_GEN = 100
     const val MAX_TURNS = 100
     const val RATIO_KEPT = .1 // doit être moins que .3, et c'est conseillé qu'il soit même moins que .25
     const val NTEAMS_KEPT = (NTEAMS * RATIO_KEPT).toInt()

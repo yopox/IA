@@ -1,5 +1,6 @@
 package com.project.ia.genetic
 
+import com.project.ia.def.Equip
 import com.project.ia.def.JOBS
 import com.project.ia.def.Runes
 import com.project.ia.logic.RT
@@ -8,7 +9,6 @@ import com.project.ia.logic.Rune
 /**
  * Gère une équipe de [GFighter].
  *
- * TODO: Génération de [GFighter] aléatoires
  * TODO: Calcul du fitness
  */
 class GTeam() {
@@ -39,6 +39,12 @@ class GTeam() {
 
             // Classe
             fighter.changeJob(JOBS.randomJob())
+
+            // Equipement
+            fighter.weapon = Equip.randomWeapon()
+            fighter.spell1 = Equip.randomSpell()
+            fighter.spell2 = Equip.randomSpell()
+            fighter.relic = Equip.randomRelic()
 
         }
 
@@ -109,7 +115,14 @@ class GTeam() {
         return mutation
     }
 
+    /**
+     * Fonctions statiques
+     */
     companion object {
+
+        /**
+         * Permets de faire se reproduire deux teams
+         */
         fun reproduce(team1: GTeam, team2: GTeam): GTeam {
             val res = GTeam()
 

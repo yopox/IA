@@ -3,8 +3,8 @@ package com.project.ia.genetic
 import java.util.Random
 
 object CONFIG {
-    const val NTEAMS = 20
-    const val N_GEN = 20
+    const val NTEAMS = 50
+    const val N_GEN = 3000
     const val MAX_TURNS = 100
     const val RATIO_KEPT = .1 // doit être moins que .3, et c'est conseillé qu'il soit même moins que .25
     const val NTEAMS_KEPT = (NTEAMS * RATIO_KEPT).toInt()
@@ -17,7 +17,7 @@ object CONFIG {
 
 object Algo {
     fun test(team: GTeam) {
-        val tteams = MutableList(CONFIG.NTEAMS * 1000){GTeam()}
+        val tteams = MutableList(CONFIG.NTEAMS * 1000) { GTeam() }
 
         var nwins = 0
         var nloses = 0
@@ -27,22 +27,22 @@ object Algo {
             val state = GBattle.fight(team, it)
 
             when (state.winner) {
-                0 -> nwins ++
-                1 -> nloses ++
-                -2 -> nnul ++
+                0 -> nwins++
+                1 -> nloses++
+                -2 -> nnul++
             }
         }
 
         println()
         println("*** TESTS ***")
         println()
-        println("wins : " + nwins)
-        println("loses : " + nloses)
-        println("nul : " + nnul)
+        println("wins : $nwins")
+        println("loses : $nloses")
+        println("nul : $nnul")
         println()
     }
 
-   fun main() {
+    fun main() {
 
         // Création des équipes
         val teams = MutableList(CONFIG.NTEAMS) { GTeam() }
@@ -76,7 +76,7 @@ object Algo {
             // Sélection des meilleures teams
             teams.sortByDescending { it.fitness }
 
-            for(i in CONFIG.NTEAMS - 1 downTo CONFIG.NTEAMS_KEPT)
+            for (i in CONFIG.NTEAMS - 1 downTo CONFIG.NTEAMS_KEPT)
                 teams.removeAt(i)
 
 
@@ -85,7 +85,8 @@ object Algo {
             println("Best fitness : ${teams[0].fitness}")
             for (i in 0..2) {
                 println("Fighter #${i + 1} :")
-                println("----- ${teams[0].fighters[i].job.name}")
+                val fighter = teams[0].fighters[i]
+                println("----- ${fighter.job.name}  (${fighter.weapon} • ${fighter.spell1} • ${fighter.spell2} • ${fighter.relic})")
                 println("----- ${teams[0].fighters[i].getIAString()}")
             }
 
@@ -109,8 +110,8 @@ object Algo {
 
         }
 
-       teams.sortByDescending { it.fitness }
-       test(teams[0])
+        teams.sortByDescending { it.fitness }
+        test(teams[0])
     }
 }
 

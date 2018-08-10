@@ -2,6 +2,14 @@
 
 1. [v0.1.0 Mogall Forest](#0.1.0)
 2. [v0.1.1 Mogall Forest](#0.1.1)
+3. [v0.2.0 Colosso](#0.2.0)
+
+## v0.2 Colosso Update
+
+<a name="0.2.0"></a>
+
+- Online screen :
+    - Share a team
 
 ## v0.1 Mogall Forest Update
 

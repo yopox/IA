@@ -32,7 +32,7 @@ data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int
 class Battle(private val game: IAGame) : KtxScreen {
 
     private val batch = SpriteBatch()
-    private val bg = Texture("Mogall_Forest.gif")
+    private val bg = Texture("Colosso.gif")
     private val font = BitmapFont(Gdx.files.internal("fonts/softsquare.fnt"), false)
     private val IAfont = BitmapFont(Gdx.files.internal("fonts/skullboy.fnt"), false)
 

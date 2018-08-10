@@ -1,5 +1,6 @@
 package com.project.ia
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
@@ -9,6 +10,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.project.ia.IAGame
 
 class AndroidLauncher : AndroidApplication() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,6 +22,6 @@ class AndroidLauncher : AndroidApplication() {
 
         val config = AndroidApplicationConfiguration()
         config.useImmersiveMode = true;
-        initialize(IAGame(), config)
+        initialize(IAGame(Online(this)), config)
     }
 }

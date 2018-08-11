@@ -4,6 +4,7 @@ import com.project.ia.def.Equip
 import com.project.ia.def.JOBS
 import com.project.ia.def.Runes
 import com.project.ia.logic.LFighter
+import com.project.ia.logic.RT
 import java.util.Random
 
 /**
@@ -55,6 +56,44 @@ class GFighter(name: String, team: Int, id: Int) : LFighter(name, team, id) {
             runes[i][j] = newRune.id
 
             // TODO: Correction de la règle au cas où les [next] sont différents
+            when (oldRune.type) {
+                RT.GATE -> {
+                    val singleCondGates = arrayOf("ID", "NOT")
+                    // Il faut rajouter une condition
+                    if (oldRune.id in singleCondGates && newRune.id !in singleCondGates) {
+                        println("ADD COND : " + runes[i])
+                        val newCond = Runes.getRandom(RT.CONDITION)
+                        runes[i].add(1, newCond.id)
+                        for (nextRune in newCond.next.reversed())
+                            runes[i].add(2, Runes.getRandom(nextRune).id)
+                        println(runes[i])
+                    } else if (oldRune.id !in singleCondGates && newRune.id in singleCondGates) {
+                        println("SUPPR COND : " + runes[i])
+                        // Il faut supprimer une condition
+                        if (Math.random() < 0.5) {
+                            // On supprime la première condition
+                            runes[i].removeAt(1)
+                            while (Runes.runes[runes[i][1]]!!.type != RT.CONDITION)
+                                runes[i].removeAt(1)
+                        } else {
+                            // On supprime la seconde condition
+                            val condIndex = runes[i].indexOfLast { Runes.runes[it]!!.type == RT.CONDITION }
+                            while (Runes.runes[runes[i][condIndex]]!!.type != RT.ACTION)
+                                runes[i].removeAt(condIndex)
+                        }
+                        println(runes[i])
+                    }
+                }
+                RT.CONDITION -> {
+                    // TODO
+                }
+                RT.ACTION -> {
+                    // TODO
+                }
+                else -> {}
+            }
+
+
 
         }
 

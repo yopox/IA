@@ -81,6 +81,7 @@ object Algo {
 
 
             // Affichage de la meilleure team
+            /*
             println("----GEN $gen----")
             println("Best fitness : ${teams[0].fitness}")
             for (i in 0..2) {
@@ -89,6 +90,7 @@ object Algo {
                 println("----- ${fighter.job.name}  (${fighter.weapon} • ${fighter.spell1} • ${fighter.spell2} • ${fighter.relic})")
                 println("----- ${teams[0].fighters[i].getIAString()}")
             }
+            */
 
             // Calcul des teams mutées
             val mteams = mutableListOf<GTeam>()

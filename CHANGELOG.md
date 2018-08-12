@@ -10,6 +10,7 @@
 
 - Online screen :
     - Share a team
+- Damage displayed above targeted characters
 
 ## v0.1 Mogall Forest Update
 

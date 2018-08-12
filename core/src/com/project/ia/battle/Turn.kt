@@ -46,6 +46,7 @@ class Turn : IAHandler {
                         "releaseFace" -> getById(fighters, it.actor).forceFacing = null
                         "blink" -> getById(fighters, it.target).blink()
                         "pose" -> getById(fighters, it.actor).setFrame(it.strContent)
+                        "damDisp" -> getById(fighters, it.target).damage(DamageDisplay(it.strContent.toInt()))
                     }
                 }
 
@@ -122,6 +123,7 @@ class Turn : IAHandler {
         actions.add(TurnAction(75, "txt", strContent = "${target.name} lost $amount HP!"))
         actions.add(TurnAction(75, "blink", target = target.id))
         actions.add(TurnAction(75, "pose", strContent = "damage", actor = target.id))
+        actions.add(TurnAction(75, "damDisp", strContent = amount, target = target.id))
         actions.add(TurnAction(75, "gui"))
         actions.add(TurnAction(105, "pose", (target as Fighter).pose, actor = target.id))
 

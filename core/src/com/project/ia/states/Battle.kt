@@ -142,7 +142,7 @@ class Battle(private val game: IAGame) : KtxScreen {
         // Draw fighters
         val fcopy = fighters.toMutableList()
         fcopy.sortByDescending { it.sprite.y }
-        fcopy.map { it.drawChar(batch, camera) }
+        fcopy.map { it.drawChar(batch, camera, IAfont) }
 
         // Draw IA and turn number
         debug(batch, IAfont, fighters)

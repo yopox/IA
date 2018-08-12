@@ -104,8 +104,6 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
         }
         toRemove.reversed().map { boosts.removeAt(it) }
 
-        boosts.map { println("$name : ${it.boost.stat} ${it.boost.value} ${it.boost.duration}T") }
-
     }
 
     fun attack(target: LFighter, jets: Array<Jet>?) {

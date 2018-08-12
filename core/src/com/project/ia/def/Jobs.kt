@@ -1,6 +1,7 @@
 package com.project.ia.def
 
 import com.project.ia.logic.*
+import java.util.*
 
 /**
  * Définition des différentes classes.
@@ -102,9 +103,6 @@ object JOBS {
         return jobs[keys[newIndex]]!!
     }
 
-    fun randomJob(): Job {
-        val keys = jobs.keys.toMutableList().shuffled()
-        return getJob(keys.first())
-    }
+    fun randomJob(): Job = getJob(JOBS.jobs.keys.elementAt(Random().nextInt(JOBS.jobs.size)))
 
 }

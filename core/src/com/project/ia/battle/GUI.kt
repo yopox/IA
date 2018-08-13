@@ -1,5 +1,6 @@
 package com.project.ia.battle
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.project.ia.states.BattleState
@@ -39,6 +40,7 @@ class GUI {
         for (i in 0..1) {
             for ((j, part) in parts.filter { it.team == i }.withIndex()) {
                 if (part.visible) {
+                    font.color = Color.WHITE
                     font.draw(batch, part.name, X_START1 + X_OFFSET * i, Y_START - Y_OFFSET * j)
                     font.draw(batch, "HP:" + part.hp, X_START2 + X_OFFSET * i, Y_START - Y_OFFSET * j)
                 }
@@ -49,6 +51,7 @@ class GUI {
 
     fun debug(batch: Batch, font: BitmapFont, chars: Array<Fighter>, state: BattleState) {
 
+        font.color = Color.WHITE
         font.draw(batch, "TURN " + (if (state.turn < 10) "0" + state.turn else state.turn) + " - ${chars[state.charTurn].name}", -160f + 6f, -90f + 133f)
         font.draw(batch, chars[state.charTurn].getIAString().replace(" - ", "\n"), -160f + 6f, -90f + 118f)
 

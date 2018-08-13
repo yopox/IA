@@ -15,6 +15,8 @@ data class DamageDisplay(val amount: Int, var act: Int = 0, var frame: Int = 0)
  * La logique est gérée par [LFighter].
  * @param [depX], [depY] position de départ du perso
  * @param id identifiant unique du perso
+ *
+ * TODO: Change [DamageDisplay] to be more versatile (damage, heal, show only an icon…)
  */
 class Fighter(private val depX: Float, private val depY: Float, name: String, team: Int, id: Int) : LFighter(name, team, id) {
 
@@ -76,11 +78,11 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
 
         if (damageDisplay.any()) {
             damageDisplay.map {
-                val offsetX = if (it.act > 9) 0f else sprite.width / 4f
+                val offsetX = if (it.act > 9) 0f else sprite.width / 3f
                 val offsetY = if (it.frame > 3 * it.amount + 30) it.frame - 3 * it.amount - 30 else 0
                 val opacity = 1f - offsetY / 30f
-                font.color = Color(1f, 1f, 1f, opacity)
-                font.draw(batch, it.act.toString(), sprite.x + offsetX, sprite.y + sprite.height + 8 + offsetY / 3)
+                font.color = Color(255 / 255f, 115 / 255f, 115 / 255f, opacity)
+                font.draw(batch, it.act.toString(), sprite.x + offsetX, sprite.y + sprite.height + 10 + offsetY / 3)
                 it.frame++
                 if (it.act < it.amount && it.frame % 3 == 0) it.act++
             }

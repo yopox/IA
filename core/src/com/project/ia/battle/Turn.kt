@@ -10,6 +10,8 @@ import com.project.ia.states.BattleState
  * [Turn] implements [IAHandler].
  * Turn is used to show the different actions happening in a turn.
  * See [Turn.update] for available TurnActions id.
+ *
+ * TODO: Change turns duration.
  */
 
 data class TurnAction(val frame: Int = 0, val id: String = "cam", val strContent: String = "Default text.", val actor: Int = 0, val target: Int = 0)

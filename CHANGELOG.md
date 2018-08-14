@@ -10,7 +10,7 @@
 
 - Online screen :
     - Share a team
-- Damage displayed above targeted characters
+- Damage, heal, D for defense or W for warmup is displayed above characters.
 
 ## v0.1 Mogall Forest Update
 

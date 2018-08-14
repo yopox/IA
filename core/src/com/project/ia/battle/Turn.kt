@@ -11,7 +11,7 @@ import com.project.ia.states.BattleState
  * Turn is used to show the different actions happening in a turn.
  * See [Turn.update] for available TurnActions id.
  *
- * TODO: Change turns duration.
+ * TODO: Réduire la durée des tours à 2 sec.
  */
 
 data class TurnAction(val frame: Int = 0, val id: String = "cam", val strContent: String = "Default text.", val actor: Int = 0, val target: Int = 0)
@@ -48,7 +48,9 @@ class Turn : IAHandler {
                         "releaseFace" -> getById(fighters, it.actor).forceFacing = null
                         "blink" -> getById(fighters, it.target).blink()
                         "pose" -> getById(fighters, it.actor).setFrame(it.strContent)
-                        "damDisp" -> getById(fighters, it.target).damage(DamageDisplay(it.strContent.toInt()))
+                        "damDisp" -> getById(fighters, it.target).damage(it.strContent.toInt())
+                        "healDisp" -> getById(fighters, it.target).heal(it.strContent.toInt())
+                        "letterDisp" -> getById(fighters, it.actor).letter(it.strContent)
                     }
                 }
 
@@ -59,6 +61,7 @@ class Turn : IAHandler {
 
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} is defending himself!"))
         actions.add(TurnAction(15, "pose", strContent = "defend", actor = fighters[state.charTurn].id))
+        actions.add(TurnAction(50, "letterDisp", strContent = "D", actor = fighters[state.charTurn].id))
     }
 
     override fun pro(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
@@ -72,6 +75,7 @@ class Turn : IAHandler {
 
     override fun wait(fighters: Array<out LFighter>, state: BattleState) {
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} does nothing."))
+        actions.add(TurnAction(50, "letterDisp", strContent = "-", actor = fighters[state.charTurn].id))
     }
 
     override fun atk(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
@@ -96,6 +100,7 @@ class Turn : IAHandler {
     override fun wrm(fighters: Array<out LFighter>, state: BattleState) {
         super.wrm(fighters, state)
         actions.add(TurnAction(15, "txt", strContent = "${fighters[state.charTurn].name} warms up!"))
+        actions.add(TurnAction(50, "letterDisp", strContent = "W", actor = fighters[state.charTurn].id))
     }
 
     override fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?, nSpl: Int) {
@@ -128,7 +133,10 @@ class Turn : IAHandler {
         actions.add(TurnAction(75, "damDisp", strContent = amount, target = target.id))
         actions.add(TurnAction(75, "gui"))
         actions.add(TurnAction(105, "pose", (target as Fighter).pose, actor = target.id))
+    }
 
+    override fun heal(target: LFighter, value: Int) {
+        actions.add(TurnAction(75, "healDisp", strContent = value.toString(), target = target.id))
     }
 
     override fun dies(actor: LFighter) {

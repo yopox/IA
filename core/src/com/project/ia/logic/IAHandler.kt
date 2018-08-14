@@ -111,6 +111,9 @@ interface IAHandler {
                 for (boost in it) {
                     val buffTarget = if (boost.onSelf) actor else target
                     actor.boosts.add(ActiveBoost(boost.copy(), buffTarget))
+                    if (boost.stat == STAT_ENUM.HP) {
+                        heal(buffTarget, boost.value)
+                    }
                 }
             }
 
@@ -123,6 +126,8 @@ interface IAHandler {
         }
 
     }
+
+    fun heal(target: LFighter, value: Int)
 
     fun damage(actor: LFighter, target: LFighter, amount: String)
 

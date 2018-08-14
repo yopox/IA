@@ -118,7 +118,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
                 DisplayTypes.LETTER -> {
                     // Calcul de la position
                     val offsetX = sprite.width / 3f
-                    val offsetY = if (hD.c > 30) hD.c - 30 else 0
+                    val offsetY = if (hD.c > 60) hD.c - 60 else 0
                     var opacity = 1f - offsetY / 30f
                     if (hD.c == 0) opacity = 0.25f
                     if (hD.c == 1) opacity = 0.75f
@@ -127,7 +127,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
                     font.draw(batch, hD.d, sprite.x + offsetX, sprite.y + sprite.height * sprite.scaleY + 12 + offsetY / 3)
                     // MAJ et mort
                     hD.c++
-                    if (hD.c > 45) hD.alive = false
+                    if (hD.c > 75) hD.alive = false
                 }
             }
         }

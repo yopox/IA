@@ -164,7 +164,7 @@ class Battle(private val game: IAGame) : KtxScreen {
 
         // Update frame
         bState.frame = bState.frame + 1
-        if (bState.frame == 180) {
+        if (bState.frame == 120) {
             bState.frame = 0
 
             if (!checkWin(fighters)) {

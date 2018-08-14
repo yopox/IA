@@ -11,6 +11,7 @@
 - Online screen :
     - Share a team
 - Damage, heal, D for defense or W for warmup is displayed above characters.
+- Turns are faster (3s -> 2s).
 
 ## v0.1 Mogall Forest Update
 

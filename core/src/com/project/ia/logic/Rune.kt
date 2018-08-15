@@ -28,7 +28,7 @@ class RuneTarget(id: String, var carac: (LFighter) -> Int = { it.stats.hp })
     /**
      * Renvoie le [LFighter] associé à la cible.
      */
-    fun getTarget(fighters: Array<out LFighter>, state: BattleState): LFighter? {
+    fun getTarget(fighters: Array<out LFighter>, state: State): LFighter? {
         val alive = fighters.filter { it.alive }
         return when (id.slice(0..1)) {
             "aM" -> alive.maxBy { carac(it) }
@@ -53,7 +53,7 @@ object RUNE_LOGIC {
      * Pour les portes logiques à deux conditions, on appelle [condCheck] en coupant [rule]
      * après la première condition. [condCheck] s'occupe de trouver la condition.
      */
-    fun gateCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: BattleState): Boolean {
+    fun gateCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: State): Boolean {
 
         return when (rule[0].id) {
             "ID" -> condCheck(rule, fighters, state)
@@ -71,7 +71,7 @@ object RUNE_LOGIC {
     /**
      * Vérifie une condition.
      */
-    private fun condCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: BattleState): Boolean {
+    private fun condCheck(rule: Array<Rune>, fighters: Array<out LFighter>, state: State): Boolean {
 
         // Il n'est pas sûr que rule[0] soit une rune de type RT.CONDITION
         var condIndex = 0

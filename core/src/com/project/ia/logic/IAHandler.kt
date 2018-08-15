@@ -4,6 +4,16 @@ import com.project.ia.battle.hpLost
 import com.project.ia.def.Equip
 import com.project.ia.states.BattleState
 
+open class State(var turn: Int = 1, var charTurn: Int = 0, var winner: Int = -1) {
+    fun newTurn() {
+        charTurn = 0
+        turn++
+    }
+
+    open fun setActRule(rule: Array<Rune>) {}
+}
+
+
 /**
  * [IAHandler] s'occupe de la partie logique des actions.
  */
@@ -12,14 +22,14 @@ interface IAHandler {
     /**
      * Fonction appelée au début du tour d'un joueur.
      */
-    fun play(fighters: Array<out LFighter>, state: BattleState) {
+    fun play(fighters: Array<out LFighter>, state: State) {
 
         // Le perso qui joue ne protège plus personne
         fighters[state.charTurn].startTurn(fighters)
 
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
-        state.activeRule = rule
+        state.setActRule(rule)
 
         // On récupère l'indice de la rune action
         var actionIndex = 0
@@ -44,7 +54,7 @@ interface IAHandler {
 
     }
 
-    fun atk(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
+    fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])
@@ -71,24 +81,24 @@ interface IAHandler {
         }
     }
 
-    fun pro(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
+    fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         target?.let { it.protected = fighters[state.charTurn] }
     }
 
-    fun wait(fighters: Array<out LFighter>, state: BattleState)
+    fun wait(fighters: Array<out LFighter>, state: State)
 
-    fun def(fighters: Array<out LFighter>, state: BattleState) {
+    fun def(fighters: Array<out LFighter>, state: State) {
         val actor = fighters[state.charTurn]
         actor.boosts.add(ActiveBoost(Boost(STAT_ENUM.DEFG, 40, 1), actor))
     }
 
-    fun wrm(fighters: Array<out LFighter>, state: BattleState) {
+    fun wrm(fighters: Array<out LFighter>, state: State) {
         val actor = fighters[state.charTurn]
         actor.boosts.add(ActiveBoost(Boost(STAT_ENUM.DEFG, 25, 1), actor))
         actor.boosts.add(ActiveBoost(Boost(STAT_ENUM.ATKG, 25, 1), actor))
     }
 
-    fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?, nSpl: Int) {
+    fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, nSpl: Int) {
 
         if (target == null) {
             notarget(fighters[state.charTurn])

@@ -40,7 +40,7 @@ class IA {
     /**
      * Renvoie la règle utilisée ce tour-ci.
      */
-    fun getRule(fighters: Array<out LFighter>, state: BattleState): Array<Rune> {
+    fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> {
         val rule = iaStep(0, fighters, state)
         // Si la rune ONCE a été utilisée
         if (rule.any { it.id == "ONCE" })
@@ -51,7 +51,7 @@ class IA {
     /**
      * Fonction récursive qui renvoie la première règle qui s'applique.
      */
-    private fun iaStep(index: Int, fighters: Array<out LFighter>, state: BattleState): Array<Rune> {
+    private fun iaStep(index: Int, fighters: Array<out LFighter>, state: State): Array<Rune> {
 
         // Cas de base
         if (index == rules.size)

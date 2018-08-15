@@ -4,8 +4,7 @@ import com.project.ia.def.Equip
 import com.project.ia.logic.IAHandler
 import com.project.ia.logic.Jet
 import com.project.ia.logic.LFighter
-import com.project.ia.logic.Rune
-import com.project.ia.states.BattleState
+import com.project.ia.logic.State
 
 /**
  * [Turn] implements [IAHandler].
@@ -21,7 +20,7 @@ class Turn : IAHandler {
 
     private val actions: MutableList<TurnAction> = mutableListOf()
 
-    override fun play(fighters: Array<out LFighter>, state: BattleState) {
+    override fun play(fighters: Array<out LFighter>, state: State) {
 
         actions.clear()
 
@@ -57,7 +56,7 @@ class Turn : IAHandler {
 
     }
 
-    override fun def(fighters: Array<out LFighter>, state: BattleState) {
+    override fun def(fighters: Array<out LFighter>, state: State) {
         super.def(fighters, state)
 
         actions.add(TurnAction(30, "txt", strContent = "${fighters[state.charTurn].name} is defending!"))
@@ -65,7 +64,7 @@ class Turn : IAHandler {
         actions.add(TurnAction(30, "letterDisp", strContent = "D", actor = fighters[state.charTurn].id))
     }
 
-    override fun pro(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
+    override fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         super.pro(fighters, state, target)
 
         val actor = fighters[state.charTurn]
@@ -76,37 +75,37 @@ class Turn : IAHandler {
         }
     }
 
-    override fun wait(fighters: Array<out LFighter>, state: BattleState) {
+    override fun wait(fighters: Array<out LFighter>, state: State) {
         actions.add(TurnAction(30, "txt", strContent = "${fighters[state.charTurn].name} does nothing."))
         actions.add(TurnAction(30, "letterDisp", strContent = "-", actor = fighters[state.charTurn].id))
     }
 
-    override fun atk(fighters: Array<out LFighter>, state: BattleState, target: LFighter?) {
+    override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         super.atk(fighters, state, target)
         val actor = fighters[state.charTurn]
 
         target?.let {
 
             if (target.id != actor.id) {
-                actions.add(TurnAction(0, "move", actor = actor.id, target = target.id))
-                actions.add(TurnAction(0, "face", actor = actor.id, target = target.id))
-                actions.add(TurnAction(0, "txt", strContent = "${actor.name} attacks ${target.name}!"))
-                actions.add(TurnAction(75, "resetPos", actor = actor.id))
-                actions.add(TurnAction(95, "releaseFace", actor = actor.id))
+                actions.add(TurnAction(15, "move", actor = actor.id, target = target.id))
+                actions.add(TurnAction(15, "face", actor = actor.id, target = target.id))
+                actions.add(TurnAction(15, "txt", strContent = "${actor.name} attacks ${target.name}!"))
+                actions.add(TurnAction(90, "resetPos", actor = actor.id))
+                actions.add(TurnAction(110, "releaseFace", actor = actor.id))
             } else {
-                actions.add(TurnAction(0, "txt", strContent = "${actor.name} attacks itself!"))
+                actions.add(TurnAction(15, "txt", strContent = "${actor.name} attacks itself!"))
             }
 
         }
     }
 
-    override fun wrm(fighters: Array<out LFighter>, state: BattleState) {
+    override fun wrm(fighters: Array<out LFighter>, state: State) {
         super.wrm(fighters, state)
         actions.add(TurnAction(30, "txt", strContent = "${fighters[state.charTurn].name} warms up!"))
         actions.add(TurnAction(30, "letterDisp", strContent = "W", actor = fighters[state.charTurn].id))
     }
 
-    override fun spl(fighters: Array<out LFighter>, state: BattleState, target: LFighter?, nSpl: Int) {
+    override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, nSpl: Int) {
         super.spl(fighters, state, target, nSpl)
         val actor = fighters[state.charTurn]
         val spell = when (nSpl) {
@@ -116,10 +115,10 @@ class Turn : IAHandler {
 
         target?.let {
 
-            actions.add(TurnAction(0, "pose", strContent = "cast", actor = actor.id))
-            actions.add(TurnAction(0, "txt", strContent = "${actor.name} uses ${spell.name} on ${if (target == actor) "itself" else target.name}!"))
-            actions.add(TurnAction(50, "pose", strContent = "idle", actor = actor.id))
-            actions.add(TurnAction(60, "gui"))
+            actions.add(TurnAction(15, "pose", strContent = "cast", actor = actor.id))
+            actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell.name} on ${if (target == actor) "itself" else target.name}!"))
+            actions.add(TurnAction(65, "pose", strContent = "idle", actor = actor.id))
+            actions.add(TurnAction(75, "gui"))
 
 
         }
@@ -131,21 +130,21 @@ class Turn : IAHandler {
     }
 
     override fun damage(actor: LFighter, target: LFighter, amount: String) {
-        actions.add(TurnAction(60, "txt", strContent = "${target.name} lost $amount HP!"))
-        actions.add(TurnAction(60, "blink", target = target.id))
-        actions.add(TurnAction(60, "pose", strContent = "damage", actor = target.id))
-        actions.add(TurnAction(60, "damDisp", strContent = amount, target = target.id))
-        actions.add(TurnAction(70, "gui"))
-        actions.add(TurnAction(90, "pose", (target as Fighter).pose, actor = target.id))
+        actions.add(TurnAction(75, "txt", strContent = "${target.name} lost $amount HP!"))
+        actions.add(TurnAction(75, "blink", target = target.id))
+        actions.add(TurnAction(75, "pose", strContent = "damage", actor = target.id))
+        actions.add(TurnAction(75, "damDisp", strContent = amount, target = target.id))
+        actions.add(TurnAction(85, "gui"))
+        actions.add(TurnAction(105, "pose", (target as Fighter).pose, actor = target.id))
     }
 
     override fun heal(target: LFighter, value: Int) {
-        actions.add(TurnAction(60, "healDisp", strContent = value.toString(), target = target.id))
+        actions.add(TurnAction(75, "healDisp", strContent = value.toString(), target = target.id))
     }
 
     override fun dies(actor: LFighter) {
-        actions.add(TurnAction(90, "txt", strContent = "${actor.name} dies!"))
-        actions.add(TurnAction(90, "pose", strContent = "death", actor = actor.id))
+        actions.add(TurnAction(105, "txt", strContent = "${actor.name} dies!"))
+        actions.add(TurnAction(105, "pose", strContent = "death", actor = actor.id))
     }
 
 }

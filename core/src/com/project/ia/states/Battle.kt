@@ -11,13 +11,23 @@ import com.project.ia.battle.*
 import com.project.ia.data.Save
 import com.project.ia.def.Behavior
 import com.project.ia.def.JOBS
+import com.project.ia.logic.RT
 import com.project.ia.logic.Rune
+import com.project.ia.logic.State
 import ktx.app.KtxScreen
 
-data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, var winner: Int = -1, var activeRule: Array<Rune> = arrayOf()) {
-    fun newTurn() {
-        charTurn = 0
-        turn++
+class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = 0, winner: Int = -1): State(turn, charTurn, winner) {
+    var activeRule: Array<Rune> = arrayOf()
+    var turnDuration = 120
+
+    override fun setActRule(rule: Array<Rune>) {
+        activeRule = rule
+        turnDuration = when (rule.first { it.type == RT.ACTION }.id) {
+            "ATK" -> 150
+            "SPL1" -> 150
+            "SPL2" -> 150
+            else -> 120
+        }
     }
 }
 
@@ -161,7 +171,7 @@ class Battle(private val game: IAGame) : KtxScreen {
 
         // Update frame
         bState.frame = bState.frame + 1
-        if (bState.frame == 120) {
+        if (bState.frame == bState.turnDuration) {
             bState.frame = 0
 
             if (!checkWin(fighters)) {

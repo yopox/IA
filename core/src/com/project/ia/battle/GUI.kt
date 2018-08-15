@@ -24,6 +24,7 @@ class GUI {
             pixmap.dispose()
             return texture
         }
+
         val barre0 = Sprite(createTexture(240, 6, Color.valueOf("98ea59")))
         val barre1 = Sprite(createTexture(240, 6, Color.valueOf("ea9859")))
         val black = Sprite(createTexture(240, 6, Color.valueOf("000000")))
@@ -53,6 +54,7 @@ class GUI {
 
     fun draw(batch: Batch, font: BitmapFont, bState: BattleState) {
 
+        font.color = Color.WHITE
         font.draw(batch, "TURN " + if (bState.turn < 10) "0" + bState.turn else bState.turn, -18f, 80f)
         batch.draw(barre1, -120f, 58f)
         batch.draw(barre0, -240f * div, 58f)

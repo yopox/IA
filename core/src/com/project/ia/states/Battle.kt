@@ -3,7 +3,6 @@ package com.project.ia.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.ExtendViewport
@@ -12,9 +11,10 @@ import com.project.ia.battle.*
 import com.project.ia.data.Save
 import com.project.ia.def.Behavior
 import com.project.ia.def.JOBS
+import com.project.ia.logic.Rune
 import ktx.app.KtxScreen
 
-data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, var winner: Int = -1) {
+data class BattleState(var turn: Int = 1, var frame: Int = -1, var charTurn: Int = 0, var winner: Int = -1, var activeRule: Array<Rune> = arrayOf()) {
     fun newTurn() {
         charTurn = 0
         turn++
@@ -105,7 +105,7 @@ class Battle(private val game: IAGame) : KtxScreen {
 
         // Liste de noms inspirés de Twitter
         val names =
-                mutableListOf<String>("Kili", "Helo", "Harka", "Arupal", "Val",
+                mutableListOf<String>("Kili", "Helo", "Harka", "Arupal", "Val", "Lear",
                         "Jean", "Paul", "ZerO", "Xen9", "Luc", "Alex", "Jean", "Sam",
                         "Psoukh", "Klaf", "Mesho", "Hiba", "Clemba", "Lou", "Ixo", "Tib")
 
@@ -136,16 +136,13 @@ class Battle(private val game: IAGame) : KtxScreen {
         batch.draw(bg, -192f, -90f + 39f, (80 * camera.angle).toInt() - 20, 16, 384, 102)
 
         // Draw GUI
-        gui.draw(batch, font)
+        gui.draw(batch, IAfont, bState)
         console.draw(batch, font)
 
         // Draw fighters
         val fcopy = fighters.toMutableList()
         fcopy.sortByDescending { it.sprite.y }
         fcopy.map { it.drawChar(batch, camera, IAfont) }
-
-        // Draw IA and turn number
-        debug(batch, IAfont, fighters)
 
         batch.end()
 
@@ -216,10 +213,6 @@ class Battle(private val game: IAGame) : KtxScreen {
             return true
         }
         return false
-    }
-
-    fun debug(batch: Batch, font: BitmapFont, fighters: Array<Fighter>) {
-        gui.debug(batch, font, fighters, bState)
     }
 
 }

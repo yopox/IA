@@ -98,7 +98,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
                     // MAJ et mort
                     hD.c++
                     if (hD.a < hD.b && hD.c % 3 == 0) hD.a++
-                    if (hD.c > 3 * hD.b + 45) hD.alive = false
+                    if (hD.c > 3 * hD.b + 60) hD.alive = false
                 }
                 DisplayTypes.HEAL -> {
                     // Calcul de la position
@@ -113,7 +113,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
                     // MAJ et mort
                     hD.c++
                     if (hD.a < hD.b && hD.c % 3 == 0) hD.a++
-                    if (hD.c > 3 * hD.b + 45) hD.alive = false
+                    if (hD.c > 3 * hD.b + 60) hD.alive = false
                 }
                 DisplayTypes.LETTER -> {
                     // Calcul de la position
@@ -127,7 +127,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
                     font.draw(batch, hD.d, sprite.x + offsetX, sprite.y + sprite.height * sprite.scaleY + 12 + offsetY / 3)
                     // MAJ et mort
                     hD.c++
-                    if (hD.c > 75) hD.alive = false
+                    if (hD.c > 90) hD.alive = false
                 }
             }
         }

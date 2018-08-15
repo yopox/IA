@@ -19,6 +19,7 @@ interface IAHandler {
 
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
+        state.activeRule = rule
 
         // On récupère l'indice de la rune action
         var actionIndex = 0

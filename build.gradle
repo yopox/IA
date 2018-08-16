@@ -89,6 +89,16 @@ project(":core") {
 
 }
 
+project(":genetic") {
+    apply plugin: "kotlin"
+
+    dependencies {
+        compile project(":core")
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    }
+
+}
+
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8

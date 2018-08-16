@@ -1,6 +1,6 @@
 package com.project.ia.logic
 
-import com.project.ia.states.BattleState
+import com.project.ia.def.Runes
 import kotlin.math.max
 
 /**
@@ -30,13 +30,14 @@ class RuneTarget(id: String, var carac: (LFighter) -> Int = { it.stats.hp })
      */
     fun getTarget(fighters: Array<out LFighter>, state: State): LFighter? {
         val alive = fighters.filter { it.alive }
+        val default = fighters[state.charTurn]
         return when (id.slice(0..1)) {
-            "aM" -> alive.maxBy { carac(it) }
-            "aL" -> alive.minBy { carac(it) }
-            "AM" -> alive.filter { it.team == fighters[state.charTurn].team }.maxBy { carac(it) }
-            "AL" -> alive.filter { it.team == fighters[state.charTurn].team }.minBy { carac(it) }
-            "EM" -> alive.filter { it.team != fighters[state.charTurn].team }.maxBy { carac(it) }
-            "EL" -> alive.filter { it.team != fighters[state.charTurn].team }.minBy { carac(it) }
+            "aM" -> alive.maxBy { carac(it) } ?: default
+            "aL" -> alive.minBy { carac(it) } ?: default
+            "AM" -> alive.filter { it.team == fighters[state.charTurn].team }.maxBy { carac(it) } ?: default
+            "AL" -> alive.filter { it.team == fighters[state.charTurn].team }.minBy { carac(it) } ?: default
+            "EM" -> alive.filter { it.team != fighters[state.charTurn].team }.maxBy { carac(it) } ?: default
+            "EL" -> alive.filter { it.team != fighters[state.charTurn].team }.minBy { carac(it) } ?: default
             else -> fighters[state.charTurn]
         }
     }
@@ -92,9 +93,9 @@ object RUNE_LOGIC {
         // Conditions avec une cible et une valeur
         // La conversion suivante marche car l'ordre est toujours COND VALUE TARGET
             "MXHP" -> (rule[condIndex + 2] as RuneTarget)
-                    .getTarget(fighters, state)!! getPercent "HP" >= value
+                    .getTarget(fighters, state) getPercent "HP" >= value
             "LXHP" -> (rule[condIndex + 2] as RuneTarget)
-                    .getTarget(fighters, state)!! getPercent "HP" <= value
+                    .getTarget(fighters, state) getPercent "HP" <= value
 
             else -> false
         }

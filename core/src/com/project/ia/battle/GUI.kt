@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.g2d.Sprite
 
-
 /**
  * Affiche des informations sur les personnages dans la partie supérieure de l'écran.
  */

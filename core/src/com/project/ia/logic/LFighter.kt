@@ -2,7 +2,6 @@ package com.project.ia.logic
 
 import com.project.ia.def.Equip
 import com.project.ia.def.JOBS
-import com.project.ia.states.BattleState
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -23,7 +22,7 @@ data class ActiveBoost(val boost: Boost, val target: LFighter)
 /**
  * Partie logique des combattants.
  */
-open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
+open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
     private val ia = IA()
     var boosts: MutableList<ActiveBoost> = mutableListOf()
     var job = JOBS.getJob("HUMAN")

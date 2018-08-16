@@ -27,12 +27,16 @@ class EditTeam(game: IAGame) : KtxScreen {
     private var team = Team()
     private var charTables = mutableListOf<KTableWidget>()
 
+    companion object {
+        var editedTeam = 0
+    }
+
     init {
 
         stage.viewport = viewport
 
         val topTable = table {
-            label("Edit your team (it will be saved)  -  ")
+            label("Edit the team (it will be saved)  -  ")
             textButton("DONE") {
                 it.spaceRight(8f)
                 addListener(object : InputListener() {
@@ -42,6 +46,22 @@ class EditTeam(game: IAGame) : KtxScreen {
 
                     override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                         game.setScreen<TitleScreen>()
+                    }
+                })
+            }
+            textButton("SWITCH") {
+                it.spaceRight(8f)
+                addListener(object : InputListener() {
+                    override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                        return true
+                    }
+
+                    override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                        editedTeam = 1 - editedTeam
+                        updateTeam()
+                        Save.saveTeam(team)
+                        team = Save.loadTeam("team$editedTeam")
+                        updateGUI()
                     }
                 })
             }
@@ -183,7 +203,7 @@ class EditTeam(game: IAGame) : KtxScreen {
     override fun show() {
         super.show()
         Gdx.input.inputProcessor = stage
-        team = Save.loadTeam("main_team")
+        team = Save.loadTeam("team$editedTeam")
         updateGUI()
     }
 

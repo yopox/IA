@@ -1,6 +1,7 @@
 package com.project.ia.def
 
 import com.project.ia.logic.*
+import java.util.*
 
 /**
  * Définition des différentes classes.
@@ -69,7 +70,7 @@ object JOBS {
                     defModif = ComplexStat(20,
                             mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 20, TYPES.MAGICAL to 10),
                             mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 20)),
-                    yPos = 66),
+                    yPos = 126),
 
             "THIEF" to Job(
                     "THIEF",
@@ -102,9 +103,6 @@ object JOBS {
         return jobs[keys[newIndex]]!!
     }
 
-    fun randomJob(): Job {
-        val keys = jobs.keys.toMutableList().shuffled()
-        return getJob(keys.first())
-    }
+    fun randomJob(): Job = getJob(JOBS.jobs.keys.elementAt(Random().nextInt(JOBS.jobs.size)))
 
 }

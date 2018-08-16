@@ -11,13 +11,11 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.project.ia.IAGame
 import com.project.ia.def.General
 import ktx.app.KtxScreen
-import ktx.scene2d.*
+import ktx.scene2d.label
+import ktx.scene2d.table
+import ktx.scene2d.textButton
 
-
-/**
- * Game State correspondant à l'écran titre.
- */
-class TitleScreen(game: IAGame) : KtxScreen {
+class Online(game: IAGame) : KtxScreen {
     private val stage = Stage()
     private val camera = OrthographicCamera()
     private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
@@ -29,54 +27,33 @@ class TitleScreen(game: IAGame) : KtxScreen {
         val maintable = table {
             table {
                 pad(16f)
-                label("IAProject") {
-                    setFontScale(4f)
-                    color = Color.BLACK
-                }
-                row()
-                label("build ${General.BUILD_NB}") {
-                    it.right()
-                    color = Color.BLACK
+                label("Online - ")
+                textButton("Done") {
+                    pad(4f)
+                    addListener(object : InputListener() {
+                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                            return true
+                        }
+
+                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                            game.setScreen<TitleScreen>()
+                        }
+                    })
                 }
             }
             row()
             table {
                 pad(16f)
-                textButton("Edit team") {
-                    pad(8f)
-                    it.spaceRight(16f)
+
+                textButton("SHARE") {
+                    pad(16f)
                     addListener(object : InputListener() {
                         override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                             return true
                         }
 
                         override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            game.setScreen<EditTeam>()
-                        }
-                    })
-                }
-                textButton("Play") {
-                    pad(8f)
-                    it.spaceRight(16f)
-                    addListener(object : InputListener() {
-                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                            return true
-                        }
-
-                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            game.setScreen<Battle>()
-                        }
-                    })
-                }
-                textButton("Online") {
-                    pad(8f)
-                    addListener(object : InputListener() {
-                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                            return true
-                        }
-
-                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            game.setScreen<Online>()
+                            game.onlineServices.sendTeam()
                         }
                     })
                 }

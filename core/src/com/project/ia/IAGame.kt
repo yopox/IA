@@ -11,7 +11,8 @@ import ktx.scene2d.Scene2DSkin
  * Created by yopox on 08/12/2017.
  */
 
-class IAGame : KtxGame<Screen>() {
+class IAGame(val onlineServices: OnlineServices) : KtxGame<Screen>() {
+
     override fun create() {
 
         // Valeurs par défaut
@@ -24,6 +25,7 @@ class IAGame : KtxGame<Screen>() {
         addScreen(EditEquip(this))
         addScreen(EditIA(this))
         addScreen(Battle(this))
+        addScreen(Online(this))
 
         setScreen<TitleScreen>()
 

@@ -3,17 +3,46 @@ package com.project.ia.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.project.ia.IAGame
 import com.project.ia.battle.*
 import com.project.ia.data.Save
 import com.project.ia.def.Behavior
 import com.project.ia.def.JOBS
-import com.project.ia.logic.BattleState
+import com.project.ia.def.Runes
+import com.project.ia.logic.LFighter
+import com.project.ia.logic.RT
+import com.project.ia.logic.Rune
+import com.project.ia.logic.State
 import ktx.app.KtxScreen
+
+class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = -1, winner: Int = -1): State(turn, charTurn, winner) {
+    var activeRule = ""
+    var activeFighter = ""
+    var turnDuration = 60
+
+    /**
+     * Logique liée au déclenchement d'une règle d'IA propre à l'affichage des combats :
+     *  - Durée du tour
+     *  - Affichage du nom du joueur et de son action
+     */
+    override fun setActRule(rule: Array<Rune>, lFighter: LFighter) {
+        turnDuration = when (rule.first { it.type == RT.ACTION }.id) {
+            "ATK" -> 150
+            "SPL1" -> 150
+            "SPL2" -> 150
+            else -> 120
+        }
+        activeFighter = lFighter.name
+        activeRule = ""
+        val actIndex = rule.withIndex().first { it.value.type == RT.ACTION }.index
+        rule.toMutableList().subList(actIndex, rule.size).map { activeRule += it.id + " " }
+        activeRule = activeRule.dropLast(1)
+    }
+}
 
 /**
  * Game State correspondant aux combats.
@@ -63,13 +92,14 @@ class Battle(private val game: IAGame) : KtxScreen {
         super.show()
 
         // Création de l'équipe du joueur
-        val team = Save.loadTeam("main_team")
+        val team = Save.loadTeam("team0")
         val teamPlayer = Team(0)
         teamPlayer.import(team)
 
         // Création de l'équipe adverse
+        val team2 = Save.loadTeam("team1")
         val teamEnemy = Team(1)
-        teamEnemy.import(getEnemies())
+        teamEnemy.import(team2)
 
         // Ajout des [Fighter] dans [fighters]
         val tempTeam = mutableListOf<Fighter>()
@@ -81,12 +111,13 @@ class Battle(private val game: IAGame) : KtxScreen {
         fighters.map { it.resetStats(true) }
         fighters.sortByDescending { it.stats.spd }
 
-        // Mise à jour des éléments visuels
-        gui.setFighters(fighters)
+        // MAJ éléments logiques
+        turnManager = Turn()
         bState = BattleState()
 
-        // Début du premier tour
-        turnManager.play(fighters, bState)
+        // Mise à jour des éléments visuels
+        console.reset()
+        gui.setFighters(fighters)
 
     }
 
@@ -99,7 +130,7 @@ class Battle(private val game: IAGame) : KtxScreen {
 
         // Liste de noms inspirés de Twitter
         val names =
-                mutableListOf<String>("Kili", "Helo", "Harka", "Arupal", "Val",
+                mutableListOf<String>("Kili", "Helo", "Harka", "Arupal", "Val", "Lear",
                         "Jean", "Paul", "ZerO", "Xen9", "Luc", "Alex", "Jean", "Sam",
                         "Psoukh", "Klaf", "Mesho", "Hiba", "Clemba", "Lou", "Ixo", "Tib")
 
@@ -130,16 +161,13 @@ class Battle(private val game: IAGame) : KtxScreen {
         batch.draw(bg, -192f, -90f + 39f, (80 * camera.angle).toInt() - 20, 16, 384, 102)
 
         // Draw GUI
-        gui.draw(batch, font)
+        gui.draw(batch, IAfont, bState)
         console.draw(batch, font)
 
         // Draw fighters
         val fcopy = fighters.toMutableList()
         fcopy.sortByDescending { it.sprite.y }
-        fcopy.map { it.drawChar(batch, camera) }
-
-        // Draw IA and turn number
-        debug(batch, IAfont, fighters)
+        fcopy.map { it.drawChar(batch, camera, IAfont) }
 
         batch.end()
 
@@ -158,7 +186,7 @@ class Battle(private val game: IAGame) : KtxScreen {
 
         // Update frame
         bState.frame = bState.frame + 1
-        if (bState.frame == 180) {
+        if (bState.frame == bState.turnDuration) {
             bState.frame = 0
 
             if (!checkWin(fighters)) {
@@ -210,10 +238,6 @@ class Battle(private val game: IAGame) : KtxScreen {
             return true
         }
         return false
-    }
-
-    fun debug(batch: Batch, font: BitmapFont, fighters: Array<Fighter>) {
-        gui.debug(batch, font, fighters, bState)
     }
 
 }

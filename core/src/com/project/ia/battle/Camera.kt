@@ -3,12 +3,13 @@ package com.project.ia.battle
 import com.badlogic.gdx.graphics.OrthographicCamera
 
 /**
- * Created by yopox on 23/08/2017.
+ * Classe qui gère à la fois la camera pour le viewport de LibGDX, et à la fois les rotations
+ * du combat ([angle]).
  */
 class Camera : OrthographicCamera() {
-    var angle = 0.0
+    var angle = CAM_1
     var center = arrayOf(viewportWidth / 2, viewportHeight / 2)
-    var nextPos: ArrayList<Double> = ArrayList()
+    private var nextPos: ArrayList<Double> = ArrayList()
 
     fun init() {
         center = arrayOf(viewportWidth / 2, viewportHeight / 2)
@@ -32,9 +33,9 @@ class Camera : OrthographicCamera() {
 
     private fun moveCam(shift: Double, duration: Int, method: String = "linear") {
         val calculatedPos = when (method) {
-            "sin" -> Array(duration, { i -> angle + shift * Math.sin(Math.PI * (i + 1) / (2 * (duration - 1))) })
-            "exp" -> Array(duration, { i -> angle + shift * (1 - Math.exp(-5.0 * (i + 1) / (duration - 1))) })
-            else -> Array(duration, { i -> angle + shift * (i + 1) / duration })
+            "sin" -> Array(duration) { i -> angle + shift * Math.sin(Math.PI * (i + 1) / (2 * (duration - 1))) }
+            "exp" -> Array(duration) { i -> angle + shift * (1 - Math.exp(-5.0 * (i + 1) / (duration - 1))) }
+            else -> Array(duration) { i -> angle + shift * (i + 1) / duration }
         }
         nextPos.let {
             it.clear()

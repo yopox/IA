@@ -46,7 +46,7 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
     /**
      * Renvoie la règle d'IA utilisée ce tour-ci.
      */
-    fun getRule(fighters: Array<out LFighter>, state: BattleState): Array<Rune> = ia.getRule(fighters, state)
+    fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> = ia.getRule(fighters, state)
 
     /**
      * Met à jour [maxStats] en tenant compte du Job et de l'équipement.

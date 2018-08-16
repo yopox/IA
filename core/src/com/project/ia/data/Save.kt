@@ -14,7 +14,7 @@ import org.json.JSONObject
 object Save {
 
     fun saveTeam(team: Team) {
-        val isLocAvailable = Gdx.files.isLocalStorageAvailable()
+        val isLocAvailable = Gdx.files.isLocalStorageAvailable
         if (isLocAvailable) {
             val handle = Gdx.files.local("teams/${team.name}.ias")
             handle.writeString(team.serialize(), false)
@@ -24,6 +24,7 @@ object Save {
     fun loadTeam(team: String) : Team {
 
         val loadedTeam = Team()
+        loadedTeam.name = team
 
         val isLocAvailable = Gdx.files.isLocalStorageAvailable
         if (isLocAvailable) {

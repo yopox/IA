@@ -2,7 +2,6 @@ package com.project.ia.logic
 
 import com.project.ia.battle.hpLost
 import com.project.ia.def.Equip
-import com.project.ia.states.BattleState
 
 open class State(var turn: Int = 1, var charTurn: Int = 0, var winner: Int = -1) {
     fun newTurn() {
@@ -10,7 +9,7 @@ open class State(var turn: Int = 1, var charTurn: Int = 0, var winner: Int = -1)
         turn++
     }
 
-    open fun setActRule(rule: Array<Rune>) {}
+    open fun setActRule(rule: Array<Rune>, lFighter: LFighter) {}
 }
 
 
@@ -29,7 +28,7 @@ interface IAHandler {
 
         // Règle d'IA de ce tour
         val rule = fighters[state.charTurn].getRule(fighters, state)
-        state.setActRule(rule)
+        state.setActRule(rule, fighters[state.charTurn])
 
         // On récupère l'indice de la rune action
         var actionIndex = 0

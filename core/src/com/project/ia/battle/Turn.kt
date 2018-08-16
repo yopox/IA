@@ -77,7 +77,7 @@ class Turn : IAHandler {
 
     override fun wait(fighters: Array<out LFighter>, state: State) {
         actions.add(TurnAction(30, "txt", strContent = "${fighters[state.charTurn].name} does nothing."))
-        actions.add(TurnAction(30, "letterDisp", strContent = "-", actor = fighters[state.charTurn].id))
+        actions.add(TurnAction(30, "letterDisp", strContent = "R", actor = fighters[state.charTurn].id))
     }
 
     override fun atk(fighters: Array<out LFighter>, state: State, target: LFighter?) {

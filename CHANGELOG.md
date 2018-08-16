@@ -2,18 +2,21 @@
 
 1. [v0.1.0 Mogall Forest](#0.1.0)
 2. [v0.1.1 Mogall Forest](#0.1.1)
-3. [v0.2.0 Colosso](#0.2.0)
+3. [v0.1.2 Mogall Forest](#0.1.2)
 
-## v0.2 Colosso Update
+## v0.1 Mogall Forest Update
 
-<a name="0.2.0"></a>
+<a name="0.1.2"></a>
 
 - Online screen :
     - Share a team
 - Damage, heal, D for defense or W for warmup is displayed above characters.
 - Non attacking turns are 1s faster.
-
-## v0.1 Mogall Forest Update
+- Changed the GUI.
+- Only the selected action is shown each turn instead of the whole IA.
+- Fixed paladin's sprite.
+- Added a switch button to edit the other team.
+- The fight is between the two editable teams.
 
 <a name="0.1.1"></a>
 

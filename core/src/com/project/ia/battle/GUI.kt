@@ -11,9 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 
 /**
  * Affiche des informations sur les personnages dans la partie supérieure de l'écran.
- * TODO: Le GUI se casse quand une team prend trop l'avantage
  */
-
 class GUI {
 
     companion object {
@@ -34,8 +32,10 @@ class GUI {
         var div = 0.5f
     }
 
+    /**
+     * MAJ des sommes de maxHP des deux teams.
+     */
     fun setFighters(fighters: Array<Fighter>) {
-        update(fighters)
         maxHP0 = 0
         maxHP1 = 0
         fighters.filter { it.team == 0 }.map { maxHP0 += it.stats.hp }
@@ -43,6 +43,9 @@ class GUI {
         update(fighters)
     }
 
+    /**
+     * MAJ de [div] : proportion de PV actuels de la team 0 dans le total des PV
+     */
     fun update(fighters: Array<Fighter>) {
         var sum0 = 0f
         fighters.filter { it.team == 0 }.map { sum0 += it.stats.hp }
@@ -50,16 +53,21 @@ class GUI {
         fighters.filter { it.team == 1 }.map { sum1 += it.stats.hp }
 
         div = 2 * sum0 / maxHP0 / (sum0 / maxHP0 + sum1 / maxHP1)
-
     }
 
     fun draw(batch: Batch, font: BitmapFont, bState: BattleState) {
 
         font.color = Color.WHITE
+
+        // On affiche le numéro du tour et la barre d'avantage
         font.draw(batch, "TURN " + if (bState.turn < 10) "0" + bState.turn else bState.turn, -18f, 80f)
         batch.draw(barre1, -120f, 58f)
         batch.draw(barre0, 120f * (1 - div), 58f)
         batch.draw(black, 120f, 58f)
+
+        // On affiche le nom du perso qui joue et son action
+        if (bState.activeFighter != "")
+            font.draw(batch, bState.activeFighter + " ~ " + bState.activeRule, -160f + 14f, 40f)
 
     }
 

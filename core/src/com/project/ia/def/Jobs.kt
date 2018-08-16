@@ -70,7 +70,7 @@ object JOBS {
                     defModif = ComplexStat(20,
                             mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 20, TYPES.MAGICAL to 10),
                             mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 20)),
-                    yPos = 66),
+                    yPos = 126),
 
             "THIEF" to Job(
                     "THIEF",

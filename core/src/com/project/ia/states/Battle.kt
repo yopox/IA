@@ -5,29 +5,42 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.project.ia.IAGame
 import com.project.ia.battle.*
 import com.project.ia.data.Save
 import com.project.ia.def.Behavior
 import com.project.ia.def.JOBS
+import com.project.ia.def.Runes
+import com.project.ia.logic.LFighter
 import com.project.ia.logic.RT
 import com.project.ia.logic.Rune
 import com.project.ia.logic.State
 import ktx.app.KtxScreen
 
-class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = 0, winner: Int = -1): State(turn, charTurn, winner) {
-    var activeRule: Array<Rune> = arrayOf()
-    var turnDuration = 120
+class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = -1, winner: Int = -1): State(turn, charTurn, winner) {
+    var activeRule = ""
+    var activeFighter = ""
+    var turnDuration = 60
 
-    override fun setActRule(rule: Array<Rune>) {
-        activeRule = rule
+    /**
+     * Logique liée au déclenchement d'une règle d'IA propre à l'affichage des combats :
+     *  - Durée du tour
+     *  - Affichage du nom du joueur et de son action
+     */
+    override fun setActRule(rule: Array<Rune>, lFighter: LFighter) {
         turnDuration = when (rule.first { it.type == RT.ACTION }.id) {
             "ATK" -> 150
             "SPL1" -> 150
             "SPL2" -> 150
             else -> 120
         }
+        activeFighter = lFighter.name
+        activeRule = ""
+        val actIndex = rule.withIndex().first { it.value.type == RT.ACTION }.index
+        rule.toMutableList().subList(actIndex, rule.size).map { activeRule += it.id + " " }
+        activeRule = activeRule.dropLast(1)
     }
 }
 
@@ -42,7 +55,7 @@ class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = 0, winner:
 class Battle(private val game: IAGame) : KtxScreen {
 
     private val batch = SpriteBatch()
-    private val bg = Texture("Colosso.gif")
+    private val bg = Texture("Mogall_Forest.gif")
     private val font = BitmapFont(Gdx.files.internal("fonts/softsquare.fnt"), false)
     private val IAfont = BitmapFont(Gdx.files.internal("fonts/skullboy.fnt"), false)
 
@@ -79,13 +92,14 @@ class Battle(private val game: IAGame) : KtxScreen {
         super.show()
 
         // Création de l'équipe du joueur
-        val team = Save.loadTeam("main_team")
+        val team = Save.loadTeam("team0")
         val teamPlayer = Team(0)
         teamPlayer.import(team)
 
         // Création de l'équipe adverse
+        val team2 = Save.loadTeam("team1")
         val teamEnemy = Team(1)
-        teamEnemy.import(getEnemies())
+        teamEnemy.import(team2)
 
         // Ajout des [Fighter] dans [fighters]
         val tempTeam = mutableListOf<Fighter>()
@@ -97,12 +111,13 @@ class Battle(private val game: IAGame) : KtxScreen {
         fighters.map { it.resetStats(true) }
         fighters.sortByDescending { it.stats.spd }
 
-        // Mise à jour des éléments visuels
-        gui.setFighters(fighters)
+        // MAJ éléments logiques
+        turnManager = Turn()
         bState = BattleState()
 
-        // Début du premier tour
-        turnManager.play(fighters, bState)
+        // Mise à jour des éléments visuels
+        console.reset()
+        gui.setFighters(fighters)
 
     }
 

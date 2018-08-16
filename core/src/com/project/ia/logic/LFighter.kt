@@ -47,7 +47,7 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
     /**
      * Renvoie la règle d'IA utilisée ce tour-ci.
      */
-    fun getRule(fighters: Array<out LFighter>, state: BattleState): Array<Rune> = ia.getRule(fighters, state)
+    fun getRule(fighters: Array<out LFighter>, state: State): Array<Rune> = ia.getRule(fighters, state)
 
     /**
      * Met à jour [maxStats] en tenant compte du Job et de l'équipement.
@@ -103,8 +103,6 @@ open class LFighter(var name: String, val team: Int = 0, val id: Int = 0) {
                 toRemove.add(i)
         }
         toRemove.reversed().map { boosts.removeAt(it) }
-
-        boosts.map { println("$name : ${it.boost.stat} ${it.boost.value} ${it.boost.duration}T") }
 
     }
 

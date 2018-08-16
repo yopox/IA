@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 
 /**
  * Affiche des informations sur les personnages dans la partie supérieure de l'écran.
+ * TODO: Le GUI se casse quand une team prend trop l'avantage
  */
 
 class GUI {
@@ -48,7 +49,7 @@ class GUI {
         var sum1 = 0f
         fighters.filter { it.team == 1 }.map { sum1 += it.stats.hp }
 
-        div = sum0 / maxHP0 - sum1 / maxHP1
+        div = 2 * sum0 / maxHP0 / (sum0 / maxHP0 + sum1 / maxHP1)
 
     }
 
@@ -57,7 +58,7 @@ class GUI {
         font.color = Color.WHITE
         font.draw(batch, "TURN " + if (bState.turn < 10) "0" + bState.turn else bState.turn, -18f, 80f)
         batch.draw(barre1, -120f, 58f)
-        batch.draw(barre0, -240f * div, 58f)
+        batch.draw(barre0, 120f * (1 - div), 58f)
         batch.draw(black, 120f, 58f)
 
     }

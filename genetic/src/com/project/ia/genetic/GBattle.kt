@@ -1,11 +1,13 @@
 package com.project.ia.genetic
 
+import com.project.ia.logic.State
+
 /**
  * Permet de faire combattre deux teams.
  */
 object GBattle {
 
-    fun fight(team1: GTeam, team2: GTeam): GState {
+    fun fight(team1: GTeam, team2: GTeam): State {
 
         val tempTeam = mutableListOf<GFighter>()
 
@@ -23,7 +25,7 @@ object GBattle {
         fighters.sortByDescending { it.stats.spd }
 
         val turnManager = GTurn()
-        val state = GState()
+        val state = State()
 
         turnManager.play(fighters, state)
 

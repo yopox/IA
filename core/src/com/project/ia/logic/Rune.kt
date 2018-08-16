@@ -28,18 +28,19 @@ class RuneTarget(id: String, var carac: (LFighter) -> Int = { it.stats.hp })
     /**
      * Renvoie le [LFighter] associé à la cible.
      */
-    fun getTarget(fighters: Array<out LFighter>, state: State): LFighter? {
+    fun getTarget(fighters: Array<out LFighter>, state: State): LFighter {
         val alive = fighters.filter { it.alive }
         val default = fighters[state.charTurn]
-        return when (id.slice(0..1)) {
-            "aM" -> alive.maxBy { carac(it) } ?: default
-            "aL" -> alive.minBy { carac(it) } ?: default
-            "AM" -> alive.filter { it.team == fighters[state.charTurn].team }.maxBy { carac(it) } ?: default
-            "AL" -> alive.filter { it.team == fighters[state.charTurn].team }.minBy { carac(it) } ?: default
-            "EM" -> alive.filter { it.team != fighters[state.charTurn].team }.maxBy { carac(it) } ?: default
-            "EL" -> alive.filter { it.team != fighters[state.charTurn].team }.minBy { carac(it) } ?: default
+        val target = when (id.slice(0..1)) {
+            "aM" -> alive.maxBy { carac(it) }
+            "aL" -> alive.minBy { carac(it) }
+            "AM" -> alive.filter { it.team == fighters[state.charTurn].team }.maxBy { carac(it) }
+            "AL" -> alive.filter { it.team == fighters[state.charTurn].team }.minBy { carac(it) }
+            "EM" -> alive.filter { it.team != fighters[state.charTurn].team }.maxBy { carac(it) }
+            "EL" -> alive.filter { it.team != fighters[state.charTurn].team }.minBy { carac(it) }
             else -> fighters[state.charTurn]
         }
+        return target ?: default
     }
 }
 

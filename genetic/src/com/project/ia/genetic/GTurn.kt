@@ -4,6 +4,7 @@ import com.project.ia.battle.TurnAction
 import com.project.ia.logic.BattleState
 import com.project.ia.logic.IAHandler
 import com.project.ia.logic.LFighter
+import com.project.ia.logic.State
 
 /**
  * Implémentation de [IAHandler].
@@ -12,14 +13,18 @@ import com.project.ia.logic.LFighter
  */
 class GTurn : IAHandler {
 
-    override fun play(fighters: Array<out LFighter>, state: BattleState) {
+    override fun play(fighters: Array<out LFighter>, state: State) {
         super.play(fighters, state)
     }
 
-    override fun wait(fighters: Array<out LFighter>, state: BattleState) {
+    override fun wait(fighters: Array<out LFighter>, state: State) {
     }
 
     override fun damage(actor: LFighter, target: LFighter, amount: String) {
+    }
+
+    override fun heal(target: LFighter, value: Int) {
+
     }
 
     override fun dies(actor: LFighter) {

@@ -68,7 +68,6 @@ object Algo {
                                 teams[j].fitness += 500
                             }
                         }
-
                     }
                 }
             }
@@ -114,4 +113,3 @@ object Algo {
         test(teams[0])
     }
 }
-

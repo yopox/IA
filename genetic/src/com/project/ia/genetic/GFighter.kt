@@ -55,21 +55,24 @@ class GFighter(name: String, team: Int, id: Int) : LFighter(name, team, id) {
             val newRune = Runes.getRandom(oldRune.type)
             runes[i][j] = newRune.id
 
-            // TODO: Correction de la règle au cas où les [next] sont différents
+            // Correction de la règle au cas où les [next] sont différents
             when (oldRune.type) {
                 RT.GATE -> {
                     val singleCondGates = arrayOf("ID", "NOT")
-                    // Il faut rajouter une condition
                     if (oldRune.id in singleCondGates && newRune.id !in singleCondGates) {
-                        println("ADD COND : " + runes[i])
+                        // Il faut rajouter une condition
+
+                        // On ajoute une nouvelle condition
                         val newCond = Runes.getRandom(RT.CONDITION)
                         runes[i].add(1, newCond.id)
+
+                        // On ajoute les runes nécessaires à cette condition
                         for (nextRune in newCond.next.reversed())
                             runes[i].add(2, Runes.getRandom(nextRune).id)
-                        println(runes[i])
+
                     } else if (oldRune.id !in singleCondGates && newRune.id in singleCondGates) {
-                        println("SUPPR COND : " + runes[i])
                         // Il faut supprimer une condition
+
                         if (Math.random() < 0.5) {
                             // On supprime la première condition
                             runes[i].removeAt(1)
@@ -81,18 +84,35 @@ class GFighter(name: String, team: Int, id: Int) : LFighter(name, team, id) {
                             while (Runes.runes[runes[i][condIndex]]!!.type != RT.ACTION)
                                 runes[i].removeAt(condIndex)
                         }
-                        println(runes[i])
                     }
                 }
                 RT.CONDITION -> {
-                    // TODO
+                    // On supprime les runes en trop
+                    for ((n, rtype) in oldRune.next.withIndex()) {
+                        if (rtype !in newRune.next) {
+                            runes[i].removeAt(j+1+n)
+                        }
+                    }
+                    // On ajoute les runes nécessaires
+                    for ((n, rtype) in newRune.next.withIndex()) {
+                        if (Runes.runes[runes[i][j+1+n]]!!.type != rtype) {
+                            runes[i].add(j+1+n, Runes.getRandom(rtype).id)
+                        }
+                    }
                 }
                 RT.ACTION -> {
-                    // TODO
+                    if (newRune.next.isNotEmpty() && oldRune.next.isEmpty()) {
+                        // On ajoute une cible
+                        val newTarget = Runes.getRandom(RT.TARGET)
+                        runes[i].add(newTarget.id)
+                    } else if (newRune.next.isEmpty() && oldRune.next.isNotEmpty()) {
+                        // On enlève la cible
+                        runes[i].removeAt(j + 1)
+                    }
                 }
-                else -> {}
+                else -> {
+                }
             }
-
 
 
         }

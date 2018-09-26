@@ -1,12 +1,44 @@
 package com.project.ia.logic
 
+import com.project.ia.battle.Turn
 import com.project.ia.battle.hpLost
 import com.project.ia.def.Equip
+import com.project.ia.def.General
 
 open class State(var turn: Int = 1, var charTurn: Int = 0, var winner: Int = -1) {
     fun newTurn() {
         charTurn = 0
         turn++
+    }
+
+    fun nextTurn(fighters: Array<out LFighter>, turnManager: IAHandler) {
+        // On regarde si le combat est fini
+        when {
+            // Une équipe gagne
+            fighters.none { it.team == 0 && it.alive } -> winner = 1
+            fighters.none { it.team == 1 && it.alive } -> winner = 0
+
+            // Combat trop long
+            turn > General.MAX_TURNS -> winner = -2
+
+            // Le combat continue
+            else -> {
+                // Tour du personnage suivant
+                charTurn++
+
+                // Tous les personnages ont joué
+                if (charTurn == fighters.size) {
+                    newTurn()
+                    fighters.sortByDescending { it.stats.spd }
+                }
+
+                // Personnage mort
+                if (!fighters[charTurn].alive)
+                    fighters[charTurn].endTurn()
+                else
+                    turnManager.play(fighters, this)
+            }
+        }
     }
 
     open fun setActRule(rule: Array<Rune>, lFighter: LFighter) {}

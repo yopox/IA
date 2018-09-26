@@ -5,7 +5,6 @@ import java.util.Random
 object CONFIG {
     const val NTEAMS = 50
     const val N_GEN = 100
-    const val MAX_TURNS = 100
     const val RATIO_KEPT = .1 // doit être moins que .3, et c'est conseillé qu'il soit même moins que .25
     const val NTEAMS_KEPT = (NTEAMS * RATIO_KEPT).toInt()
     const val MUTATION_PROB = .6
@@ -79,9 +78,7 @@ object Algo {
             for (i in CONFIG.NTEAMS - 1 downTo CONFIG.NTEAMS_KEPT)
                 teams.removeAt(i)
 
-
             // Affichage de la meilleure team
-            /*
             println("----GEN $gen----")
             println("Best fitness : ${teams[0].fitness}")
             for (i in 0..2) {
@@ -90,7 +87,6 @@ object Algo {
                 println("----- ${fighter.job.name}  (${fighter.weapon} • ${fighter.spell1} • ${fighter.spell2} • ${fighter.relic})")
                 println("----- ${teams[0].fighters[i].getIAString()}")
             }
-            */
 
             // Calcul des teams mutées
             val mteams = mutableListOf<GTeam>()
@@ -117,3 +113,6 @@ object Algo {
     }
 }
 
+fun main(args: Array<String>) {
+    Algo.main()
+}

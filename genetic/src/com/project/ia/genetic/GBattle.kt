@@ -27,32 +27,8 @@ object GBattle {
 
         turnManager.play(fighters, state)
 
-        while (state.winner == -1) {
-
-            // On regarde si le combat est fini
-            when {
-                fighters.none { it.team == 0 && it.alive } -> state.winner = 1
-                fighters.none { it.team == 1 && it.alive } -> state.winner = 0
-                state.turn > CONFIG.MAX_TURNS -> state.winner = -2
-                else -> {
-
-                    // Tour du personnage suivant
-                    state.charTurn++
-
-                    // Tous les personnages ont joué
-                    if (state.charTurn == fighters.size) {
-                        state.newTurn()
-                        fighters.sortByDescending { it.stats.spd }
-                    }
-
-                    // Personnage mort
-                    if (!fighters[state.charTurn].alive)
-                        fighters[state.charTurn].endTurn()
-                    else
-                        turnManager.play(fighters, state)
-                }
-            }
-        }
+        while (state.winner == -1)
+            state.nextTurn(fighters, turnManager)
 
         return state
 

@@ -1,11 +1,7 @@
 package com.project.ia.genetic
 
-import com.project.ia.logic.BattleState
+import com.project.ia.logic.State
 
-class GState(turn: Int = 1, frame: Int = -1, charTurn: Int = 0, winner: Int = -1) : BattleState(turn, frame, charTurn, winner) {
-
-    override fun newTurn() {
-        super.newTurn()
-    }
+class GState : State(1, 0, -1) {
 
 }

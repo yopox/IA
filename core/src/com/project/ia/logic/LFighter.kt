@@ -6,13 +6,12 @@ import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
-data class Jet(var type: TYPES, var elem: ELEMENTS, var damage: Int)
+data class Jet(var elem: ELEMENTS, var damage: Int)
 
 /**
  * Définition d'un [Boost].
- * @param [apply] est une fonction qui applique le boost voulu
  */
-data class Boost(var stat: STAT_ENUM,
+data class Boost(var stat: STAT,
                  var value: Int,
                  var duration: Int,
                  var onSelf: Boolean = true)
@@ -55,19 +54,19 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
         maxStats.setTo(job.stats, true)
 
         // Arme
-        for (boost in Equip.getWeapon(weapon).stats) {
+        for (boost in Equip.getWeapon(weapon).STAT) {
             maxStats.applyBuff(boost)
         }
 
         // Relique
-        for (boost in Equip.getRelic(relic).stats) {
+        for (boost in Equip.getRelic(relic).STAT) {
             maxStats.applyBuff(boost)
         }
 
     }
 
     /**
-     * Reset les stats du personnage.
+     * Reset les STAT du personnage.
      */
     fun resetStats(setHp: Boolean = false) {
         updateMaxStats()
@@ -107,7 +106,7 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
 
     fun attack(target: LFighter, jets: Array<Jet>?) {
 
-        for ((_, _, damage) in damageCalculation(this, target, jets)) {
+        for ((_, damage) in damageCalculation(this, target, jets)) {
             target.stats.hp -= damage
         }
 
@@ -144,8 +143,8 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
      * Applique un boost.
      */
     private fun applyBoost(boost: Boost) {
-        if (boost.stat != STAT_ENUM.HP)
-            // Modification de stat
+        if (boost.stat != STAT.HP)
+        // Modification de stat
             stats.applyBuff(Pair(boost.stat, boost.value))
         else if (alive && boost.value > 0) {
             // Soin
@@ -155,35 +154,27 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
 
 }
 
-fun atkStat(atk: Int) = max(-100, atk) / 100.0
+fun atkStat(atk: Int) = max(-99, atk) / 100.0
 
-fun defStat(def: Int) = min(100, def) / 100.0
+fun defStat(def: Int) = min(99, def) / 100.0
 
 fun damageCalculation(fighter: LFighter, target: LFighter, jets: Array<Jet>?): ArrayList<Jet> {
 
-    val coeffAtk = 1 + atkStat(fighter.stats.atk.general)
-    val coeffDef = 1 - defStat(target.stats.def.general)
     val damageDealt = ArrayList<Jet>()
 
     if (jets != null) {
-        for ((t, e, d) in jets) {
+        for ((e, d) in jets) {
 
-            // Offensive formula
-            val attackT = fighter.stats.atk.types[t] ?: 0
-            val attackE = fighter.stats.atk.elements[e] ?: 0
+            // Attack formula
+            val coeffAtk = 1.0 + atkStat(fighter.stats.getAtk(e))
+            val attack = max(0, d) * coeffAtk
 
-            val Ai = coeffAtk * max(0, d) *
-                    (1 + atkStat(attackT)) *
-                    (1 + atkStat(attackE))
+            // Damage received
+            val coeffDef = 1 - defStat(target.stats.getDef(e))
+            val damage = max(0.0, attack) * coeffDef
 
-            // Defensive formula
-            val defT = fighter.stats.def.types[t] ?: 0
-            val defE = fighter.stats.def.elements[e] ?: 0
+            damageDealt.add(Jet(e, floor(damage).toInt()))
 
-            val Di = coeffDef * max(0.0, Ai) *
-                    (1 - defStat(defT)) *
-                    (1 - defStat(defE))
-            damageDealt.add(Jet(t, e, floor(Di).toInt()))
         }
     }
 

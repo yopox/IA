@@ -1,18 +1,16 @@
 buildscript {
 
-    ext.kotlin_version = "1.2.60"
+    ext.kotlin_version = "1.2.70"
 
     repositories {
+        google()
         mavenLocal()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         jcenter()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -34,9 +32,8 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
     }
 
 }
@@ -83,8 +80,8 @@ project(":core") {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile group: 'io.github.libktx', name: 'ktx-app', version: '1.9.8-b1'
-        compile group: 'io.github.libktx', name: 'ktx-scene2d', version: '1.9.8-b1'
+        compile group: 'io.github.libktx', name: 'ktx-app', version: '1.9.8-b5'
+        compile group: 'io.github.libktx', name: 'ktx-scene2d', version: '1.9.8-b5'
     }
 
 }

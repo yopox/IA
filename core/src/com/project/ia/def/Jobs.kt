@@ -6,85 +6,27 @@ import java.util.*
 /**
  * Définition des différentes classes.
  * Voir [Job] pour les propriétés d'une classe.
- *
- * ★ 4 ★★ 10 ★★★ 20 ★★★★ 34
+ * TODO: Créer enum et jobs map de l'enum vers [Job]
  */
 object JOBS {
 
     private val jobs = mapOf(
-
-            "WARRIOR" to Job(
-                    "WARRIOR",
-                    40,
-                    10,
-                    atkModif = ComplexStat(10,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 10, TYPES.MAGICAL to 10),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 10, ELEMENTS.LIGHT to 10)),
-                    defModif = ComplexStat(10,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 10, TYPES.MAGICAL to 10),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 10, ELEMENTS.LIGHT to 10))),
-
-            "DARK MAGE" to Job(
-                    "DARK MAGE",
+            "FREELANCE" to Job(
+                    "FREELANCE",
+                    50,
                     20,
-                    20,
-                    atkModif = ComplexStat(20,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 4, TYPES.MAGICAL to 20),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 20, ELEMENTS.LIGHT to 4)),
-                    defModif = ComplexStat(10,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 4, TYPES.MAGICAL to 10),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 20, ELEMENTS.LIGHT to 4)),
-                    yPos = 336),
+                    15,
+                    0,
+                    0),
+            "PRIEST" to Job(
+                    "PRIEST",
+                    30,
+                    15,
+                    5,
+                    30,
+                    0))
 
-            "WHITE MAGE" to Job(
-                    "WHITE MAGE",
-                    20,
-                    20,
-                    atkModif = ComplexStat(20,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 4, TYPES.MAGICAL to 20),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 20)),
-                    defModif = ComplexStat(10,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 4, TYPES.MAGICAL to 10),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 20)),
-                    yPos = 306),
-
-            "MONK" to Job(
-                    "MONK",
-                    40,
-                    34,
-                    atkModif = ComplexStat(34,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 20, TYPES.MAGICAL to 4),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 10)),
-                    defModif = ComplexStat(4,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 10, TYPES.MAGICAL to 4),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 4)),
-                    yPos = 66),
-
-            "PALADIN" to Job(
-                    "PALADIN",
-                    20,
-                    10,
-                    atkModif = ComplexStat(10,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 10, TYPES.MAGICAL to 10),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 10)),
-                    defModif = ComplexStat(20,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 20, TYPES.MAGICAL to 10),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 4, ELEMENTS.LIGHT to 20)),
-                    yPos = 126),
-
-            "THIEF" to Job(
-                    "THIEF",
-                    20,
-                    55,
-                    atkModif = ComplexStat(20,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 10, TYPES.MAGICAL to 4),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 20, ELEMENTS.LIGHT to 10)),
-                    defModif = ComplexStat(4,
-                            mutableMapOf<TYPES, Int>(TYPES.PHYSICAL to 10, TYPES.MAGICAL to 4),
-                            mutableMapOf<ELEMENTS, Int>(ELEMENTS.DARK to 20, ELEMENTS.LIGHT to 4)),
-                    yPos = 96))
-
-    fun getJob(job: String): Job = jobs[job] ?: jobs["WARRIOR"]!!
+    fun getJob(job: String): Job = jobs[job] ?: jobs["FREELANCE"]!!
 
     /**
      * Utile depuis l'interface pour changer de job sur un personnage.

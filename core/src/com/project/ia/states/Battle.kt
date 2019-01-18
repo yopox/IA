@@ -193,7 +193,6 @@ class Battle(private val game: IAGame) : KtxScreen {
 
                 bState.nextTurn(fighters, turnManager)
 
-
             } else {
                 game.setScreen<TitleScreen>()
             }

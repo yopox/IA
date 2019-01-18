@@ -15,7 +15,6 @@ import com.project.ia.data.Team
 import com.project.ia.def.Equip
 import com.project.ia.logic.ELEMENTS
 import com.project.ia.logic.LFighter
-import com.project.ia.logic.TYPES
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
@@ -102,17 +101,11 @@ class EditEquip(game: IAGame) : KtxScreen {
                 table {
                     pad(8f)
                     it.width(96f)
-                    label("  HP: 75 SPD: 20")
+                    label("  HP: 0 ATK: 0")
                     row()
-                    label("ATK G: 75 DEF G: 20")
+                    label("  LT: 75 DK: 20")
                     row()
-                    label("ATK P: 75 DEF P: 20")
-                    row()
-                    label("ATK M: 75 DEF M: 20")
-                    row()
-                    label("ATK L: 75 DEF L: 20")
-                    row()
-                    label("ATK D: 75 DEF D: 20")
+                    label(" SPD: 100")
                 }
 
             }
@@ -257,27 +250,16 @@ class EditEquip(game: IAGame) : KtxScreen {
 
         val table = (mainTable.children[1] as KTableWidget).children[1] as KTableWidget
 
-        // MAJ des stats de [editedLFighter]
+        // MAJ des STAT de [editedLFighter]
         editedLFighter.updateMaxStats()
 
         val stats = editedLFighter.maxStats
         (table.children[0] as Label)
-                .setText("  HP: ${stats.hp} SPD: ${stats.spd}")
+                .setText("  HP: ${stats.hp} ATK: ${stats.atk}")
         (table.children[1] as Label)
-                .setText("ATK G: ${stats.atk.general} " +
-                        "DEF G: ${stats.def.general}")
+                .setText("  LT: ${stats.lt} DK: ${stats.dk}")
         (table.children[2] as Label)
-                .setText("ATK P: ${stats.atk.types[TYPES.PHYSICAL]} " +
-                        "DEF P: ${stats.def.types[TYPES.PHYSICAL]}")
-        (table.children[3] as Label)
-                .setText("ATK M: ${stats.atk.types[TYPES.MAGICAL]} " +
-                        "DEF M: ${stats.def.types[TYPES.MAGICAL]}")
-        (table.children[4] as Label)
-                .setText("ATK L: ${stats.atk.elements[ELEMENTS.LIGHT]} " +
-                        "DEF L: ${stats.def.elements[ELEMENTS.LIGHT]}")
-        (table.children[5] as Label)
-                .setText("ATK D: ${stats.atk.elements[ELEMENTS.DARK]} " +
-                        "DEF D: ${stats.def.elements[ELEMENTS.DARK]}")
+                .setText(" SPD: ${stats.spd}")
     }
 
 }

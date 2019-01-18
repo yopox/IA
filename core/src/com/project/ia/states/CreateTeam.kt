@@ -3,11 +3,14 @@ package com.project.ia.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.project.ia.IAGame
@@ -15,19 +18,20 @@ import com.project.ia.data.Save
 import com.project.ia.data.Team
 import com.project.ia.def.General
 import com.project.ia.def.JOBS
-import com.project.ia.logic.ELEMENTS
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
 /**
  * Game State correspondant à l'écran de création de team.
  */
-class EditTeam(game: IAGame) : KtxScreen {
+class CreateTeam(game: IAGame) : KtxScreen {
     private var stage = Stage()
     private val camera = OrthographicCamera()
     private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
     private var team = Team()
     private var charTables = mutableListOf<KTableWidget>()
+    private val charsSprite = Texture("chars.png")
+    private var classSprites = mutableListOf<Sprite>()
 
     companion object {
         var editedTeam = 0
@@ -38,36 +42,10 @@ class EditTeam(game: IAGame) : KtxScreen {
         stage.viewport = viewport
 
         val topTable = table {
-            label("Edit the team (it will be saved)  -  ")
-            textButton("DONE") {
-                it.spaceRight(8f)
-                addListener(object : InputListener() {
-                    override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                        return true
-                    }
-
-                    override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                        game.setScreen<TitleScreen>()
-                    }
-                })
+            label("Create your team") {
+                color = General.COLOR4
+                it.pad(8f)
             }
-            textButton("SWITCH") {
-                it.spaceRight(8f)
-                addListener(object : InputListener() {
-                    override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                        return true
-                    }
-
-                    override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                        editedTeam = 1 - editedTeam
-                        updateTeam()
-                        Save.saveTeam(team)
-                        team = Save.loadTeam("team$editedTeam")
-                        updateGUI()
-                    }
-                })
-            }
-
         }
 
         for (i in 0..2) {
@@ -98,6 +76,7 @@ class EditTeam(game: IAGame) : KtxScreen {
                         it.pad(8f)
                         it.width(56f)
                         setAlignment(Align.center)
+                        color = General.COLOR4
                     }
                     textButton(">") {
                         addListener(object : InputListener() {
@@ -114,48 +93,19 @@ class EditTeam(game: IAGame) : KtxScreen {
                     }
                 }
                 row()
+                classSprites.add(Sprite())
+                //image()
                 table {
                     pad(8f)
-                    label("HP : 0") { it.width(40f) }
-                    label("SPD : 0") { it.width(40f) }
+                    label("HP : 0") { it.width(40f) ; color = General.COLOR4 }
                     row()
-                    label("ATK : 0") { it.width(40f) }
-                    label("LT : 0") { it.width(40f) }
-                    label("DK : 0") { it.width(40f) }
-                }
-                row()
-                textButton("EQUIP") {
-                    it.spaceBottom(8f)
-                    pad(0f, 8f, 0f, 8f)
-                    addListener(object : InputListener() {
-                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                            updateTeam()
-                            return true
-                        }
-
-                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            EditEquip.editedLFighter = team.fighters[i]
-                            EditEquip.editedTeam = team
-                            game.setScreen<EditEquip>()
-                        }
-                    })
-                }
-                row()
-                textButton("IA") {
-                    it.spaceTop(8f)
-                    pad(0f, 16f, 0f, 16f)
-                    addListener(object : InputListener() {
-                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                            updateTeam()
-                            return true
-                        }
-
-                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            EditIA.editedLFighter = team.fighters[i]
-                            EditIA.editedTeam = team
-                            game.setScreen<EditIA>()
-                        }
-                    })
+                    label("SPD : 0") { it.width(40f) ; color = General.COLOR4 }
+                    row()
+                    label("ATK : 0") { it.width(40f) ; color = General.COLOR4 }
+                    row()
+                    label("LT : 0") { it.width(40f) ; color = General.COLOR4 }
+                    row()
+                    label("DK : 0") { it.width(40f) ; color = General.COLOR4 }
                 }
             })
         }
@@ -167,6 +117,19 @@ class EditTeam(game: IAGame) : KtxScreen {
                 appendActor(charTables[0])
                 appendActor(charTables[1])
                 appendActor(charTables[2])
+            }
+            row()
+            textButton("DONE") {
+                it.spaceRight(8f)
+                addListener(object : InputListener() {
+                    override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                        return true
+                    }
+
+                    override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                        game.setScreen<TitleScreen>()
+                    }
+                })
             }
         })
 

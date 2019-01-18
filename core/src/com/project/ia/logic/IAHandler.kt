@@ -2,11 +2,42 @@ package com.project.ia.logic
 
 import com.project.ia.battle.hpLost
 import com.project.ia.def.Equip
+import com.project.ia.def.General
 
 open class State(var turn: Int = 1, var charTurn: Int = 0, var winner: Int = -1) {
-    fun newTurn() {
+    private fun newTurn() {
         charTurn = 0
         turn++
+    }
+
+    fun nextTurn(fighters: Array<out LFighter>, turnManager: IAHandler) {
+        // On regarde si le combat est fini
+        when {
+            // Une équipe gagne
+            fighters.none { it.team == 0 && it.alive } -> winner = 1
+            fighters.none { it.team == 1 && it.alive } -> winner = 0
+
+            // Combat trop long
+            turn > General.MAX_TURNS -> winner = -2
+
+            // Le combat continue
+            else -> {
+                // Tour du personnage suivant
+                charTurn++
+
+                // Tous les personnages ont joué
+                if (charTurn == fighters.size) {
+                    newTurn()
+                    fighters.sortByDescending { it.stats.spd }
+                }
+
+                // Personnage mort
+                if (!fighters[charTurn].alive)
+                    fighters[charTurn].endTurn()
+                else
+                    turnManager.play(fighters, this)
+            }
+        }
     }
 
     open fun setActRule(rule: Array<Rune>, lFighter: LFighter) {}
@@ -39,16 +70,14 @@ interface IAHandler {
 
         // Action du tour
         when (rule[actionIndex].id) {
-            "DEF" -> def(fighters, state)
             "SPL1" -> spl(fighters, state, target!!.getTarget(fighters, state), 1)
             "SPL2" -> spl(fighters, state, target!!.getTarget(fighters, state), 2)
             "PRO" -> pro(fighters, state, target!!.getTarget(fighters, state))
-            "WRM" -> wrm(fighters, state)
             "ATK" -> atk(fighters, state, target!!.getTarget(fighters, state))
             else -> wait(fighters, state)
         }
 
-        // MAJ des stats du personnage
+        // MAJ des STAT du personnage
         fighters[state.charTurn].endTurn()
 
     }
@@ -86,17 +115,6 @@ interface IAHandler {
 
     fun wait(fighters: Array<out LFighter>, state: State)
 
-    fun def(fighters: Array<out LFighter>, state: State) {
-        val actor = fighters[state.charTurn]
-        actor.boosts.add(ActiveBoost(Boost(STAT_ENUM.DEFG, 40, 1), actor))
-    }
-
-    fun wrm(fighters: Array<out LFighter>, state: State) {
-        val actor = fighters[state.charTurn]
-        actor.boosts.add(ActiveBoost(Boost(STAT_ENUM.DEFG, 25, 1), actor))
-        actor.boosts.add(ActiveBoost(Boost(STAT_ENUM.ATKG, 25, 1), actor))
-    }
-
     fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, nSpl: Int) {
 
         if (target == null) {
@@ -121,7 +139,7 @@ interface IAHandler {
                 for (boost in it) {
                     val buffTarget = if (boost.onSelf) actor else target
                     actor.boosts.add(ActiveBoost(boost.copy(), buffTarget))
-                    if (boost.stat == STAT_ENUM.HP) {
+                    if (boost.stat == STAT.HP) {
                         heal(buffTarget, boost.value)
                     }
                 }

@@ -1,7 +1,6 @@
 package com.project.ia.states
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -31,18 +30,18 @@ class TitleScreen(game: IAGame) : KtxScreen {
                 pad(16f)
                 label("IAProject") {
                     setFontScale(4f)
-                    color = Color.BLACK
+                    color = General.COLOR4;
                 }
                 row()
                 label("build ${General.BUILD_NB}") {
                     it.right()
-                    color = Color.BLACK
+                    color = General.COLOR4
                 }
             }
             row()
             table {
-                pad(16f)
-                textButton("Edit team") {
+                pad(24f)
+                textButton("NEW GAME") {
                     pad(8f)
                     it.spaceRight(16f)
                     addListener(object : InputListener() {
@@ -51,11 +50,11 @@ class TitleScreen(game: IAGame) : KtxScreen {
                         }
 
                         override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            game.setScreen<EditTeam>()
+                            game.setScreen<CreateTeam>()
                         }
                     })
                 }
-                textButton("Play") {
+                textButton("CONTINUE") {
                     pad(8f)
                     it.spaceRight(16f)
                     addListener(object : InputListener() {
@@ -65,18 +64,6 @@ class TitleScreen(game: IAGame) : KtxScreen {
 
                         override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                             game.setScreen<Battle>()
-                        }
-                    })
-                }
-                textButton("Online") {
-                    pad(8f)
-                    addListener(object : InputListener() {
-                        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                            return true
-                        }
-
-                        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                            game.setScreen<Online>()
                         }
                     })
                 }
@@ -98,7 +85,7 @@ class TitleScreen(game: IAGame) : KtxScreen {
         stage.act(Gdx.graphics.deltaTime);
 
         // Clear screen
-        Gdx.gl.glClearColor(0.518f, 0.494f, 0.529f, 1f)
+        Gdx.gl.glClearColor(General.COLOR1.r, General.COLOR1.g, General.COLOR1.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         stage.draw()

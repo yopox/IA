@@ -175,7 +175,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFiUg773RjFulU="
 									},
-									"name": "stats",
+									"name": "STAT",
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
@@ -961,7 +961,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+stats: Stats",
+											"text": "+STAT: Stats",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false

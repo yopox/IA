@@ -21,6 +21,7 @@ class IAGame(val onlineServices: OnlineServices) : KtxGame<Screen>() {
 
         // On ajoute tous les écrans
         addScreen(TitleScreen(this))
+        addScreen(CreateTeam(this))
         addScreen(EditTeam(this))
         addScreen(EditEquip(this))
         addScreen(EditIA(this))

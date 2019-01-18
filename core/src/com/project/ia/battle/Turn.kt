@@ -56,14 +56,6 @@ class Turn : IAHandler {
 
     }
 
-    override fun def(fighters: Array<out LFighter>, state: State) {
-        super.def(fighters, state)
-
-        actions.add(TurnAction(30, "txt", strContent = "${fighters[state.charTurn].name} is defending!"))
-        actions.add(TurnAction(30, "pose", strContent = "defend", actor = fighters[state.charTurn].id))
-        actions.add(TurnAction(30, "letterDisp", strContent = "D", actor = fighters[state.charTurn].id))
-    }
-
     override fun pro(fighters: Array<out LFighter>, state: State, target: LFighter?) {
         super.pro(fighters, state, target)
 
@@ -99,12 +91,6 @@ class Turn : IAHandler {
         }
     }
 
-    override fun wrm(fighters: Array<out LFighter>, state: State) {
-        super.wrm(fighters, state)
-        actions.add(TurnAction(30, "txt", strContent = "${fighters[state.charTurn].name} warms up!"))
-        actions.add(TurnAction(30, "letterDisp", strContent = "W", actor = fighters[state.charTurn].id))
-    }
-
     override fun spl(fighters: Array<out LFighter>, state: State, target: LFighter?, nSpl: Int) {
         super.spl(fighters, state, target, nSpl)
         val actor = fighters[state.charTurn]
@@ -119,7 +105,6 @@ class Turn : IAHandler {
             actions.add(TurnAction(15, "txt", strContent = "${actor.name} uses ${spell.name} on ${if (target == actor) "itself" else target.name}!"))
             actions.add(TurnAction(65, "pose", strContent = "idle", actor = actor.id))
             actions.add(TurnAction(75, "gui"))
-
 
         }
     }

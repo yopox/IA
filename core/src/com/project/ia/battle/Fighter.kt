@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.project.ia.def.JOBS
 import com.project.ia.logic.*
 import java.util.*
 
@@ -135,9 +136,11 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
 
     override fun changeJob(job: Job) {
         super.changeJob(job)
-        srcY = job.yPos
+        srcY = YPOS(job)
         sprite.setRegion(srcX, srcY, width, height)
     }
+
+    private fun YPOS(job: Job) = 6
 
     /**
      * Change la pose du personnage.

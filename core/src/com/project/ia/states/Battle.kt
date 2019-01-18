@@ -191,21 +191,7 @@ class Battle(private val game: IAGame) : KtxScreen {
 
             if (!checkWin(fighters)) {
 
-                do {
-
-                    bState.charTurn++
-
-                    if (bState.charTurn == fighters.size) {
-                        bState.newTurn()
-                        fighters.sortByDescending { it.stats.spd }
-                    }
-
-                    if (!fighters[bState.charTurn].alive)
-                        fighters[bState.charTurn].endTurn()
-
-                } while (!fighters[bState.charTurn].alive)
-
-                turnManager.play(fighters, bState)
+                bState.nextTurn(fighters, turnManager)
 
             } else {
                 game.setScreen<TitleScreen>()
@@ -230,14 +216,18 @@ class Battle(private val game: IAGame) : KtxScreen {
      * Vérifie si le combat est terminé.
      */
     private fun checkWin(fighters: Array<Fighter>): Boolean {
-        if (fighters.none { it.team == 0 && it.alive }) {
-            bState.winner = 1
-            return true
-        } else if (fighters.none { it.team == 1 && it.alive }) {
-            bState.winner = 0
-            return true
+        return when {
+            fighters.none { it.team == 0 && it.alive } -> {
+                bState.winner = 1
+                true
+            }
+            fighters.none { it.team == 1 && it.alive } -> {
+                bState.winner = 0
+                true
+            }
+            bState.winner == -2 -> true
+            else -> false
         }
-        return false
     }
 
 }

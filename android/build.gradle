@@ -1,5 +1,5 @@
 android {
-    buildToolsVersion "27.0.1"
+    buildToolsVersion '27.0.3'
     compileSdkVersion 28
     sourceSets {
         main {
@@ -11,8 +11,6 @@ android {
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
         }
-
-        instrumentTest.setRoot('tests')
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'

@@ -1,5 +1,7 @@
 package com.project.ia.logic
 
+import com.project.ia.def.JOB
+
 /**
  * Permet de définir des classes des personnages.
  *
@@ -11,7 +13,9 @@ package com.project.ia.logic
  * [lt] : Base lt
  * [dk] : Base dk
  */
-class Job(val name: String, val hp: Int, val spd: Int, val atk: Int, val lt: Int, val dk: Int) {
+class Job(val value: JOB, val name: String,
+          val hp: Int, val atk: Int,
+          val lt: Int, val dk: Int, val spd: Int) {
     var stats = Stats()
 
     init {

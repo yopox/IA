@@ -1,7 +1,7 @@
 package com.project.ia.genetic
 
 import com.project.ia.def.Equip
-import com.project.ia.def.JOBS
+import com.project.ia.def.Jobs
 import com.project.ia.def.Runes
 import com.project.ia.logic.LFighter
 import com.project.ia.logic.RT
@@ -21,12 +21,11 @@ class GFighter(name: String, team: Int, id: Int) : LFighter(name, team, id) {
 
         // Mutation du job
         if (Math.random() < 0.25)
-            changeJob(JOBS.randomJob())
+            changeJob(Jobs.randomJob())
 
         // Mutation de l'équipement
         if (Math.random() < 0.25)
             weapon = Equip.randomWeapon()
-
 
         // Mutation du sort 1
         if (Math.random() < 0.25)

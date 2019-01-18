@@ -41,12 +41,26 @@ object Runes {
 
             // Cibles
             "SELF" to RuneTarget("SELF"),
-            "aMHP" to RuneTarget("aMHP", { it.stats.hp }),
-            "aLHP" to RuneTarget("aLHP", { it.stats.hp }),
-            "AMHP" to RuneTarget("AMHP", { it.stats.hp }),
-            "ALHP" to RuneTarget("ALHP", { it.stats.hp }),
-            "EMHP" to RuneTarget("EMHP", { it.stats.hp }),
-            "ELHP" to RuneTarget("ELHP", { it.stats.hp }),
+            "aMHP" to RuneTarget("aMHP") { it.stats.hp },
+            "aLHP" to RuneTarget("aLHP") { it.stats.hp },
+            "AMHP" to RuneTarget("AMHP") { it.stats.hp },
+            "ALHP" to RuneTarget("ALHP") { it.stats.hp },
+            "EMHP" to RuneTarget("EMHP") { it.stats.hp },
+            "ELHP" to RuneTarget("ELHP") { it.stats.hp },
+
+            "aMDK" to RuneTarget("aMDK") { it.stats.dk },
+            "aLDK" to RuneTarget("aLDK") { it.stats.dk },
+            "AMDK" to RuneTarget("AMDK") { it.stats.dk },
+            "ALDK" to RuneTarget("ALDK") { it.stats.dk },
+            "EMDK" to RuneTarget("EMDK") { it.stats.dk },
+            "ELDK" to RuneTarget("ELDK") { it.stats.dk },
+
+            "aMLT" to RuneTarget("aMLT") { it.stats.lt },
+            "aLLT" to RuneTarget("aLLT") { it.stats.lt },
+            "AMLT" to RuneTarget("AMLT") { it.stats.lt },
+            "ALLT" to RuneTarget("ALLT") { it.stats.lt },
+            "EMLT" to RuneTarget("EMLT") { it.stats.lt },
+            "ELLT" to RuneTarget("ELLT") { it.stats.lt },
 
             // Valeurs
             "0" to Rune("0", RT.VALUE),
@@ -55,6 +69,10 @@ object Runes {
             "3" to Rune("3", RT.VALUE),
             "4" to Rune("4", RT.VALUE),
             "5" to Rune("5", RT.VALUE),
+            "6" to Rune("6", RT.VALUE),
+            "7" to Rune("7", RT.VALUE),
+            "8" to Rune("8", RT.VALUE),
+            "9" to Rune("9", RT.VALUE),
             "10" to Rune("10", RT.VALUE),
             "15" to Rune("15", RT.VALUE),
             "20" to Rune("20", RT.VALUE),
@@ -78,8 +96,8 @@ object Runes {
             "ATK" to Rune("ATK", RT.ACTION, arrayOf(RT.TARGET)),
             "SPL1" to Rune("SPL1", RT.ACTION, arrayOf(RT.TARGET)),
             "SPL2" to Rune("SPL2", RT.ACTION, arrayOf(RT.TARGET)),
-            "DEF" to Rune("DEF", RT.ACTION),
-            "WRM" to Rune("WRM", RT.ACTION),
+            //"DEF" to Rune("DEF", RT.ACTION),
+            //"WRM" to Rune("WRM", RT.ACTION),
             "PRO" to Rune("PRO", RT.ACTION, arrayOf(RT.TARGET)),
             "WAIT" to Rune("WAIT", RT.ACTION)
 

@@ -5,14 +5,12 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.project.ia.IAGame
 import com.project.ia.battle.*
 import com.project.ia.data.Save
 import com.project.ia.def.Behavior
-import com.project.ia.def.JOBS
-import com.project.ia.def.Runes
+import com.project.ia.def.Jobs
 import com.project.ia.logic.LFighter
 import com.project.ia.logic.RT
 import com.project.ia.logic.Rune
@@ -138,7 +136,7 @@ class Battle(private val game: IAGame) : KtxScreen {
         for (i in 0..2) {
             team.fighters[i].name = names.shuffled().first()
             team.fighters[i].changeIA(Behavior.getRandom())
-            team.fighters[i].changeJob(JOBS.randomJob())
+            team.fighters[i].changeJob(Jobs.randomJob())
         }
 
         return team

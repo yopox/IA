@@ -1,7 +1,5 @@
 package com.project.ia.data
 
-import com.project.ia.def.JOBS
-import com.project.ia.def.Runes
 import com.project.ia.logic.Job
 import com.project.ia.logic.LFighter
 

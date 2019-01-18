@@ -10,14 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.project.ia.IAGame
 import com.project.ia.data.Save
 import com.project.ia.data.Team
 import com.project.ia.def.General
-import com.project.ia.def.JOBS
+import com.project.ia.def.Jobs
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
@@ -67,12 +66,12 @@ class CreateTeam(game: IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                                team.changeJob(i) { j -> JOBS.previousJob(j) }
+                                team.changeJob(i) { j -> Jobs.previousJob(j) }
                                 updateGUI()
                             }
                         })
                     }
-                    label(JOBS.getJob("").name) {
+                    label(Jobs.getJob("").name) {
                         it.pad(8f)
                         it.width(56f)
                         setAlignment(Align.center)
@@ -86,7 +85,7 @@ class CreateTeam(game: IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                                team.changeJob(i) { j -> JOBS.nextJob(j) }
+                                team.changeJob(i) { j -> Jobs.nextJob(j) }
                                 updateGUI()
                             }
                         })

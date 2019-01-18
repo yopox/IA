@@ -14,8 +14,7 @@ import com.project.ia.IAGame
 import com.project.ia.data.Save
 import com.project.ia.data.Team
 import com.project.ia.def.General
-import com.project.ia.def.JOBS
-import com.project.ia.logic.ELEMENTS
+import com.project.ia.def.Jobs
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
@@ -89,12 +88,12 @@ class EditTeam(game: IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                                team.changeJob(i) { j -> JOBS.previousJob(j) }
+                                team.changeJob(i) { j -> Jobs.previousJob(j) }
                                 updateGUI()
                             }
                         })
                     }
-                    label(JOBS.getJob("").name) {
+                    label(Jobs.getJob("").name) {
                         it.pad(8f)
                         it.width(56f)
                         setAlignment(Align.center)
@@ -107,7 +106,7 @@ class EditTeam(game: IAGame) : KtxScreen {
                             }
 
                             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                                team.changeJob(i) { j -> JOBS.nextJob(j) }
+                                team.changeJob(i) { j -> Jobs.nextJob(j) }
                                 updateGUI()
                             }
                         })

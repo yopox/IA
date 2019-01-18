@@ -17,7 +17,7 @@ Les combats sont ensuite automatiques.
 Il y a 5 éléments.
 
 Nom | Description
-:-: | ------------------------------------------------------
+:-: | ------------------------------------------------------------------------------------
 HP  | Points de vie
 SPD | Vitesse
 ATK | Force physique
@@ -81,3 +81,14 @@ EM[STAT] | Ennemi avec le plus de [STAT]
 EL[STAT] | Ennemi avec le moins de [STAT]
 aM[STAT] | Personnage avec le plus de [STAT]
 aL[STAT] | Personnage avec le moins de [STAT]
+
+### Classes de personnages
+
+Nom         | HP  | ATK | LT  | DK | SPD
+----------- | --- | --- | --- | -- | ---
+Freelance   | 100 | 20  | 0   | 0  | 25
+Warrior     | 90  | 30  | 5   | 5  | 20
+Rogue       | 75  | 15  | 0   | 10 | 50
+Paladin     | 150 | 18  | 25  | -5 | 25
+Priest      | 85  | 5   | 30  | -5 | 20
+Necromancer | 85  | 10  | -10 | 30 | 22

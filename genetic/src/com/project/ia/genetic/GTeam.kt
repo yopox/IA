@@ -1,7 +1,7 @@
 package com.project.ia.genetic
 
 import com.project.ia.def.Equip
-import com.project.ia.def.JOBS
+import com.project.ia.def.Jobs
 import com.project.ia.def.Runes
 import com.project.ia.logic.RT
 import com.project.ia.logic.Rune
@@ -38,7 +38,7 @@ class GTeam() {
             fighter.changeIA(chaine.drop(3))
 
             // Classe
-            fighter.changeJob(JOBS.randomJob())
+            fighter.changeJob(Jobs.randomJob())
 
             // Equipement
             fighter.weapon = Equip.randomWeapon()

@@ -1,7 +1,7 @@
 package com.project.ia.logic
 
 import com.project.ia.def.Equip
-import com.project.ia.def.JOBS
+import com.project.ia.def.Jobs
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -24,7 +24,7 @@ data class ActiveBoost(val boost: Boost, val target: LFighter)
 open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
     private val ia = IA()
     var boosts: MutableList<ActiveBoost> = mutableListOf()
-    var job = JOBS.getJob("HUMAN")
+    var job = Jobs.getJob("HUMAN")
     var stats = Stats()
     var maxStats = Stats()
     var alive = true
@@ -34,6 +34,7 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
     var spell2 = "NONE"
     var relic = "NONE"
     var onceUsed = false
+    var damageMultipliers: MutableList<Int> = mutableListOf()
 
     open fun changeJob(job: Job) {
         this.job = job
@@ -143,10 +144,10 @@ open class LFighter(var name: String, var team: Int = 0, var id: Int = 0) {
      * Applique un boost.
      */
     private fun applyBoost(boost: Boost) {
-        if (boost.stat != STAT.HP)
-        // Modification de stat
+        if (boost.stat != STAT.HP) {
+            // Modification de stat
             stats.applyBuff(Pair(boost.stat, boost.value))
-        else if (alive && boost.value > 0) {
+        } else if (alive && boost.value > 0) {
             // Soin
             stats.hp = min(stats.hp + boost.value, maxStats.hp)
         }
@@ -171,7 +172,10 @@ fun damageCalculation(fighter: LFighter, target: LFighter, jets: Array<Jet>?): A
 
             // Damage received
             val coeffDef = 1 - defStat(target.stats.getDef(e))
-            val damage = max(0.0, attack) * coeffDef
+            var damage = max(0.0, attack) * coeffDef
+
+            for (mult in target.damageMultipliers)
+                damage *= mult
 
             damageDealt.add(Jet(e, floor(damage).toInt()))
 

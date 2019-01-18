@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.project.ia.def.JOBS
 import com.project.ia.logic.*
 import java.util.*
 

@@ -1,10 +1,7 @@
 package com.project.ia.data
 
 import com.badlogic.gdx.Gdx
-import com.project.ia.def.JOBS
-import com.project.ia.logic.IA
-import com.project.ia.logic.LFighter
-import com.project.ia.logic.Stats
+import com.project.ia.def.Jobs
 import org.json.JSONObject
 
 
@@ -45,7 +42,7 @@ object Save {
                     loadedTeam.fighters[i].name = objFighter.getString("name")
 
                     // Classe
-                    loadedTeam.fighters[i].changeJob(JOBS.getJob(objFighter.getString("job")))
+                    loadedTeam.fighters[i].changeJob(Jobs.getJob(objFighter.getString("job")))
 
                     // Equipement
                     loadedTeam.fighters[i].weapon = objFighter.getString("weapon")

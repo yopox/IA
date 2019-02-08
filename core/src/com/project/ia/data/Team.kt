@@ -24,7 +24,7 @@ class Team {
         fighters[nfi].changeJob(dir(fighters[nfi].job))
     }
 
-    fun serialize() : String {
+    fun serialize(): String {
         var str = "{\n"
 
         str += """ "name": "$name", """ + "\n"

@@ -48,9 +48,9 @@ object Equip {
     fun getSpell(spell: String): Spell = SPELLS[spell] ?: SPELLS["NONE"]!!
     fun getRelic(relic: String): Relic = RELICS[relic] ?: RELICS["NONE"]!!
 
-    fun randomWeapon(): String = WEAPONS.keys.elementAt(Random().nextInt(Equip.WEAPONS.size))
-    fun randomSpell(): String = SPELLS.keys.elementAt(Random().nextInt(Equip.SPELLS.size))
-    fun randomRelic(): String = RELICS.keys.elementAt(Random().nextInt(Equip.RELICS.size))
+    fun randomWeapon(): String = WEAPONS.keys.random()
+    fun randomSpell(): String = SPELLS.keys.random()
+    fun randomRelic(): String = RELICS.keys.random()
 
     /**
      * Renvoie la description d'une arme avec nom, dommages, et bonus de STAT.

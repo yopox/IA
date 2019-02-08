@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.project.ia.def.JOB
 import com.project.ia.logic.*
 import java.util.*
 
@@ -35,7 +36,7 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
     var forceFacing: Fighter? = null
     var pose = "idle"
     private var blink = 0
-    private var upcomingPos = Array(2, { Vector<Float>() })
+    private var upcomingPos = Array(2) { Vector<Float>() }
 
     /**
      * Modifie la position du sprite en fonction de posX et posY.
@@ -135,11 +136,18 @@ class Fighter(private val depX: Float, private val depY: Float, name: String, te
 
     override fun changeJob(job: Job) {
         super.changeJob(job)
-        srcY = YPOS(job)
+        srcY = ypos(job)
         sprite.setRegion(srcX, srcY, width, height)
     }
 
-    private fun YPOS(job: Job) = 6
+    private fun ypos(job: Job) = when (job.value) {
+        JOB.NECROMANCER -> 336
+        JOB.PALADIN -> 36
+        JOB.PRIEST -> 306
+        JOB.ROGUE -> 96
+        JOB.WARRIOR -> 126
+        else -> 6
+    }
 
     /**
      * Change la pose du personnage.

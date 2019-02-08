@@ -19,10 +19,11 @@ Il y a 5 éléments.
 Nom | Description
 :-: | ------------------------------------------------------------------------------------
 HP  | Points de vie
-SPD | Vitesse
 ATK | Force physique
 DK  | Noirceur : puissance et résistance aux magies noires
 LT  | Lumière : augmente la puissance des soins et des buffs, rend faible à la magie noire
+DEF | Defense
+SPD | Vitesse
 
 ## Runes
 
@@ -84,11 +85,11 @@ aL[STAT] | Personnage avec le moins de [STAT]
 
 ### Classes de personnages
 
-Nom         | HP  | ATK | LT  | DK | SPD
------------ | --- | --- | --- | -- | ---
-Freelance   | 100 | 20  | 0   | 0  | 25
-Warrior     | 90  | 30  | 5   | 5  | 20
-Rogue       | 75  | 15  | 0   | 10 | 50
-Paladin     | 150 | 18  | 25  | -5 | 25
-Priest      | 85  | 5   | 30  | -5 | 20
-Necromancer | 85  | 10  | -10 | 30 | 22
+Nom         | HP  | ATK | LT  | DK | DEF | SPD
+----------- | --- | --- | --- | -- | --- | ---
+Freelance   | 100 | 20  | 0   | 0  | 5   | 25
+Warrior     | 90  | 30  | 5   | 5  | 10  | 20
+Rogue       | 75  | 15  | 0   | 10 | 0   | 50
+Paladin     | 120 | 18  | 25  | -5 | 15  | 25
+Priest      | 85  | 5   | 30  | -5 | 5   | 20
+Necromancer | 85  | 10  | -10 | 30 | 0   | 22

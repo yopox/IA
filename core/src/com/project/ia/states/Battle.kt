@@ -17,7 +17,7 @@ import com.project.ia.logic.Rune
 import com.project.ia.logic.State
 import ktx.app.KtxScreen
 
-class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = -1, winner: Int = -1): State(turn, charTurn, winner) {
+class BattleState(turn: Int = 1, var frame: Int = -1, charTurn: Int = -1, winner: Int = -1) : State(turn, charTurn, winner) {
     var activeRule = ""
     var activeFighter = ""
     var turnDuration = 60

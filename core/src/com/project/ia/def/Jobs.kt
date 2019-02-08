@@ -66,12 +66,8 @@ object Jobs {
     fun getJob(job: JOB): Job = jobs[job] ?: jobs[JOB.FREELANCE]!!
 
     fun getJob(job: String): Job {
-        val subJobs = jobs.filter { entry -> entry.value.name == job }.toList()
-        return if (subJobs.any()) {
-            subJobs[0].second
-        } else {
-            jobs[JOB.FREELANCE]!!
-        }
+        val subJobs = jobs.filter { it.value.name == job }.toList()
+        return if (subJobs.any()) subJobs[0].second else jobs[JOB.FREELANCE]!!
     }
 
     /**
@@ -91,6 +87,6 @@ object Jobs {
         return jobs[jobValues[newIndex]]!!
     }
 
-    fun randomJob(): Job = getJob(Jobs.jobs.keys.elementAt(Random().nextInt(Jobs.jobs.size)))
+    fun randomJob(): Job = getJob(Jobs.jobs.keys.random())
 
 }

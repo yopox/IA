@@ -97,8 +97,8 @@ object Algo {
             val rteams = mutableListOf<GTeam>()
             for (i in 1..CONFIG.NTEAMS_KEPT)
                 rteams.add(GTeam.reproduce(
-                        teams[Random().nextInt(teams.size)],
-                        teams[Random().nextInt(teams.size)]))
+                        teams.random(),
+                        teams.random()))
 
             // Ajout de nouvelles teams
             mteams.forEach { teams.add(it) } // Ajout des teams mutées

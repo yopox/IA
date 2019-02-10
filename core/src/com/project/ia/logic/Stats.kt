@@ -5,7 +5,7 @@ enum class ELEMENTS {
 }
 
 enum class STAT {
-    HP, SPD, ATK, LT, DK
+    HP, SPD, ATK, DEF, LT, DK
 }
 
 /**
@@ -16,6 +16,7 @@ class Stats {
     var hp = 100
     var spd = 0
     var atk = 0
+    var def = 0
     var lt = 0
     var dk = 0
 
@@ -28,10 +29,11 @@ class Stats {
         atk = maxStats.atk
         lt = maxStats.lt
         dk = maxStats.dk
+        def = maxStats.def
     }
 
     override fun toString(): String {
-        return "hp: $hp ; spd: $spd ; atk: $atk ; lt: $lt ; dk: $dk"
+        return "hp: $hp ; spd: $spd ; atk: $atk ; def: $def ; lt: $lt ; dk: $dk"
     }
 
     fun applyBuff(buff: Pair<STAT, Int>) = when (buff.first) {
@@ -40,6 +42,7 @@ class Stats {
         STAT.ATK -> atk += buff.second
         STAT.LT -> lt += buff.second
         STAT.DK -> dk += buff.second
+        STAT.DEF -> def += buff.second
     }
 
     fun getAtk(elem: ELEMENTS) = when(elem) {
@@ -48,8 +51,8 @@ class Stats {
     }
 
     fun getDef(elem: ELEMENTS) = when(elem) {
-        ELEMENTS.PHYSICAL -> lt
-        ELEMENTS.DARK -> dk
+        ELEMENTS.PHYSICAL -> def
+        ELEMENTS.DARK -> (dk + lt) / 2
     }
 
 }

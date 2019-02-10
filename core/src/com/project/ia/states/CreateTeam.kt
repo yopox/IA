@@ -95,12 +95,14 @@ class CreateTeam(game: IAGame) : KtxScreen {
                 classSprites.add(Sprite())
                 //image()
                 table {
-                    pad(8f)
+                    pad(2f)
                     label("HP : 0") { it.width(40f) ; color = General.COLOR4 }
                     row()
                     label("SPD : 0") { it.width(40f) ; color = General.COLOR4 }
                     row()
                     label("ATK : 0") { it.width(40f) ; color = General.COLOR4 }
+                    row()
+                    label("DEF : 0") { it.width(40f) ; color = General.COLOR4 }
                     row()
                     label("LT : 0") { it.width(40f) ; color = General.COLOR4 }
                     row()
@@ -151,8 +153,9 @@ class CreateTeam(game: IAGame) : KtxScreen {
             ((charTables[i].children[2] as KTableWidget).children[0] as Label).setText("HP: ${team.fighters[i].maxStats.hp}")
             ((charTables[i].children[2] as KTableWidget).children[1] as Label).setText("SPD: ${team.fighters[i].maxStats.spd}")
             ((charTables[i].children[2] as KTableWidget).children[2] as Label).setText("ATK: ${team.fighters[i].maxStats.atk}")
-            ((charTables[i].children[2] as KTableWidget).children[3] as Label).setText("LT: ${team.fighters[i].maxStats.lt}")
-            ((charTables[i].children[2] as KTableWidget).children[4] as Label).setText("DK: ${team.fighters[i].maxStats.dk}")
+            ((charTables[i].children[2] as KTableWidget).children[3] as Label).setText("DEF: ${team.fighters[i].maxStats.def}")
+            ((charTables[i].children[2] as KTableWidget).children[4] as Label).setText("LT: ${team.fighters[i].maxStats.lt}")
+            ((charTables[i].children[2] as KTableWidget).children[5] as Label).setText("DK: ${team.fighters[i].maxStats.dk}")
         }
 
     }

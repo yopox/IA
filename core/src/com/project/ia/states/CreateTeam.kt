@@ -3,7 +3,6 @@ package com.project.ia.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
@@ -17,6 +16,7 @@ import com.project.ia.data.Save
 import com.project.ia.data.Team
 import com.project.ia.def.General
 import com.project.ia.def.Jobs
+import com.project.ia.gui.Graph
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
@@ -29,8 +29,8 @@ class CreateTeam(game: IAGame) : KtxScreen {
     private val viewport = ExtendViewport(320f, 180f, 360f, 180f, camera)
     private var team = Team()
     private var charTables = mutableListOf<KTableWidget>()
-    private val charsSprite = Texture("chars.png")
     private var classSprites = mutableListOf<Sprite>()
+    private var graphs = mutableListOf<Graph>()
 
     companion object {
         var editedTeam = 0
@@ -96,17 +96,8 @@ class CreateTeam(game: IAGame) : KtxScreen {
                 //image()
                 table {
                     pad(2f)
-                    label("HP : 0") { it.width(40f) ; color = General.COLOR4 }
-                    row()
-                    label("SPD : 0") { it.width(40f) ; color = General.COLOR4 }
-                    row()
-                    label("ATK : 0") { it.width(40f) ; color = General.COLOR4 }
-                    row()
-                    label("DEF : 0") { it.width(40f) ; color = General.COLOR4 }
-                    row()
-                    label("LT : 0") { it.width(40f) ; color = General.COLOR4 }
-                    row()
-                    label("DK : 0") { it.width(40f) ; color = General.COLOR4 }
+                    graphs.add(Graph())
+                    appendActor(graphs.last())
                 }
             })
         }
@@ -150,12 +141,7 @@ class CreateTeam(game: IAGame) : KtxScreen {
 
             // Stats
             team.fighters[i].updateMaxStats()
-            ((charTables[i].children[2] as KTableWidget).children[0] as Label).setText("HP: ${team.fighters[i].maxStats.hp}")
-            ((charTables[i].children[2] as KTableWidget).children[1] as Label).setText("SPD: ${team.fighters[i].maxStats.spd}")
-            ((charTables[i].children[2] as KTableWidget).children[2] as Label).setText("ATK: ${team.fighters[i].maxStats.atk}")
-            ((charTables[i].children[2] as KTableWidget).children[3] as Label).setText("DEF: ${team.fighters[i].maxStats.def}")
-            ((charTables[i].children[2] as KTableWidget).children[4] as Label).setText("LT: ${team.fighters[i].maxStats.lt}")
-            ((charTables[i].children[2] as KTableWidget).children[5] as Label).setText("DK: ${team.fighters[i].maxStats.dk}")
+            graphs[i].updateTexture(team.fighters[i].maxStats)
         }
 
     }
